@@ -18,7 +18,7 @@ const ProtectedRoute = (props: PropTypes) => {
         if (token) logout();
         return <Navigate to='/login' replace />
     }
-    if (isAuthenticated && currentRoute === 'login') {
+    if (isAuthenticated && currentRoute === '/login') {
         return <Navigate to='/dashboard' replace />
     }
 
