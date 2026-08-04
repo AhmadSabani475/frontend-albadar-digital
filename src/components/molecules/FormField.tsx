@@ -1,6 +1,6 @@
 import { Field, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
-
+import type { LucideIcon } from "lucide-react";
 interface PropTypes {
     id?: string;
     name: string;
@@ -8,7 +8,10 @@ interface PropTypes {
     value: string;
     type?: string;
     error?: string;
+    placeholder?: string;
+    Icon?: LucideIcon;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    required?: boolean;
 }
 
 const FormField = (props: PropTypes) => {
@@ -18,8 +21,11 @@ const FormField = (props: PropTypes) => {
         label,
         onChange,
         value,
+        placeholder,
         type = 'text',
-        error
+        error,
+        Icon,
+        required = false
     } = props;
 
     return (
@@ -27,7 +33,21 @@ const FormField = (props: PropTypes) => {
             <FieldLabel htmlFor={name}>
                 {label}
             </FieldLabel>
-            <Input type={type} name={name} id={id} value={value} onChange={onChange} />
+            <div className="relative">
+                {Icon && (
+                    <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                )}
+                <Input
+                    name={name}
+                    id={id}
+                    type={type}
+                    value={value}
+                    placeholder={placeholder}
+                    onChange={onChange}
+                    className={`h-11 ${Icon ? "pl-9" : ""}`}
+                    required={required}
+                />
+            </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
         </Field>
     )

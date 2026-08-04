@@ -4,6 +4,7 @@ import FormField from "../molecules/FormField"
 import { Button } from "../ui/button"
 import { authService } from "../../services/auth.service"
 import { useAuthStore } from "../../store/authStore"
+import { ArrowRight, Lock, User } from "lucide-react"
 
 const LoginForm = () => {
     const [username, setUsername] = useState<string>("");
@@ -12,7 +13,7 @@ const LoginForm = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         setError("");
         setIsLoading(true);
@@ -32,13 +33,16 @@ const LoginForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-5">
             <FormField
                 type="text"
                 label="Username"
                 name="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                placeholder="Masukkan username"
+                Icon={User}
+                required={true}
             />
             <FormField
                 type="password"
@@ -46,12 +50,15 @@ const LoginForm = () => {
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="Masukkan password"
+                Icon={Lock}
+                required={true}
             />
             {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Loading..." : "Submit"}
+            <Button type="submit" disabled={isLoading} className="w-full bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-900/50">
+                {isLoading ? "Loading..." : <>Submit <ArrowRight className="h-4 w-4" /></>}
             </Button>
-        </form>
+        </form >
     )
 }
 
