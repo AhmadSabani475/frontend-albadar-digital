@@ -1,13 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { jwtDecode } from 'jwt-decode';
+import type { Santri } from '@/types/Santri';
 
 interface User {
     _id: string;
     username: string;
     role: 'admin' | 'pengurus';
     is_active: boolean;
-    santriId?: any;
+    santriId?: string | Santri;
 }
 
 interface JwtPayload {
@@ -21,6 +22,7 @@ interface AuthState {
     user: User | null;
     setAuth: (token: string, user: User) => void;
     setToken: (token: string) => void;
+    setUser: (user: User) => void;
     logout: () => void;
     isTokenValid: () => boolean;
 }
@@ -32,6 +34,7 @@ export const useAuthStore = create<AuthState>()(
             user: null,
             setAuth: (token, user) => set({ token, user }),
             setToken: (token) => set({ token }),
+            setUser: (user) => set({ user }),
             logout: () => set({ token: null, user: null }),
             isTokenValid: () => {
                 const token = get().token;

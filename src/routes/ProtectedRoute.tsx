@@ -9,7 +9,7 @@ interface PropTypes {
 
 const ProtectedRoute = (props: PropTypes) => {
     const { children } = props;
-    const { token, isTokenValid, logout } = useAuthStore();
+    const { token, isTokenValid, logout, user } = useAuthStore();
     const currentRoute = useLocation().pathname;
 
     const isAuthenticated = !!token && isTokenValid();
@@ -20,6 +20,16 @@ const ProtectedRoute = (props: PropTypes) => {
     }
     if (isAuthenticated && currentRoute === '/login') {
         return <Navigate to='/dashboard' replace />
+    }
+
+    if (isAuthenticated && user?.is_active === false) {
+        if (currentRoute !== '/complete-profile') {
+            return <Navigate to='/complete-profile' replace />;
+        }
+    }
+
+    if ((isAuthenticated && user?.is_active === true && currentRoute === '/complete-profile')) {
+        return <Navigate to='/dashboard' replace />;
     }
 
     return <>{children}</>
