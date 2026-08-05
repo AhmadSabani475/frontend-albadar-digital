@@ -4,7 +4,6 @@ import AuthLayout from "@/components/templates/AuthLayout"
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const CompleteProfile = () => {
-
     return (
         <AuthLayout >
             <Card className="w-full max-w-4xl mx-auto gap-5">

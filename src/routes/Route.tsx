@@ -3,8 +3,13 @@ import type { RouteObject } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Dashboard from "@/pages/DashboardPage/Dashboard";
 import CompleteProfile from "@/pages/CompleteProfile/CompleteProfile";
+import LandingPage from "@/pages/LandingPage/LandingPage";
 
 const routes: RouteObject[] = [
+    {
+        path: '/',
+        element: <LandingPage />
+    },
     {
         path: '/login',
         element: <ProtectedRoute>
