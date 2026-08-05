@@ -1,6 +1,6 @@
 import LoginForm from "@/components/organisms/LoginForm";
 import AuthLayout from "@/components/templates/AuthLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const LoginPage = () => {
     return (

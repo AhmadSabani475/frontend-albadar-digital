@@ -5,7 +5,8 @@ interface PropTypes {
     id?: string;
     name: string;
     label: string;
-    value: string;
+    value?: string;
+    defaultValue?: string;
     type?: string;
     error?: string;
     placeholder?: string;
@@ -20,6 +21,7 @@ const FormField = (props: PropTypes) => {
         name,
         label,
         onChange,
+        defaultValue,
         value,
         placeholder,
         type = 'text',
@@ -40,6 +42,7 @@ const FormField = (props: PropTypes) => {
                 <Input
                     name={name}
                     id={id}
+                    defaultValue={defaultValue}
                     type={type}
                     value={value}
                     placeholder={placeholder}
