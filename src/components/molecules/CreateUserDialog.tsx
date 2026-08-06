@@ -1,4 +1,4 @@
-import { Lock, User } from "lucide-react"
+import { User } from "lucide-react"
 import { Button } from "../ui/button"
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { FieldGroup } from "../ui/field"
@@ -9,7 +9,6 @@ import { usersService } from "@/services/users.service"
 
 const CreateUserDialog = () => {
     const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
     const [role, setRole] = useState<string>("pengurus");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -20,9 +19,8 @@ const CreateUserDialog = () => {
         setIsLoading(true);
         setError("");
         try {
-            await usersService.createUser(username, password, role as 'admin' | 'pengurus');
+            await usersService.createUser(username, role as 'admin' | 'pengurus');
             setUsername("");
-            setPassword("");
             setRole('pengurus');
             setOpen(false);
         } catch (err) {
@@ -45,10 +43,7 @@ const CreateUserDialog = () => {
                             onChange={(e) => setUsername(e.target.value)}
                             placeholder="Masukkan Username"
                             name="username" Icon={User} value={username} required={true} />
-                        <FormField type="password" label="Password"
-                            placeholder="**********"
-                            onChange={(e) => setPassword(e.target.value)}
-                            name="username" Icon={Lock} value={password} required={true} />
+                        
                         <SelectField
                             label="Role"
                             name="role"
