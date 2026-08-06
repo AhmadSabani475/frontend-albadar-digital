@@ -8,7 +8,7 @@ interface User {
     username: string;
     role: 'admin' | 'pengurus';
     is_active: boolean;
-    santriId?: string | Santri;
+    santriId?: Santri;
 }
 
 interface JwtPayload {

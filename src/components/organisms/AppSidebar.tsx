@@ -1,38 +1,44 @@
-import { Bed, LayoutDashboard, School, Users } from "lucide-react";
 import Brand from "../molecules/Brand";
 import SidebarNavItem from "../molecules/SidebarNavItem";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
+import SidebarNavGroup from "../molecules/SidebarNavGroup";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import { useAuthStore } from "@/store/authStore";
+import { SIDEBAR_MENU } from "@/constants/menu";
+import { Button } from "../ui/button";
+import { LogOut } from "lucide-react";
+
 
 const AppSidebar = () => {
-    const user = useAuthStore.getState().user;
-
-    if (!user) {
-        return null;
-    }
-
-    const { username, role } = user;
+    const logout = useAuthStore((state) => state.logout);
     return (
         <Sidebar>
-            <SidebarHeader
-            >
+            <SidebarHeader>
                 <Brand />
             </SidebarHeader>
             <SidebarContent>
-                <SidebarNavItem
-                    title="Dashboard"
-                    url="/dashboard"
-                    Icon={LayoutDashboard}
-                />
+                {SIDEBAR_MENU.map((entry) =>
+                    entry.type === "item" ? (
+                        <SidebarNavItem
+                            key={entry.url}
+                            title={entry.title}
+                            url={entry.url}
+                            Icon={entry.icon}
+                        />
+                    ) : (
+                        <SidebarNavGroup
+                            key={entry.label}
+                            label={entry.label}
+                            items={entry.items}
+                        />
+                    )
+                )}
             </SidebarContent>
             <SidebarFooter>
                 <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton>
-                            <p>{username}</p>
-                            <p>{role}</p>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
+                    <SidebarMenuButton onClick={logout} className="text-destructive hover:text-destructive">
+                        <LogOut />
+                        <span>Logout</span>
+                    </SidebarMenuButton>
                 </SidebarMenu>
             </SidebarFooter>
         </Sidebar>

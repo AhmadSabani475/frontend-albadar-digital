@@ -1,7 +1,7 @@
 
 import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
 import type { LucideIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 interface PropTypes {
     title: string;
@@ -10,19 +10,21 @@ interface PropTypes {
 }
 const SidebarNavItem = (props: PropTypes) => {
     const { title, url, Icon } = props;
+    const location = useLocation().pathname;
     return (
         <SidebarGroup>
             <SidebarMenu>
                 <SidebarMenuItem>
-                    <SidebarMenuButton>
-                        <Link to={url} className="flex gap-3">
-                            {Icon && <Icon />}
-                            <span>{title}</span>
-                        </Link>
+                    <SidebarMenuButton isActive={location === url}
+                        render={<Link to={url} className="flex gap-3" />}>
+
+                        {Icon && <Icon />}
+                        <span>{title}</span>
+
                     </SidebarMenuButton>
                 </SidebarMenuItem>
             </SidebarMenu>
-        </SidebarGroup>
+        </SidebarGroup >
 
     )
 }
