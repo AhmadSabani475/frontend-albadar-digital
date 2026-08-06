@@ -1,10 +1,9 @@
 import Brand from "../molecules/Brand";
 import SidebarNavItem from "../molecules/SidebarNavItem";
 import SidebarNavGroup from "../molecules/SidebarNavGroup";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton } from "../ui/sidebar";
 import { useAuthStore } from "@/store/authStore";
 import { SIDEBAR_MENU } from "@/constants/menu";
-import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
 
 

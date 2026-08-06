@@ -10,10 +10,10 @@ interface CreateUserResponse {
     };
 }
 export const usersService = {
-    createUser: (username: string, password: string, role: 'admin' | 'pengurus') => {
+    createUser: (username: string,  role: 'admin' | 'pengurus') => {
         return fetchAPI<CreateUserResponse>('/auth', {
             method: 'POST',
-            body: JSON.stringify({ username, password, role }),
+            body: JSON.stringify({ username, role }),
         })
     }
 }

@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Bed, School, type LucideIcon } from "lucide-react";
+import { LayoutDashboard, Users, Bed, type LucideIcon } from "lucide-react";
 
 interface MenuItem {
     type: "item";

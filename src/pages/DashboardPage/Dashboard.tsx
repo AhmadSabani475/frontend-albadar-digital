@@ -1,10 +1,7 @@
-import DashboardLayout from "@/components/templates/DashboardLayout";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/authStore";
 
 const Dashboard = () => {
-    const { user, logout } = useAuthStore((state) => state);
+    const { user } = useAuthStore((state) => state);
 
     return (
         <div className="w-full flex flex-col gap-6">
