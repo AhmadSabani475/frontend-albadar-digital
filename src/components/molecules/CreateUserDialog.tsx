@@ -1,4 +1,4 @@
-import { User } from "lucide-react"
+import { Check, Copy, User } from "lucide-react"
 import { Button } from "../ui/button"
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { FieldGroup } from "../ui/field"
@@ -13,13 +13,19 @@ const CreateUserDialog = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [open, setOpen] = useState(false);
+    const [createdCredential, setCreatedCredential] = useState<{ username: string; password: string } | null>(null);
+    const [copied, setCopied] = useState(false);
 
     const handleSubmitCreateUser = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
         setError("");
         try {
-            await usersService.createUser(username, role as 'admin' | 'pengurus');
+            const result = await usersService.createUser(username, role as 'admin' | 'pengurus');
+            setCreatedCredential({
+                username: result.data.username,
+                password: result.data.generatedPassword
+            })
             setUsername("");
             setRole('pengurus');
             setOpen(false);
@@ -30,45 +36,142 @@ const CreateUserDialog = () => {
         }
     }
 
-    return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger render={<Button variant="outline">+ Tambah User</Button>} />
-            <DialogContent className="sm:max-w-sm">
-                <form onSubmit={handleSubmitCreateUser}>
-                    <DialogHeader className="mb-5">
-                        <DialogTitle>Tambah User</DialogTitle>
-                    </DialogHeader>
-                    <FieldGroup>
-                        <FormField type="text" label="Username"
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Masukkan Username"
-                            name="username" Icon={User} value={username} required={true} />
-                        
-                        <SelectField
-                            label="Role"
-                            name="role"
-                            value={role}
-                            onChange={setRole}
-                            groups={[
-                                {
-                                    groupLabel: "Pilih Role", options: [
-                                        { label: "Admin", value: "admin" },
-                                        { label: "Pengurus", value: "pengurus" },
-                                    ]
-                                }
-                            ]}
-                            placeholder="Pilih Role"
-                        />
-                    </FieldGroup>
-                    {error && <p className="text-sm text-destructive mt-2">{error}</p>}
-                    <DialogFooter>
-                        <DialogClose render={<Button variant="outline">Batal</Button>} />
-                        <Button type="submit">{isLoading ? "Loading..." : "Simpan User"}</Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
+    const handleCopy = async () => {
+        if (!createdCredential) return;
 
-        </Dialog >
+        const credentialText = `Username: ${createdCredential.username}
+Password: ${createdCredential.password}`;
+
+        try {
+            await navigator.clipboard.writeText(credentialText);
+
+            setCopied(true);
+
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
+        } catch (err) {
+            console.error("Gagal menyalin credential:", err);
+        }
+    };
+
+    return (
+        <>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger render={<Button variant="outline">+ Tambah User</Button>} />
+                <DialogContent className="sm:max-w-sm">
+                    <form onSubmit={handleSubmitCreateUser}>
+                        <DialogHeader className="mb-5">
+                            <DialogTitle>Tambah User</DialogTitle>
+                        </DialogHeader>
+                        <FieldGroup className="mb-4">
+                            <FormField type="text" label="Username"
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="Masukkan Username"
+                                name="username" Icon={User} value={username} required={true} />
+
+                            <SelectField
+                                label="Role"
+                                name="role"
+                                value={role}
+                                onChange={setRole}
+                                groups={[
+                                    {
+                                        groupLabel: "Pilih Role", options: [
+                                            { label: "Admin", value: "admin" },
+                                            { label: "Pengurus", value: "pengurus" },
+                                        ]
+                                    }
+                                ]}
+                                placeholder="Pilih Role"
+                            />
+                        </FieldGroup>
+                        {error && <p className="text-sm text-destructive mt-2">{error}</p>}
+                        <DialogFooter>
+                            <DialogClose render={<Button variant="outline">Batal</Button>} />
+                            <Button type="submit">{isLoading ? "Loading..." : "Simpan User"}</Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+
+            </Dialog ><Dialog
+                open={!!createdCredential}
+                onOpenChange={(isOpen) => {
+                    if (!isOpen) {
+                        setCreatedCredential(null);
+                        setCopied(false);
+                    }
+                }}
+            >
+                <DialogContent className="sm:max-w-sm">
+                    <DialogHeader>
+                        <DialogTitle>User Berhasil Dibuat</DialogTitle>
+                    </DialogHeader>
+
+                    <div className="space-y-3">
+                        <p className="text-sm text-muted-foreground">
+                            Simpan credential berikut. Password ini ditampilkan
+                            hanya setelah user berhasil dibuat.
+                        </p>
+
+                        <div className="rounded-md border bg-muted/50 p-4 space-y-3">
+                            <div>
+                                <p className="text-xs text-muted-foreground mb-1">
+                                    Username
+                                </p>
+
+                                <p className="font-mono text-sm font-medium select-all">
+                                    {createdCredential?.username}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className="text-xs text-muted-foreground mb-1">
+                                    Password
+                                </p>
+
+                                <p className="font-mono text-sm font-medium select-all">
+                                    {createdCredential?.password}
+                                </p>
+                            </div>
+                        </div>
+
+                        <Button
+                            type="button"
+                            variant="outline"
+                            className="w-full"
+                            onClick={handleCopy}
+                        >
+                            {copied ? (
+                                <>
+                                    <Check />
+                                    Tersalin!
+                                </>
+                            ) : (
+                                <>
+                                    <Copy />
+                                    Copy Credential
+                                </>
+                            )}
+                        </Button>
+                    </div>
+
+                    <DialogFooter>
+                        <DialogClose
+                            render={
+                                <Button
+                                    onClick={() => {
+                                        setCreatedCredential(null);
+                                        setCopied(false);
+                                    }}
+                                >
+                                    Saya sudah catat
+                                </Button>
+                            }
+                        />
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog></>
     )
 }
 
