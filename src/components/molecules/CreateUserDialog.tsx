@@ -7,7 +7,10 @@ import { useState, type SubmitEvent } from "react"
 import SelectField from "./SelectField"
 import { usersService } from "@/services/users.service"
 
-const CreateUserDialog = () => {
+interface PropTypes {
+    onSuccess?: () => void;
+}
+const CreateUserDialog = ({ onSuccess }: PropTypes) => {
     const [username, setUsername] = useState<string>("");
     const [role, setRole] = useState<string>("pengurus");
     const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +32,7 @@ const CreateUserDialog = () => {
             setUsername("");
             setRole('pengurus');
             setOpen(false);
+            onSuccess?.()
         } catch (err) {
             setError((err as Error).message);
         } finally {

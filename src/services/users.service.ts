@@ -1,4 +1,5 @@
 import { fetchAPI } from "@/lib/api"
+import type { User } from "@/types/Users";
 
 interface CreateUserResponse {
     message: string;
@@ -16,5 +17,8 @@ export const usersService = {
             method: 'POST',
             body: JSON.stringify({ username, role }),
         })
+    },
+    getAllUsers: () => {
+        return fetchAPI<{ message: string, data: User[] }>('/users')
     }
 }
