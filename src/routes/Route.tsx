@@ -7,6 +7,7 @@ import LandingPage from "@/pages/LandingPage/LandingPage";
 import DashboardLayout from "@/components/templates/DashboardLayout";
 import Dashboard from "@/pages/DashboardPage/Dashboard";
 import DataUsersPage from "@/pages/DataUsers/DataUsersPage";
+import KamarPage from "@/pages/KamarPage/KamarPage";
 
 const routes: RouteObject[] = [
     {
@@ -33,6 +34,10 @@ const routes: RouteObject[] = [
             {
                 path: '/dashboard/users',
                 element: <DataUsersPage />
+            },
+            {
+                path: '/dashboard/kamar',
+                element: <KamarPage />
             }
         ]
     },

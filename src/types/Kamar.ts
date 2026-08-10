@@ -1,5 +1,11 @@
-export interface Kamar{
+export interface Asrama {
+    _id: string;
+    namaAsrama: string;
+    keterangan?: string;
+}
+
+export interface Kamar {
     namaKamar: string;
-    asramaId: string;
+    asramaId: Asrama;
     kapasitas: number;
 }
