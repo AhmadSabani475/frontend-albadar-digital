@@ -8,6 +8,8 @@ import DashboardLayout from "@/components/templates/DashboardLayout";
 import Dashboard from "@/pages/DashboardPage/Dashboard";
 import DataUsersPage from "@/pages/DataUsers/DataUsersPage";
 import KamarPage from "@/pages/KamarPage/KamarPage";
+import AddSantriPage from "@/pages/SantriPage/AddSantriPage";
+import SantriPage from "@/pages/SantriPage/SantriPage";
 
 const routes: RouteObject[] = [
     {
@@ -38,7 +40,15 @@ const routes: RouteObject[] = [
             {
                 path: '/dashboard/kamar',
                 element: <KamarPage />
-            }
+            },
+            {
+                path: '/dashboard/santri',
+                element: <SantriPage />
+            },
+            {
+                path: '/dashboard/santri/add',
+                element: <AddSantriPage />
+            },
         ]
     },
     {

@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Bed, type LucideIcon } from "lucide-react";
+import { LayoutDashboard, Users, Bed, type LucideIcon, Archive } from "lucide-react";
 
 interface MenuItem {
     type: "item";
@@ -28,6 +28,7 @@ export const SIDEBAR_MENU: MenuEntry[] = [
         items: [
             { name: "Data User", url: "/dashboard/users", icon: Users },
             { name: "Kamar & Asrama", url: "/dashboard/kamar", icon: Bed },
+            { name: "Santri", url: '/dashboard/santri', icon: Archive }
         ],
     },
 ];

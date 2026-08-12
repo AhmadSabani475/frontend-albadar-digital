@@ -7,9 +7,8 @@ import { Button } from "../ui/button";
 import { useEffect, useState, type SubmitEvent } from "react";
 import { kamarService } from "@/services/kamar.service";
 import type { CreateSantriPayload } from "@/types/Santri";
-import { authService } from "@/services/auth.service";
-import { useAuthStore } from "@/store/authStore";
 import { useNavigate } from "react-router-dom";
+import { santriService } from "@/services/santri.service";
 
 
 const educationGroups = [
@@ -41,7 +40,7 @@ const schools = [
 ];
 
 
-const CompleteProfileForm = () => {
+const AddSantriForm = () => {
     const navigate = useNavigate();
     const [kamarGroups, setKamarGroups] = useState<{ groupLabel: string; options: { label: string; value: string }[] }[]>([]);
     const [pendidikanTerakhir, setPendidikanTerakhir] = useState("");
@@ -83,14 +82,12 @@ const CompleteProfileForm = () => {
             },
             kamarId: kamarId
         }
-        const password = formData.get('password') as string;
 
         try {
             setIsLoading(true);
             setError("");
-            const result = await authService.completeProfile(password, santri);
-            useAuthStore.getState().setUser(result.data);
-            navigate('/dashboard');
+            await santriService.createSantri(santri)
+            navigate('/dashboard/santri');
         } catch (err) {
             setError((err as Error).message);
         } finally {
@@ -234,7 +231,7 @@ const CompleteProfileForm = () => {
                     <AccordionTrigger className="hover:no-underline py-5">
                         <div className="flex gap-2 items-center">
                             <MapPinHouse className="text-green-400" />
-                            <h3 className="text-xl font-semibold">Kamar & Akun</h3>
+                            <h3 className="text-xl font-semibold">Kamar</h3>
                         </div>
                     </AccordionTrigger>
                     <AccordionContent className="pb-5">
@@ -248,8 +245,7 @@ const CompleteProfileForm = () => {
                                     onChange={setKamarId}
                                     placeholder="Kamar"
                                 />
-                                <FormField type="password" label="Reset Password" name="password" placeholder="password123"
-                                    error="" id="password" required />
+
                             </div>
                         </div>
                     </AccordionContent>
@@ -264,4 +260,4 @@ const CompleteProfileForm = () => {
     )
 }
 
-export default CompleteProfileForm;
+export default AddSantriForm;
