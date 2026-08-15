@@ -12,13 +12,20 @@ interface CreateUserResponse {
     };
 }
 export const usersService = {
-    createUser: (username: string, role: 'admin' | 'pengurus') => {
+    createUser: (username: string, role: 'admin' | 'pengurus', santriId: string) => {
         return fetchAPI<CreateUserResponse>('/users', {
             method: 'POST',
-            body: JSON.stringify({ username, role }),
+            body: JSON.stringify({ username, role, santriId }),
         })
     },
     getAllUsers: () => {
         return fetchAPI<{ message: string, data: User[] }>('/users')
+    },
+    deleteUserById: (id: string) => {
+        return fetchAPI<{ message: string, success: boolean }>(
+            `/users/${id}`, {
+            method: 'DELETE'
+        }
+        )
     }
 }

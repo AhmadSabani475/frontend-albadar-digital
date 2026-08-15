@@ -1,25 +1,42 @@
 import { useEffect, useState } from "react";
-import {
-    useReactTable,
-    getCoreRowModel,
-    flexRender,
-} from "@tanstack/react-table";
-import { columns } from "./columns";
-import {
-    Table,
-    TableHeader,
-    TableRow,
-    TableHead,
-    TableBody,
-    TableCell,
-} from "../ui/table";
-
+import { getColumns } from "./columns";
 import type { User } from "@/types/Users";
 import { usersService } from "@/services/users.service";
+import DataTable from "./DataTable";
+import StatusAlert from "../molecules/StatusAlert";
 
 const UserTable = () => {
     const [data, setData] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [alert, setAlert] = useState<{
+        variant: "success" | "error" | "info" | "warning";
+        title: string;
+        description?: string;
+    } | null>(null);
+
+
+    const handleDelete = async (id: string) => {
+        try {
+            setIsLoading(true);
+            await usersService.deleteUserById(id);
+            await fetchUsers();
+            setAlert({
+                variant: 'success',
+                title: "User berhasil dihapus",
+                description: "Data user telah dihapus dari sistem.",
+            })
+        } catch (error) {
+            setAlert({
+                variant: "error",
+                title: "Gagal menghapus user",
+                description: "Terjadi kesalahan, coba lagi.",
+            });
+        } finally {
+            setIsLoading(false)
+        }
+    };
+
+
 
     const fetchUsers = () => {
         setIsLoading(true);
@@ -32,52 +49,36 @@ const UserTable = () => {
         fetchUsers();
     }, []);
 
-    const table = useReactTable({
-        data,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-    });
+    useEffect(() => {
+        if (alert) {
+            const timer = setTimeout(() => setAlert(null), 3000)
+            return () => clearTimeout(timer)
+        }
+    }, [alert])
 
-    if (isLoading) {
-        return <p className="text-sm text-muted-foreground">Memuat data...</p>;
-    }
+    const columns = getColumns({ onDelete: handleDelete })
 
     return (
-        <Table>
-            <TableHeader className="bg-green-400">
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                            <TableHead key={header.id}>
-                                {header.isPlaceholder
-                                    ? null
-                                    : flexRender(header.column.columnDef.header, header.getContext())}
-                            </TableHead>
-                        ))}
-                    </TableRow>
-                ))}
-            </TableHeader>
-            <TableBody>
-                {table.getRowModel().rows.length ? (
-                    table.getRowModel().rows.map((row) => (
-                        <TableRow key={row.id}>
-                            {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id}>
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    ))
-                ) : (
-                    <TableRow>
-                        <TableCell colSpan={columns.length} className="text-center text-muted-foreground">
-                            Belum ada data user
-                        </TableCell>
-                    </TableRow>
-                )}
-            </TableBody>
-        </Table>
+        <div>
+            <DataTable
+                data={data}
+                columns={columns}
+                isLoading={isLoading}
+                searchPlaceholder="Cari user..."
+                emptyMessage="Belum ada data user" />
+
+            {alert && (
+                <div className="fixed top-4 right-4 z-50 w-full max-w-sm">
+                    <StatusAlert
+                        variant={alert.variant}
+                        title={alert.title}
+                        description={alert.description}
+                    />
+                </div>
+            )}
+        </div>
     )
+
 }
 
 export default UserTable;

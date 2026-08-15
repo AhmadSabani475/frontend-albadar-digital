@@ -8,7 +8,10 @@ const DataUsersPage = () => {
     return (
         <div className="w-full flex flex-col gap-4">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold">Data User</h1>
+                <div className="flex flex-col gap-1.5">
+                    <h1 className="text-3xl font-bold">Data User</h1>
+                    <p className="text-[#c9c5c5] text-xs">Kelola data Pengguna</p>
+                </div>
                 <CreateUserDialog onSuccess={() => setRefreshKey((prev) => prev + 1)} />
             </div>
             <UserTable key={refreshKey} />

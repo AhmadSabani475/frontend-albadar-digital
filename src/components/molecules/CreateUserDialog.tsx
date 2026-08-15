@@ -3,9 +3,12 @@ import { Button } from "../ui/button"
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { FieldGroup } from "../ui/field"
 import FormField from "./FormField"
-import { useState, type SubmitEvent } from "react"
+import { useEffect, useState, type SubmitEvent } from "react"
 import SelectField from "./SelectField"
 import { usersService } from "@/services/users.service"
+import { santriService } from "@/services/santri.service"
+import type { Santri } from "@/types/Santri"
+import SearchableSelectField from "./SearchableSelectField"
 
 interface PropTypes {
     onSuccess?: () => void;
@@ -13,24 +16,36 @@ interface PropTypes {
 const CreateUserDialog = ({ onSuccess }: PropTypes) => {
     const [username, setUsername] = useState<string>("");
     const [role, setRole] = useState<string>("pengurus");
+    const [santriId, setSantriId] = useState("");
+    const [santri, setSantri] = useState<Santri[] | undefined>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [open, setOpen] = useState(false);
     const [createdCredential, setCreatedCredential] = useState<{ username: string; password: string } | null>(null);
     const [copied, setCopied] = useState(false);
 
+    const fetchSantri = async () => {
+        try {
+            const result = await santriService.getAllSantri();
+            return result.data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const handleSubmitCreateUser = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
         setError("");
         try {
-            const result = await usersService.createUser(username, role as 'admin' | 'pengurus');
+            const result = await usersService.createUser(username, role as 'admin' | 'pengurus', santriId);
             setCreatedCredential({
                 username: result.data.username,
-                password: result.data.generatedPassword
+                password: result.data.generatedPassword,
             })
             setUsername("");
             setRole('pengurus');
+            setSantriId("");
             setOpen(false);
             onSuccess?.()
         } catch (err) {
@@ -59,10 +74,18 @@ Password: ${createdCredential.password}`;
         }
     };
 
+    useEffect(() => {
+        (async () => {
+            const data = await fetchSantri();
+            setSantri(data);
+        })();
+    }, [santri])
+
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger render={<Button variant="outline">+ Tambah User</Button>} />
+                <DialogTrigger render={<Button
+                    className="px-4 py-2 bg-green-400 text-[#ffff]">+ Tambah User</Button>} />
                 <DialogContent className="sm:max-w-sm">
                     <form onSubmit={handleSubmitCreateUser}>
                         <DialogHeader className="mb-5">
@@ -88,6 +111,17 @@ Password: ${createdCredential.password}`;
                                     }
                                 ]}
                                 placeholder="Pilih Role"
+                            />
+                            <SearchableSelectField
+                                label="Santri"
+                                name="santriId"
+                                value={santriId}
+                                onChange={setSantriId}
+                                options={(santri ?? []).map((s) => ({
+                                    label: s.namaLengkap, // sesuaikan field nama di type Santri
+                                    value: s._id,
+                                }))}
+                                placeholder="Pilih Santri"
                             />
                         </FieldGroup>
                         {error && <p className="text-sm text-destructive mt-2">{error}</p>}
