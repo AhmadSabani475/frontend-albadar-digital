@@ -1,6 +1,6 @@
-import { Outlet } from "react-router-dom";
-import AppSidebar from "../organisms/AppSidebar";
-import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
+import { Outlet } from 'react-router-dom';
+import AppSidebar from '../organisms/AppSidebar';
+import { SidebarProvider, SidebarTrigger } from '../ui/sidebar';
 
 const DashboardLayout = () => {
     return (
@@ -15,7 +15,7 @@ const DashboardLayout = () => {
                 </div>
             </main>
         </SidebarProvider>
-    )
-}
+    );
+};
 
 export default DashboardLayout;

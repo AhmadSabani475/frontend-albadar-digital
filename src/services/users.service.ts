@@ -1,5 +1,5 @@
-import { fetchAPI } from "@/lib/api"
-import type { User } from "@/types/Users";
+import { fetchAPI } from '@/lib/api';
+import type { User } from '@/types/Users';
 
 interface CreateUserResponse {
     message: string;
@@ -16,16 +16,16 @@ export const usersService = {
         return fetchAPI<CreateUserResponse>('/users', {
             method: 'POST',
             body: JSON.stringify({ username, role, santriId }),
-        })
+        });
     },
     getAllUsers: () => {
-        return fetchAPI<{ message: string, data: User[] }>('/users')
+        return fetchAPI<{ message: string, data: User[] }>('/users');
     },
     deleteUserById: (id: string) => {
         return fetchAPI<{ message: string, success: boolean }>(
             `/users/${id}`, {
             method: 'DELETE'
         }
-        )
+        );
     }
-}
+};

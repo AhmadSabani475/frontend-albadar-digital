@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
     useReactTable,
     getCoreRowModel,
     flexRender,
-} from "@tanstack/react-table";
-import { columns } from "./columns";
+} from '@tanstack/react-table';
+import { columns } from './columns';
 import {
     Table,
     TableHeader,
@@ -12,9 +12,9 @@ import {
     TableHead,
     TableBody,
     TableCell,
-} from "../../ui/table";
-import type { Kamar } from "@/types/Kamar";
-import { kamarService } from "@/services/kamar.service";
+} from '../../ui/table';
+import type { Kamar } from '@/types/Kamar';
+import { kamarService } from '@/services/kamar.service';
 
 
 const KamarTable = () => {
@@ -26,7 +26,7 @@ const KamarTable = () => {
         kamarService.getAllKamar()
             .then((res) => setData(res.data))
             .finally(() => setIsLoading(false));
-    }
+    };
 
     useEffect(() => {
         fetchKamar();
@@ -77,7 +77,7 @@ const KamarTable = () => {
                 )}
             </TableBody>
         </Table>
-    )
-}
+    );
+};
 
 export default KamarTable;

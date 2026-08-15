@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/store/authStore";
+import { useAuthStore } from '@/store/authStore';
 
 const Dashboard = () => {
     const { user } = useAuthStore((state) => state);
@@ -10,11 +10,11 @@ const Dashboard = () => {
                     Selamat datang, {user?.santriId?.namaLengkap} 👋
                 </h1>
                 <p className="text-sm text-emerald-200/80 mt-1">
-                    {user?.role === "admin" ? "Administrator" : "Pengurus"} — Al-Badar Digital Portal
+                    {user?.role === 'admin' ? 'Administrator' : 'Pengurus'} — Al-Badar Digital Portal
                 </p>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Dashboard;

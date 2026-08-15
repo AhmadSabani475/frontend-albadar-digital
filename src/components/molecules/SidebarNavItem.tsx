@@ -1,7 +1,7 @@
 
-import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
-import type { LucideIcon } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
+import type { LucideIcon } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 interface PropTypes {
     title: string;
@@ -26,6 +26,6 @@ const SidebarNavItem = (props: PropTypes) => {
             </SidebarMenu>
         </SidebarGroup >
 
-    )
-}
+    );
+};
 export default SidebarNavItem;

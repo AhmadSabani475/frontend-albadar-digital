@@ -1,8 +1,8 @@
 
-import { ChevronDown, type LucideIcon } from "lucide-react"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
-import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
-import { Link, useLocation } from "react-router-dom";
+import { ChevronDown, type LucideIcon } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
+import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
+import { Link, useLocation } from 'react-router-dom';
 
 interface groupItem {
     name: string;
@@ -47,6 +47,6 @@ const SidebarNavGroup = (props: PropTypes) => {
                 </CollapsibleContent>
             </SidebarGroup>
         </Collapsible >
-    )
-}
+    );
+};
 export default SidebarNavGroup;

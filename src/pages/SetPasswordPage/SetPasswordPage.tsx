@@ -1,6 +1,6 @@
-import SetPasswordForm from "@/components/organisms/SetPasswordForm";
-import AuthLayout from "@/components/templates/AuthLayout"
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import SetPasswordForm from '@/components/organisms/SetPasswordForm';
+import AuthLayout from '@/components/templates/AuthLayout';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 const CompleteProfile = () => {
     return (
@@ -21,6 +21,6 @@ const CompleteProfile = () => {
             </Card>
 
         </AuthLayout>
-    )
-}
+    );
+};
 export default CompleteProfile;

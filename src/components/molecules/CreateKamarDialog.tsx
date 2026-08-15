@@ -1,51 +1,60 @@
-import { DoorClosed, House } from "lucide-react"
-import { Button } from "../ui/button"
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { FieldGroup } from "../ui/field"
-import FormField from "./FormField"
-import { useEffect, useState, type SubmitEvent } from "react"
-import SelectField from "./SelectField"
-import { kamarService } from "@/services/kamar.service"
-import { asramaService } from "@/services/asrama.service"
+import { DoorClosed, House } from 'lucide-react';
+import { Button } from '../ui/button';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { FieldGroup } from '../ui/field';
+import FormField from './FormField';
+import { useEffect, useState, type SubmitEvent } from 'react';
+import SelectField from './SelectField';
+import { kamarService } from '@/services/kamar.service';
+import { asramaService } from '@/services/asrama.service';
+import type { Asrama } from '@/types/Kamar';
 
 interface PropTypes {
     onSuccess?: () => void;
 }
 const CreateKamarDialog = ({ onSuccess }: PropTypes) => {
-    const [namaKamar, setNamaKamar] = useState<string>("");
-    const [kapasitas, setKapasitas] = useState("");
-    const [asramaId, setAsramaId] = useState<string>("");
+    const [namaKamar, setNamaKamar] = useState<string>('');
+    const [kapasitas, setKapasitas] = useState('');
+    const [asramaId, setAsramaId] = useState<string>('');
     const [asramaGroups, setAsramaGroups] = useState<{ groupLabel: string; options: { label: string; value: string }[] }[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
     const [open, setOpen] = useState(false);
 
-    const fetchAsrama = async () => {
-        try {
-            const response = await asramaService.getAllAsrama();
-            const options = response.data.map((asrama) => ({
-                label: asrama.namaAsrama,
-                value: asrama._id,
-            }));
-            setAsramaGroups([{ groupLabel: "Pilih Asrama", options }]);
-        } catch (error) {
-            console.error("Gagal mengambil data asrama:", error);
-        }
-    }
+
 
     useEffect(() => {
+        if (!open) return;
+        let isMounted = true;
+        const fetchAsrama = async () => {
+            try {
+                const response = await asramaService.getAllAsrama();
+                const options = response.data.map((asrama: Asrama) => ({
+                    label: asrama.namaAsrama,
+                    value: asrama._id,
+                }));
+                if (isMounted) {
+                    setAsramaGroups([{ groupLabel: 'Pilih Asrama', options }]);
+                }
+            } catch (error) {
+                console.error('Gagal mengambil data asrama:', error);
+            }
+        };
         fetchAsrama();
-    }, [])
+        return () => {
+            isMounted = false;
+        };
+    }, [open]);
 
     const handleSubmitCreateKamar = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
-        setError("");
+        setError('');
         try {
             await kamarService.createKamar(namaKamar, asramaId, Number(kapasitas));
-            setNamaKamar("");
-            setKapasitas("");
-            setAsramaId("");
+            setNamaKamar('');
+            setKapasitas('');
+            setAsramaId('');
             setOpen(false);
             onSuccess?.();
         } catch (err) {
@@ -53,7 +62,7 @@ const CreateKamarDialog = ({ onSuccess }: PropTypes) => {
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -83,13 +92,13 @@ const CreateKamarDialog = ({ onSuccess }: PropTypes) => {
                     {error && <p className="text-sm text-destructive mt-2">{error}</p>}
                     <DialogFooter>
                         <DialogClose render={<Button variant="outline">Batal</Button>} />
-                        <Button type="submit">{isLoading ? "Loading..." : "Simpan Kamar"}</Button>
+                        <Button type="submit">{isLoading ? 'Loading...' : 'Simpan Kamar'}</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>
 
         </Dialog >
-    )
-}
+    );
+};
 
 export default CreateKamarDialog;

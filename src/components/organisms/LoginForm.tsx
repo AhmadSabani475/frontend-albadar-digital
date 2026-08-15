@@ -1,21 +1,21 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import FormField from "../molecules/FormField"
-import { Button } from "../ui/button"
-import { authService } from "../../services/auth.service"
-import { useAuthStore } from "../../store/authStore"
-import { ArrowRight, Lock, User } from "lucide-react"
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import FormField from '../molecules/FormField';
+import { Button } from '../ui/button';
+import { authService } from '../../services/auth.service';
+import { useAuthStore } from '../../store/authStore';
+import { ArrowRight, Lock, User } from 'lucide-react';
 
 const LoginForm = () => {
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [error, setError] = useState<string>("");
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [error, setError] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
-        setError("");
+        setError('');
         setIsLoading(true);
         try {
             const loginRes = await authService.login(username, password);
@@ -24,13 +24,13 @@ const LoginForm = () => {
             const meRes = await authService.me();
             useAuthStore.getState().setAuth(loginRes.data, meRes.data);
 
-            navigate("/dashboard");
+            navigate('/dashboard');
         } catch (err) {
             setError((err as Error).message);
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -56,10 +56,10 @@ const LoginForm = () => {
             />
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button type="submit" disabled={isLoading} className="w-full bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-900/50">
-                {isLoading ? "Loading..." : <>Submit <ArrowRight className="h-4 w-4" /></>}
+                {isLoading ? 'Loading...' : <>Submit <ArrowRight className="h-4 w-4" /></>}
             </Button>
         </form >
-    )
-}
+    );
+};
 
 export default LoginForm;

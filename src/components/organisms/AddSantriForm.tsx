@@ -1,40 +1,41 @@
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import FormField from "@/components/molecules/FormField";
-import SelectField from "@/components/molecules/SelectField";
-import { MapPinHouse, Save, UserRound, UsersRound } from "lucide-react";
-import { Button } from "../ui/button";
-import { useEffect, useState, type SubmitEvent } from "react";
-import { kamarService } from "@/services/kamar.service";
-import type { CreateSantriPayload } from "@/types/Santri";
-import { useNavigate } from "react-router-dom";
-import { santriService } from "@/services/santri.service";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import FormField from '@/components/molecules/FormField';
+import SelectField from '@/components/molecules/SelectField';
+import { MapPinHouse, Save, UserRound, UsersRound } from 'lucide-react';
+import { Button } from '../ui/button';
+import { useEffect, useState, type SubmitEvent } from 'react';
+import { kamarService } from '@/services/kamar.service';
+import type { CreateSantriPayload } from '@/types/Santri';
+import { useNavigate } from 'react-router-dom';
+import { santriService } from '@/services/santri.service';
+import type { Kamar } from '@/types/Kamar';
 
 
 const educationGroups = [
     {
-        groupLabel: "Pendidikan Dasar & Menengah",
+        groupLabel: 'Pendidikan Dasar & Menengah',
         options: [
-            { label: "SD/Sederajat", value: "sd" },
-            { label: "SMP/Sederajat", value: "smp" },
-            { label: "SMA/SMK/Sederajat", value: "sma" },
+            { label: 'SD/Sederajat', value: 'sd' },
+            { label: 'SMP/Sederajat', value: 'smp' },
+            { label: 'SMA/SMK/Sederajat', value: 'sma' },
         ],
     },
 ];
 const schools = [
     {
-        groupLabel: "SMP/Sederajat",
+        groupLabel: 'SMP/Sederajat',
         options: [
-            { label: "SMP Al-Badar Cipulus", value: "smp al-badar" },
-            { label: "MTs YPPA Cipulus", value: "mts yppa" },
+            { label: 'SMP Al-Badar Cipulus', value: 'smp al-badar' },
+            { label: 'MTs YPPA Cipulus', value: 'mts yppa' },
         ],
     },
     {
-        groupLabel: "SMA/Sederajat",
+        groupLabel: 'SMA/Sederajat',
         options: [
-            { label: "SMA Al-Badar Cipulus", value: "sma al-badar" },
-            { label: "SMK Al-Badar Cipulus", value: "sml al-badar" },
-            { label: "MA YPPA Cipulus", value: "ma yppa" },
+            { label: 'SMA Al-Badar Cipulus', value: 'sma al-badar' },
+            { label: 'SMK Al-Badar Cipulus', value: 'sml al-badar' },
+            { label: 'MA YPPA Cipulus', value: 'ma yppa' },
         ],
     },
 ];
@@ -43,11 +44,11 @@ const schools = [
 const AddSantriForm = () => {
     const navigate = useNavigate();
     const [kamarGroups, setKamarGroups] = useState<{ groupLabel: string; options: { label: string; value: string }[] }[]>([]);
-    const [pendidikanTerakhir, setPendidikanTerakhir] = useState("");
-    const [sekolah, setSekolah] = useState("");
-    const [kamarId, setKamarId] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [pendidikanTerakhir, setPendidikanTerakhir] = useState('');
+    const [sekolah, setSekolah] = useState<string>('');
+    const [kamarId, setKamarId] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
     const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -81,34 +82,34 @@ const AddSantriForm = () => {
                 noTelepon: formData.get('alamat.noTelepon') as string | undefined,
             },
             kamarId: kamarId
-        }
+        };
 
         try {
             setIsLoading(true);
-            setError("");
-            await santriService.createSantri(santri)
+            setError('');
+            await santriService.createSantri(santri);
             navigate('/dashboard/santri');
         } catch (err) {
             setError((err as Error).message);
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
-    }
+    };
 
 
     useEffect(() => {
         kamarService.getAllKamar().then((res) => {
-            const options = res.data.map((kamar: any) => ({
-                label: `${kamar.asramaId?.namaAsrama ?? "-"} - ${kamar.namaKamar}`,
+            const options = res.data.map((kamar: Kamar) => ({
+                label: `${kamar.asramaId?.namaAsrama ?? '-'} - ${kamar.namaKamar}`,
                 value: kamar._id,
             }));
-            setKamarGroups([{ groupLabel: "Pilih Kamar", options }]);
+            setKamarGroups([{ groupLabel: 'Pilih Kamar', options }]);
         });
-    }, [])
+    }, []);
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3">
-            <Accordion defaultValue={["data-diri", "data-ortu", "alamat", 'kamar-akun']} className="flex flex-col gap-5">
+            <Accordion defaultValue={['data-diri', 'data-ortu', 'alamat', 'kamar-akun']} className="flex flex-col gap-5">
                 <AccordionItem value="data-diri" className="border-2 px-8 rounded-2xl">
                     <AccordionTrigger className="hover:no-underline py-5">
                         <div className="flex gap-2 items-center">
@@ -254,10 +255,10 @@ const AddSantriForm = () => {
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button type="submit" className="w-full text-xl hover:text-green-400 hover:font-bold bg-green-400 p-5">
                 <Save />
-                {isLoading ? "menyimpan" : "Simpan Profil"}
+                {isLoading ? 'menyimpan' : 'Simpan Profil'}
             </Button>
         </form>
-    )
-}
+    );
+};
 
 export default AddSantriForm;

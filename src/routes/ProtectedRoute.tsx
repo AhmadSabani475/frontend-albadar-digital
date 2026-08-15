@@ -1,6 +1,6 @@
-import { useAuthStore } from "@/store/authStore";
-import type { ReactNode } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { useAuthStore } from '@/store/authStore';
+import type { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 
 
 interface PropTypes {
@@ -16,10 +16,10 @@ const ProtectedRoute = (props: PropTypes) => {
 
     if (!isAuthenticated && currentRoute !== '/login') {
         if (token) logout();
-        return <Navigate to='/login' replace />
+        return <Navigate to='/login' replace />;
     }
     if (isAuthenticated && currentRoute === '/login') {
-        return <Navigate to='/dashboard' replace />
+        return <Navigate to='/dashboard' replace />;
     }
 
     if (isAuthenticated && user?.is_active === false) {
@@ -32,6 +32,6 @@ const ProtectedRoute = (props: PropTypes) => {
         return <Navigate to='/dashboard' replace />;
     }
 
-    return <>{children}</>
-}
+    return <>{children}</>;
+};
 export default ProtectedRoute;

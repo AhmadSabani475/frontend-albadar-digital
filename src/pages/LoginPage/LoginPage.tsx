@@ -1,6 +1,6 @@
-import LoginForm from "@/components/organisms/LoginForm";
-import AuthLayout from "@/components/templates/AuthLayout";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import LoginForm from '@/components/organisms/LoginForm';
+import AuthLayout from '@/components/templates/AuthLayout';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 const LoginPage = () => {
     return (
@@ -20,7 +20,7 @@ const LoginPage = () => {
                 </CardContent>
             </Card>
         </AuthLayout>
-    )
-}
+    );
+};
 
 export default LoginPage;

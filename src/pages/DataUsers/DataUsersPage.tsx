@@ -1,6 +1,6 @@
-import { useState } from "react";
-import CreateUserDialog from "@/components/molecules/CreateUserDialog";
-import UserTable from "@/components/organisms/UserTable";
+import { useState } from 'react';
+import CreateUserDialog from '@/components/molecules/CreateUserDialog';
+import UserTable from '@/components/organisms/UserTable';
 
 const DataUsersPage = () => {
     const [refreshKey, setRefreshKey] = useState(0);
@@ -16,6 +16,6 @@ const DataUsersPage = () => {
             </div>
             <UserTable key={refreshKey} />
         </div>
-    )
-}
+    );
+};
 export default DataUsersPage;

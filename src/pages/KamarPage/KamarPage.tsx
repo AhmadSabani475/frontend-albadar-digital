@@ -1,6 +1,6 @@
-import { useState } from "react";
-import KamarTable from "@/components/organisms/KamarOrg/KamarTable";
-import CreateKamarDialog from "@/components/molecules/CreateKamarDialog";
+import { useState } from 'react';
+import KamarTable from '@/components/organisms/KamarOrg/KamarTable';
+import CreateKamarDialog from '@/components/molecules/CreateKamarDialog';
 
 const KamarPage = () => {
     const [refreshKey, setRefreshKey] = useState(0);
@@ -14,6 +14,6 @@ const KamarPage = () => {
             </div>
             <KamarTable key={refreshKey} />
         </div>
-    )
-}
+    );
+};
 export default KamarPage;

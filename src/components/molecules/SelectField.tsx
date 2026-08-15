@@ -1,4 +1,4 @@
-import { Field, FieldLabel } from "../ui/field";
+import { Field, FieldLabel } from '../ui/field';
 import {
     Select,
     SelectContent,
@@ -8,7 +8,7 @@ import {
     SelectSeparator,
     SelectTrigger,
     SelectValue,
-} from "../ui/select";
+} from '../ui/select';
 
 interface SelectOption {
     label: string;
@@ -53,7 +53,7 @@ const SelectField = (props: PropTypes) => {
             <Select
                 items={allItems}
                 value={value}
-                onValueChange={(newValue) => onChange?.(newValue ?? "")}
+                onValueChange={(newValue) => onChange?.(newValue ?? '')}
                 required={required}
             >
                 <SelectTrigger id={name} name={name} className="w-full">
@@ -77,7 +77,7 @@ const SelectField = (props: PropTypes) => {
             </Select>
             {error && <p className="text-sm text-destructive">{error}</p>}
         </Field>
-    )
-}
+    );
+};
 
 export default SelectField;

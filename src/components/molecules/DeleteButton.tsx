@@ -1,11 +1,11 @@
-import { santriService } from "@/services/santri.service";
-import { useNavigate } from "react-router-dom";
+import { santriService } from '@/services/santri.service';
+import { useNavigate } from 'react-router-dom';
 import {
     AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent
     , AlertDialogFooter, AlertDialogHeader, AlertDialogMedia, AlertDialogTitle, AlertDialogTrigger
-} from "../ui/alert-dialog";
-import { Button } from "../ui/button";
-import { Trash, Trash2Icon } from "lucide-react";
+} from '../ui/alert-dialog';
+import { Button } from '../ui/button';
+import { Trash, Trash2Icon } from 'lucide-react';
 
 interface PropTypes {
     id: string;
@@ -14,12 +14,12 @@ const DeleteButton = ({ id }: PropTypes) => {
     const navigate = useNavigate();
     const handleDelete = async () => {
         try {
-            await santriService.deleteSantriById(id)
+            await santriService.deleteSantriById(id);
             navigate('/dashboard/santri');
         } catch (error) {
             console.log(error);
         }
-    }
+    };
     return (
         <AlertDialog>
             <AlertDialogTrigger
@@ -43,6 +43,6 @@ const DeleteButton = ({ id }: PropTypes) => {
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
-    )
-}
+    );
+};
 export default DeleteButton;

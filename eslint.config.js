@@ -18,5 +18,18 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
     },
+    rules: {
+      'react-refresh/only-export-components': [
+        'off',
+        { allowConstantExport: true },
+      ],
+      // 2. Mematikan warning TanStack Table yang belum didukung React Compiler
+      'react-hooks/incompatible-library': 'off',
+      'semi': ['error', 'always'],
+      'quotes': ['error', 'single', { 'avoidEscape': true }],
+      'no-var': 'error',
+      'prefer-const': 'error',
+      'camelcase': ['error', { 'properties': 'never' }],
+    },
   },
 ])

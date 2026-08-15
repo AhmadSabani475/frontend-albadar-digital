@@ -1,16 +1,16 @@
-import LoginPage from "@/pages/LoginPage";
-import type { RouteObject } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
+import LoginPage from '@/pages/LoginPage';
+import type { RouteObject } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 
-import CompleteProfile from "@/pages/SetPasswordPage/SetPasswordPage";
-import LandingPage from "@/pages/LandingPage/LandingPage";
-import DashboardLayout from "@/components/templates/DashboardLayout";
-import Dashboard from "@/pages/DashboardPage/Dashboard";
-import DataUsersPage from "@/pages/DataUsers/DataUsersPage";
-import KamarPage from "@/pages/KamarPage/KamarPage";
-import AddSantriPage from "@/pages/SantriPage/AddSantriPage";
-import SantriPage from "@/pages/SantriPage/SantriPage";
-import ViewSantriPage from "@/pages/SantriPage/ViewSantriPage";
+import CompleteProfile from '@/pages/SetPasswordPage/SetPasswordPage';
+import LandingPage from '@/pages/LandingPage/LandingPage';
+import DashboardLayout from '@/components/templates/DashboardLayout';
+import Dashboard from '@/pages/DashboardPage/Dashboard';
+import DataUsersPage from '@/pages/DataUsers/DataUsersPage';
+import KamarPage from '@/pages/KamarPage/KamarPage';
+import AddSantriPage from '@/pages/SantriPage/AddSantriPage';
+import SantriPage from '@/pages/SantriPage/SantriPage';
+import ViewSantriPage from '@/pages/SantriPage/ViewSantriPage';
 
 const routes: RouteObject[] = [
     {
@@ -62,5 +62,5 @@ const routes: RouteObject[] = [
             <CompleteProfile />
         </ProtectedRoute>
     }
-]
+];
 export default routes;

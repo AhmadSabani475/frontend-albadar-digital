@@ -5,6 +5,7 @@ export interface Asrama {
 }
 
 export interface Kamar {
+    _id: string;
     namaKamar: string;
     asramaId: Asrama;
     kapasitas: number;

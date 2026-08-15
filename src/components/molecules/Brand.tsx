@@ -1,4 +1,4 @@
-import Logo from "../atoms/Logo"
+import Logo from '../atoms/Logo';
 
 const Brand = () => {
     return (
@@ -11,7 +11,7 @@ const Brand = () => {
                 <p className="font-light text-xs">Digital Portal</p>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Brand;

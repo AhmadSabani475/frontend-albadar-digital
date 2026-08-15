@@ -1,6 +1,6 @@
-import { Field, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
-import type { LucideIcon } from "lucide-react";
+import { Field, FieldLabel } from '../ui/field';
+import { Input } from '../ui/input';
+import type { LucideIcon } from 'lucide-react';
 interface PropTypes {
     id?: string;
     name: string;
@@ -47,13 +47,13 @@ const FormField = (props: PropTypes) => {
                     value={value}
                     placeholder={placeholder}
                     onChange={onChange}
-                    className={`h-11 ${Icon ? "pl-9" : ""}`}
+                    className={`h-11 ${Icon ? 'pl-9' : ''}`}
                     required={required}
                 />
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
         </Field>
-    )
-}
+    );
+};
 
 export default FormField;

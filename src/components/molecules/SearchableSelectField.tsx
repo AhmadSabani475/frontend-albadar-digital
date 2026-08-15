@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Field, FieldLabel } from "../ui/field";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Button } from "../ui/button";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
+import { useState } from 'react';
+import { Field, FieldLabel } from '../ui/field';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Button } from '../ui/button';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command';
 
 interface Option {
     label: string;
@@ -28,13 +28,13 @@ const SearchableSelectField = (props: PropTypes) => {
         onChange,
         options,
         value,
-        emptyText = "Tidak Ditemukan",
-        placeholder = "Pilih...",
+        emptyText = 'Tidak Ditemukan',
+        placeholder = 'Pilih...',
         required
     } = props;
 
     const [open, setOpen] = useState<boolean>(false);
-    const selected = options.find((opt) => opt.value === value)
+    const selected = options.find((opt) => opt.value === value);
     return (
         <Field>
             <FieldLabel htmlFor={name}>{label}</FieldLabel>
@@ -65,12 +65,12 @@ const SearchableSelectField = (props: PropTypes) => {
                                         key={opt.value}
                                         value={opt.label}
                                         onSelect={() => {
-                                            onChange(opt.value)
-                                            setOpen(false)
+                                            onChange(opt.value);
+                                            setOpen(false);
                                         }}
                                     >
                                         <Check
-                                            className={`mr-2 ${value === opt.value ? "opacity-100" : "opacity-0"}`}
+                                            className={`mr-2 ${value === opt.value ? 'opacity-100' : 'opacity-0'}`}
                                         />
                                         {opt.label}
                                     </CommandItem>
@@ -85,6 +85,6 @@ const SearchableSelectField = (props: PropTypes) => {
             )}
         </Field>
 
-    )
-}
+    );
+};
 export default SearchableSelectField;

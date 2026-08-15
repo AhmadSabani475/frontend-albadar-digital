@@ -1,9 +1,9 @@
-import { santriService } from "@/services/santri.service";
-import type { Santri } from "@/types/Santri";
-import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
-import { columns } from "./columns";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { santriService } from '@/services/santri.service';
+import type { Santri } from '@/types/Santri';
+import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { useEffect, useState } from 'react';
+import { columns } from './columns';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 const SantriTable = () => {
 
@@ -20,17 +20,17 @@ const SantriTable = () => {
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
-        fetchData()
+        fetchData();
     }, []);
 
     const table = useReactTable({
         columns,
         data,
         getCoreRowModel: getCoreRowModel()
-    })
+    });
 
     if (isLoading) {
         return <p className="text-sm text-muted-foreground">Memuat data...</p>;
@@ -68,6 +68,6 @@ const SantriTable = () => {
                 )}
             </TableBody>
         </Table>
-    )
-}
+    );
+};
 export default SantriTable;

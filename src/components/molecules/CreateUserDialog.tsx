@@ -1,25 +1,25 @@
-import { Check, Copy, User } from "lucide-react"
-import { Button } from "../ui/button"
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
-import { FieldGroup } from "../ui/field"
-import FormField from "./FormField"
-import { useEffect, useState, type SubmitEvent } from "react"
-import SelectField from "./SelectField"
-import { usersService } from "@/services/users.service"
-import { santriService } from "@/services/santri.service"
-import type { Santri } from "@/types/Santri"
-import SearchableSelectField from "./SearchableSelectField"
+import { Check, Copy, User } from 'lucide-react';
+import { Button } from '../ui/button';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { FieldGroup } from '../ui/field';
+import FormField from './FormField';
+import { useEffect, useState, type SubmitEvent } from 'react';
+import SelectField from './SelectField';
+import { usersService } from '@/services/users.service';
+import { santriService } from '@/services/santri.service';
+import type { Santri } from '@/types/Santri';
+import SearchableSelectField from './SearchableSelectField';
 
 interface PropTypes {
     onSuccess?: () => void;
 }
 const CreateUserDialog = ({ onSuccess }: PropTypes) => {
-    const [username, setUsername] = useState<string>("");
-    const [role, setRole] = useState<string>("pengurus");
-    const [santriId, setSantriId] = useState("");
+    const [username, setUsername] = useState<string>('');
+    const [role, setRole] = useState<string>('pengurus');
+    const [santriId, setSantriId] = useState('');
     const [santri, setSantri] = useState<Santri[] | undefined>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
     const [open, setOpen] = useState(false);
     const [createdCredential, setCreatedCredential] = useState<{ username: string; password: string } | null>(null);
     const [copied, setCopied] = useState(false);
@@ -31,29 +31,29 @@ const CreateUserDialog = ({ onSuccess }: PropTypes) => {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     const handleSubmitCreateUser = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
-        setError("");
+        setError('');
         try {
             const result = await usersService.createUser(username, role as 'admin' | 'pengurus', santriId);
             setCreatedCredential({
                 username: result.data.username,
                 password: result.data.generatedPassword,
-            })
-            setUsername("");
+            });
+            setUsername('');
             setRole('pengurus');
-            setSantriId("");
+            setSantriId('');
             setOpen(false);
-            onSuccess?.()
+            onSuccess?.();
         } catch (err) {
             setError((err as Error).message);
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     const handleCopy = async () => {
         if (!createdCredential) return;
@@ -70,7 +70,7 @@ Password: ${createdCredential.password}`;
                 setCopied(false);
             }, 2000);
         } catch (err) {
-            console.error("Gagal menyalin credential:", err);
+            console.error('Gagal menyalin credential:', err);
         }
     };
 
@@ -79,7 +79,7 @@ Password: ${createdCredential.password}`;
             const data = await fetchSantri();
             setSantri(data);
         })();
-    }, [santri])
+    }, [santri]);
 
     return (
         <>
@@ -104,9 +104,9 @@ Password: ${createdCredential.password}`;
                                 onChange={setRole}
                                 groups={[
                                     {
-                                        groupLabel: "Pilih Role", options: [
-                                            { label: "Admin", value: "admin" },
-                                            { label: "Pengurus", value: "pengurus" },
+                                        groupLabel: 'Pilih Role', options: [
+                                            { label: 'Admin', value: 'admin' },
+                                            { label: 'Pengurus', value: 'pengurus' },
                                         ]
                                     }
                                 ]}
@@ -127,7 +127,7 @@ Password: ${createdCredential.password}`;
                         {error && <p className="text-sm text-destructive mt-2">{error}</p>}
                         <DialogFooter>
                             <DialogClose render={<Button variant="outline">Batal</Button>} />
-                            <Button type="submit">{isLoading ? "Loading..." : "Simpan User"}</Button>
+                            <Button type="submit">{isLoading ? 'Loading...' : 'Simpan User'}</Button>
                         </DialogFooter>
                     </form>
                 </DialogContent>
@@ -210,7 +210,7 @@ Password: ${createdCredential.password}`;
                     </DialogFooter>
                 </DialogContent>
             </Dialog></>
-    )
-}
+    );
+};
 
 export default CreateUserDialog;

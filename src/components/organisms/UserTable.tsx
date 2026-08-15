@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import { getColumns } from "./columns";
-import type { User } from "@/types/Users";
-import { usersService } from "@/services/users.service";
-import DataTable from "./DataTable";
-import StatusAlert from "../molecules/StatusAlert";
+import { useEffect, useState } from 'react';
+import { getColumns } from './columns';
+import type { User } from '@/types/Users';
+import { usersService } from '@/services/users.service';
+import DataTable from './DataTable';
+import StatusAlert from '../molecules/StatusAlert';
 
 const UserTable = () => {
     const [data, setData] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [alert, setAlert] = useState<{
-        variant: "success" | "error" | "info" | "warning";
+        variant: 'success' | 'error' | 'info' | 'warning';
         title: string;
         description?: string;
     } | null>(null);
@@ -22,17 +22,17 @@ const UserTable = () => {
             await fetchUsers();
             setAlert({
                 variant: 'success',
-                title: "User berhasil dihapus",
-                description: "Data user telah dihapus dari sistem.",
-            })
-        } catch (error) {
+                title: 'User berhasil dihapus',
+                description: 'Data user telah dihapus dari sistem.',
+            });
+        } catch {
             setAlert({
-                variant: "error",
-                title: "Gagal menghapus user",
-                description: "Terjadi kesalahan, coba lagi.",
+                variant: 'error',
+                title: 'Gagal menghapus user',
+                description: 'Terjadi kesalahan, coba lagi.',
             });
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
     };
 
@@ -43,7 +43,7 @@ const UserTable = () => {
         usersService.getAllUsers()
             .then((res) => setData(res.data))
             .finally(() => setIsLoading(false));
-    }
+    };
 
     useEffect(() => {
         fetchUsers();
@@ -51,12 +51,12 @@ const UserTable = () => {
 
     useEffect(() => {
         if (alert) {
-            const timer = setTimeout(() => setAlert(null), 3000)
-            return () => clearTimeout(timer)
+            const timer = setTimeout(() => setAlert(null), 3000);
+            return () => clearTimeout(timer);
         }
-    }, [alert])
+    }, [alert]);
 
-    const columns = getColumns({ onDelete: handleDelete })
+    const columns = getColumns({ onDelete: handleDelete });
 
     return (
         <div>
@@ -77,8 +77,8 @@ const UserTable = () => {
                 </div>
             )}
         </div>
-    )
+    );
 
-}
+};
 
 export default UserTable;

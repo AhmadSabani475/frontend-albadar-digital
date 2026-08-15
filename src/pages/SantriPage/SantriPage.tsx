@@ -1,8 +1,8 @@
-import SantriTable from "@/components/organisms/SantriTable/SantriTable";
-import { Button } from "@base-ui/react";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import SantriTable from '@/components/organisms/SantriTable/SantriTable';
+import { Button } from '@base-ui/react';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const SantriPage = () => {
     const [refreshKey] = useState(0);
@@ -23,6 +23,6 @@ const SantriPage = () => {
             </div>
             <SantriTable key={refreshKey} />
         </div>
-    )
-}
+    );
+};
 export default SantriPage;

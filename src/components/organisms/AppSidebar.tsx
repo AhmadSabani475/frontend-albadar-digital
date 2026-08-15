@@ -1,10 +1,10 @@
-import Brand from "../molecules/Brand";
-import SidebarNavItem from "../molecules/SidebarNavItem";
-import SidebarNavGroup from "../molecules/SidebarNavGroup";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton } from "../ui/sidebar";
-import { useAuthStore } from "@/store/authStore";
-import { SIDEBAR_MENU } from "@/constants/menu";
-import { LogOut } from "lucide-react";
+import Brand from '../molecules/Brand';
+import SidebarNavItem from '../molecules/SidebarNavItem';
+import SidebarNavGroup from '../molecules/SidebarNavGroup';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton } from '../ui/sidebar';
+import { useAuthStore } from '@/store/authStore';
+import { SIDEBAR_MENU } from '@/constants/menu';
+import { LogOut } from 'lucide-react';
 
 
 const AppSidebar = () => {
@@ -16,7 +16,7 @@ const AppSidebar = () => {
             </SidebarHeader>
             <SidebarContent>
                 {SIDEBAR_MENU.map((entry) =>
-                    entry.type === "item" ? (
+                    entry.type === 'item' ? (
                         <SidebarNavItem
                             key={entry.url}
                             title={entry.title}
@@ -41,7 +41,7 @@ const AppSidebar = () => {
                 </SidebarMenu>
             </SidebarFooter>
         </Sidebar>
-    )
-}
+    );
+};
 
 export default AppSidebar;

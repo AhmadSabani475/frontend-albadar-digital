@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
     useReactTable,
     getCoreRowModel,
@@ -6,7 +6,7 @@ import {
     getPaginationRowModel,
     flexRender,
     type ColumnDef,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 import {
     Table,
     TableHeader,
@@ -14,8 +14,8 @@ import {
     TableHead,
     TableBody,
     TableCell,
-} from "../ui/table";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+} from '../ui/table';
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 
 interface DataTableProps<T> {
     data: T[];
@@ -30,10 +30,10 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
         data,
         columns,
         isLoading = false,
-        searchPlaceholder = "Cari...",
-        emptyMessage = "Belum ada data",
+        searchPlaceholder = 'Cari...',
+        emptyMessage = 'Belum ada data',
     } = props;
-    const [globalFilter, setGlobalFilter] = useState("");
+    const [globalFilter, setGlobalFilter] = useState('');
     const [pageSize, setPageSize] = useState(10);
 
     const table = useReactTable({
@@ -156,8 +156,8 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                             key={pageIndex}
                             onClick={() => table.setPageIndex(pageIndex)}
                             className={`w-8 h-8 rounded-md font-medium transition-colors ${pageIndex === currentPage
-                                ? "bg-green-600 text-white"
-                                : "hover:bg-white/5 text-gray-400"
+                                ? 'bg-green-600 text-white'
+                                : 'hover:bg-white/5 text-gray-400'
                                 }`}
                         >
                             {pageIndex + 1}
@@ -176,6 +176,6 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
             </div>
         </div>
     );
-}
+};
 
 export default DataTable;

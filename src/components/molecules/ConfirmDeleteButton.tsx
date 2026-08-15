@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 
 
 interface PropTypes {
@@ -12,8 +12,8 @@ interface PropTypes {
 const ConfirmDeleteButton = (props: PropTypes) => {
     const {
         trigger,
-        title = "Yakin mau hapus?",
-        description = "Tindakan ini gak bisa dibatalin. Data bakal kehapus permanen.",
+        title = 'Yakin mau hapus?',
+        description = 'Tindakan ini gak bisa dibatalin. Data bakal kehapus permanen.',
         onConfirm,
         loading
     } = props;
@@ -33,13 +33,13 @@ const ConfirmDeleteButton = (props: PropTypes) => {
                         disabled={loading}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                     >
-                        {loading ? "Menghapus..." : "Hapus"}
+                        {loading ? 'Menghapus...' : 'Hapus'}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
-    )
+    );
 
-}
+};
 
-export default ConfirmDeleteButton
+export default ConfirmDeleteButton;
