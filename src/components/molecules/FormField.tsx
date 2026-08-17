@@ -21,19 +21,23 @@ const FormField = (props: PropTypes) => {
         name,
         label,
         onChange,
-        defaultValue,
         value,
+        defaultValue,
         placeholder,
         type = 'text',
         error,
         Icon,
         required = false
     } = props;
+    const isControlled = value !== undefined;
 
     return (
         <Field>
             <FieldLabel htmlFor={name}>
                 {label}
+                {required && (
+                    <span className="text-destructive">*</span>
+                )}
             </FieldLabel>
             <div className="relative">
                 {Icon && (
@@ -42,13 +46,12 @@ const FormField = (props: PropTypes) => {
                 <Input
                     name={name}
                     id={id}
-                    defaultValue={defaultValue}
                     type={type}
-                    value={value}
                     placeholder={placeholder}
                     onChange={onChange}
                     className={`h-11 ${Icon ? 'pl-9' : ''}`}
                     required={required}
+                    {...(isControlled ? { value } : { defaultValue })}
                 />
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}

@@ -6,7 +6,7 @@ interface fetchOptions extends RequestInit {
     auth?: boolean;
 }
 
-export const fetchAPI = async (endpoint: string, options: fetchOptions = {}) => {
+export const fetchAPI = async <T>(endpoint: string, options: fetchOptions = {}): Promise<T> => {
     const { auth = true, headers, ...rest } = options;
     const finalHeaders: Record<string, string> = {
         'Content-Type': 'application/json',
@@ -30,5 +30,5 @@ export const fetchAPI = async (endpoint: string, options: fetchOptions = {}) => 
         throw new Error(data.message || 'Terjadi kesalahan');
     }
 
-    return data;
+    return data as T;
 };

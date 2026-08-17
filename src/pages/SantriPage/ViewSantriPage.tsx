@@ -1,10 +1,11 @@
-import ViewDataSantri from '@/components/organisms/ViewDataSantri';
+
 import { useParams } from 'react-router-dom';
 
 const ViewSantriPage = () => {
     const { id } = useParams();
     return (
-        <ViewDataSantri id={id} />
+        // <ViewDataSantri id={id} />
+        <h1>hello</h1>
     );
 };
 export default ViewSantriPage;

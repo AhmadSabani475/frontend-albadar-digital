@@ -55,8 +55,9 @@ const SelectField = (props: PropTypes) => {
                 value={value}
                 onValueChange={(newValue) => onChange?.(newValue ?? '')}
                 required={required}
+                name={name}
             >
-                <SelectTrigger id={name} name={name} className="w-full">
+                <SelectTrigger id={name}  className="w-full">
                     <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
                 <SelectContent>

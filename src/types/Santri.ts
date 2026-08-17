@@ -1,35 +1,56 @@
 export interface Orangtua {
+  nik?: string;
+  statusHidup?: 'Hidup' | 'Meninggal';
   nama: string;
   pendidikan?: string;
   pekerjaan?: string;
+  noHp?: string;
 }
 
 export interface Alamat {
   jalan: string;
   rtRw?: string;
+  kodeDesaKelurahan: string;
   desaKelurahan: string;
+  kodeKecamatan: string;
   kecamatan: string;
+  kodeKabupatenKota: string;
   kabupatenKota: string;
+  kodeProvinsi: string;
   provinsi: string;
-  noTelepon?: string;
+  kodePos?: string;
+}
+
+export interface PendidikanSebelumnya {
+  jenjangTerakhir: string;
+  namaSekolah: string;
+  tahunMasuk: string;
+  tahunLulus: string;
 }
 
 export interface CreateSantriPayload {
+  nik?: string;
   nis?: string;
   namaLengkap: string;
+  jenisKelamin: 'L' | 'P';
   tempatLahir: string;
   tanggalLahir: string;
+  fotoUrl?: string;
   anakKe?: number;
   jumlahSaudara?: number;
-  asalPesantren?: string;
-  pendidikanTerakhir: string;
+  noHp?: string;
+  noKk?: string;
+  namaKepalaKeluarga?: string;
+  pendidikanTerakhir: PendidikanSebelumnya;
   ayah: Orangtua;
   ibu: Orangtua;
   alamat: Alamat;
-  sekolah: string;
+  sekolahId: string;
   kamarId: string;
+  laundry?: boolean;
 }
-export interface Santri extends Omit<CreateSantriPayload, 'kamarId'> {
+
+export interface Santri extends Omit<CreateSantriPayload, 'kamarId' | 'sekolahId'> {
   _id: string;
   kamarId: {
     _id: string;
@@ -40,8 +61,14 @@ export interface Santri extends Omit<CreateSantriPayload, 'kamarId'> {
       namaAsrama: string;
     };
   };
-  status: 'aktif' | 'alumni';
+  sekolahId: {
+    _id: string;
+    nama: string;
+    jenjang?: string;
+  };
+  status: 'aktif' | 'alumni' | 'dikeluarkan';
   tanggalTerdaftar: string;
+  tanggalKeluar?: string;
   createdAt?: string;
   updatedAt?: string;
 }

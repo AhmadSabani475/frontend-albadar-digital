@@ -10,43 +10,19 @@ import type { CreateSantriPayload } from '@/types/Santri';
 import { useNavigate } from 'react-router-dom';
 import { santriService } from '@/services/santri.service';
 import type { Kamar } from '@/types/Kamar';
-
-
-const educationGroups = [
-    {
-        groupLabel: 'Pendidikan Dasar & Menengah',
-        options: [
-            { label: 'SD/Sederajat', value: 'sd' },
-            { label: 'SMP/Sederajat', value: 'smp' },
-            { label: 'SMA/SMK/Sederajat', value: 'sma' },
-        ],
-    },
-];
-const schools = [
-    {
-        groupLabel: 'SMP/Sederajat',
-        options: [
-            { label: 'SMP Al-Badar Cipulus', value: 'smp al-badar' },
-            { label: 'MTs YPPA Cipulus', value: 'mts yppa' },
-        ],
-    },
-    {
-        groupLabel: 'SMA/Sederajat',
-        options: [
-            { label: 'SMA Al-Badar Cipulus', value: 'sma al-badar' },
-            { label: 'SMK Al-Badar Cipulus', value: 'sml al-badar' },
-            { label: 'MA YPPA Cipulus', value: 'ma yppa' },
-        ],
-    },
-];
-
+import { sekolahService } from '@/services/sekolah.service';
+import type { Sekolah } from '@/types/Sekolah';
+import DataDiriSection from './DataDiriSection';
+import DataAlamatSection from './DataAlamatSection';
 
 const AddSantriForm = () => {
     const navigate = useNavigate();
     const [kamarGroups, setKamarGroups] = useState<{ groupLabel: string; options: { label: string; value: string }[] }[]>([]);
+    const [sekolahGroups, setSekolahGroups] = useState<{ groupLabel: string; options: { label: string; value: string }[] }[]>([]);
     const [pendidikanTerakhir, setPendidikanTerakhir] = useState('');
-    const [sekolah, setSekolah] = useState<string>('');
+    const [sekolahId, setSekolahId] = useState<string>('');
     const [kamarId, setKamarId] = useState<string>('');
+    const [laundry, setLaundry] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
@@ -54,34 +30,56 @@ const AddSantriForm = () => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const santri: CreateSantriPayload = {
+            nik: formData.get('nik') as string | undefined,
+            nis: formData.get('nis') as string | undefined,
             namaLengkap: formData.get('namaLengkap') as string,
+            jenisKelamin: formData.get('jenisKelamin') as 'L' | 'P',
             tempatLahir: formData.get('tempatLahir') as string,
             tanggalLahir: formData.get('tanggalLahir') as string,
-            pendidikanTerakhir: pendidikanTerakhir,
-            sekolah: sekolah,
+            fotoUrl: formData.get('fotoUrl') as string | undefined,
             anakKe: formData.get('anakKe') ? Number(formData.get('anakKe')) : undefined,
             jumlahSaudara: formData.get('jumlahSaudara') ? Number(formData.get('jumlahSaudara')) : undefined,
-            asalPesantren: formData.get('asalPesantren') as string | undefined,
+            noHp: formData.get('noHp') as string | undefined,
+            noKk: formData.get('noKk') as string | undefined,
+            namaKepalaKeluarga: formData.get('namaKepalaKeluarga') as string | undefined,
+            pendidikanTerakhir: {
+                jenjangTerakhir: formData.get('pendidikanTerakhir.jenjangTerakhir') as string,
+                namaSekolah: formData.get('pendidikanTerakhir.namaSekolah') as string,
+                tahunMasuk: formData.get('pendidikanTerakhir.tahunMasuk') as string,
+                tahunLulus: formData.get('pendidikanTerakhir.tahunLulus') as string,
+            },
             ayah: {
+                nik: formData.get('ayah.nik') as string | undefined,
+                statusHidup: formData.get('ayah.statusHidup') as 'Hidup' | 'Meninggal',
                 nama: formData.get('ayah.nama') as string,
                 pendidikan: formData.get('ayah.pendidikan') as string | undefined,
                 pekerjaan: formData.get('ayah.pekerjaan') as string | undefined,
+                noHp: formData.get('ayah.noHp') as string | undefined,
             },
             ibu: {
+                nik: formData.get('ibu.nik') as string | undefined,
+                statusHidup: formData.get('ibu.statusHidup') as 'Hidup' | 'Meninggal',
                 nama: formData.get('ibu.nama') as string,
                 pendidikan: formData.get('ibu.pendidikan') as string | undefined,
                 pekerjaan: formData.get('ibu.pekerjaan') as string | undefined,
+                noHp: formData.get('ibu.noHp') as string | undefined,
             },
             alamat: {
                 jalan: formData.get('alamat.jalan') as string,
                 rtRw: formData.get('alamat.rtRw') as string | undefined,
+                kodeDesaKelurahan: formData.get('alamat.kodeDesaKelurahan') as string,
                 desaKelurahan: formData.get('alamat.desaKelurahan') as string,
+                kodeKecamatan: formData.get('alamat.kodeKecamatan') as string,
                 kecamatan: formData.get('alamat.kecamatan') as string,
+                kodeKabupatenKota: formData.get('alamat.kodeKabupatenKota') as string,
                 kabupatenKota: formData.get('alamat.kabupatenKota') as string,
+                kodeProvinsi: formData.get('alamat.kodeProvinsi') as string,
                 provinsi: formData.get('alamat.provinsi') as string,
-                noTelepon: formData.get('alamat.noTelepon') as string | undefined,
+                kodePos: formData.get('alamat.kodePos') as string | undefined
             },
-            kamarId: kamarId
+            kamarId: kamarId,
+            sekolahId: sekolahId,
+            laundry: laundry
         };
 
         try {
@@ -96,161 +94,43 @@ const AddSantriForm = () => {
         }
     };
 
-
-    useEffect(() => {
-        kamarService.getAllKamar().then((res) => {
-            const options = res.data.map((kamar: Kamar) => ({
+    const getAllKamar = async () => {
+        try {
+            const result = await kamarService.getAllKamar();
+            const options = result.data.map((kamar: Kamar) => ({
                 label: `${kamar.asramaId?.namaAsrama ?? '-'} - ${kamar.namaKamar}`,
                 value: kamar._id,
             }));
             setKamarGroups([{ groupLabel: 'Pilih Kamar', options }]);
-        });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const getAllSchool = async () => {
+        try {
+            const result = await sekolahService.getAllSchool();
+            const options = result.data.map((sekolah: Sekolah) => ({
+                label: `${sekolah.nama} - ${sekolah.jenjang}`,
+                value: sekolah._id,
+            }));
+            setSekolahGroups([{ groupLabel: 'Pilih Sekolah', options }]);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    useEffect(() => {
+        getAllKamar()
+        getAllSchool()
     }, []);
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3">
             <Accordion defaultValue={['data-diri', 'data-ortu', 'alamat', 'kamar-akun']} className="flex flex-col gap-5">
-                <AccordionItem value="data-diri" className="border-2 px-8 rounded-2xl">
-                    <AccordionTrigger className="hover:no-underline py-5">
-                        <div className="flex gap-2 items-center">
-                            <UserRound className="text-green-400" />
-                            <h3 className="text-xl font-semibold">Data Diri</h3>
-                        </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-5">
-                        <div className="flex flex-col gap-4 rounded-2xl">
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <FormField type="text" label="Nama Lengkap" name="namaLengkap" placeholder="Nama Lengkap"
-                                    error="" id="namaLengkap" required />
-
-                            </div>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <FormField type="text" label="Tempat Lahir" name="tempatLahir" placeholder="Tempat Lahir"
-                                    error="" id="tempatLahir" required />
-                                <FormField type="date" label="Tanggal Lahir" name="tanggalLahir" placeholder="Tanggal Lahir"
-                                    error="" id="tanggalLahir" required />
-
-                            </div>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <FormField type="number" label="Anak Ke-" name="anakKe" placeholder="Anak Ke-"
-                                    error="" id="anakKe" required />
-                                <FormField type="number" label="Jumlah Saudara" name="jumlahSaudara" placeholder="Jumlah Saudara"
-                                    error="" id="jumlahSaudara" required />
-
-                            </div>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <SelectField
-                                    groups={educationGroups}
-                                    label="Pendidikan Terakhir"
-                                    name="pendidikanTerakhir"
-                                    value={pendidikanTerakhir}
-                                    onChange={setPendidikanTerakhir}
-                                    placeholder="Pendidikan Terakhir"
-                                />
-                                <FormField type="text" label="Asal Pesantren"
-                                    name="asalPesantren" placeholder="Asal Pesantren"
-                                    error="" id="asalPesantren" required />
-                            </div>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <SelectField
-                                    groups={schools}
-                                    label="Sekolah Saat Ini"
-                                    name="sekolah"
-                                    value={sekolah}
-                                    onChange={setSekolah}
-                                    placeholder="Sekolah Saat Ini"
-                                />
-                            </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="data-ortu" className="border-2 px-8 rounded-2xl">
-                    <AccordionTrigger className="hover:no-underline py-5">
-                        <div className="flex gap-2 items-center">
-                            <UsersRound className="text-green-400" />
-                            <h3 className="text-xl font-semibold">Data Orang Tua</h3>
-                        </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-5">
-                        <div className="flex flex-col gap-4 rounded-2xl">
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <FormField type="text" label="Nama Ayah" name="ayah.nama" placeholder="Nama Ayah"
-                                    error="" id="ayah.nama" required />
-                                <FormField type="text" label="Nama Ibu" name="ibu.nama" placeholder="Nama Ibu"
-                                    error="" id="ibu.nama" required />
-                            </div>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <FormField type="text" label="Pendidikan Ayah" name="ayah.pendidikan" placeholder="Pendidikan Ayah"
-                                    error="" id="ayah.pendidikan" required />
-                                <FormField type="text" label="Pendidikan Ibu" name="ibu.pendidikan" placeholder="Pendidikan Ibu"
-                                    error="" id="ibu.pendidikan" required />
-                            </div>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <FormField type="text" label="Pekerjaan Ayah" name="ayah.pekerjaan" placeholder="Pekerjaan Ayah"
-                                    error="" id="ayah.pekerjaan" required />
-                                <FormField type="text" label="Pekerjaan Ibu" name="ibu.pekerjaan" placeholder="Pekerjaan Ibu"
-                                    error="" id="ibu.pekerjaan" required />
-                            </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="alamat" className="border-2 px-8 rounded-2xl">
-                    <AccordionTrigger className="hover:no-underline py-5">
-                        <div className="flex gap-2 items-center">
-                            <MapPinHouse className="text-green-400" />
-                            <h3 className="text-xl font-semibold">Alamat</h3>
-                        </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-5">
-                        <div className="flex flex-col gap-4 rounded-2xl">
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <FormField type="text" label="Jalan" name="alamat.jalan" placeholder="Jalan"
-                                    error="" id="alamat.jalan" required />
-                            </div>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <FormField type="text" label="RT/RW" name="alamat.rtRw" placeholder="contoh: 002/013"
-                                    error="" id="alamat.rtRw" required />
-                                <FormField type="text" label="Kelurahan/Desa" name="alamat.desaKelurahan" placeholder="Kel/Des"
-                                    error="" id="alamat.desaKelurahan" required />
-                            </div>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <FormField type="text" label="Kecamatan" name="alamat.kecamatan" placeholder="Kecamatan"
-                                    error="" id="alamat.kecamatan" required />
-                                <FormField type="text" label="Kab/Kota" name="alamat.kabupatenKota" placeholder="Kab/Kota"
-                                    error="" id="alamat.kabupatenKota" required />
-                            </div>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <FormField type="text" label="Provinsi" name="alamat.provinsi" placeholder="Provinsi"
-                                    error="" id="alamat.provinsi" required />
-                                <FormField type="text" label="No.hp" name="alamat.noTelepon" placeholder="628......"
-                                    error="" id="alamat.noTelepon" required />
-                            </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="kamar-akun" className="border-2 px-8 rounded-2xl">
-                    <AccordionTrigger className="hover:no-underline py-5">
-                        <div className="flex gap-2 items-center">
-                            <MapPinHouse className="text-green-400" />
-                            <h3 className="text-xl font-semibold">Kamar</h3>
-                        </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-5">
-                        <div className="flex flex-col gap-4 rounded-2xl">
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <SelectField
-                                    groups={kamarGroups}
-                                    label="Kamar"
-                                    name="kamarId"
-                                    value={kamarId}
-                                    onChange={setKamarId}
-                                    placeholder="Kamar"
-                                />
-
-                            </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionItem>
+                <DataDiriSection />
+                <DataAlamatSection />
             </Accordion>
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button type="submit" className="w-full text-xl hover:text-green-400 hover:font-bold bg-green-400 p-5">
