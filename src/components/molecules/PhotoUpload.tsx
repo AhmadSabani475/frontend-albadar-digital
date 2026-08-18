@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Camera } from "lucide-react";
+import { useRef, useState } from 'react';
+import { Camera } from 'lucide-react';
 
 type PhotoUploadProps = {
     name: string;
@@ -11,18 +11,18 @@ type PhotoUploadProps = {
 
 const PhotoUpload = ({
     name,
-    label = "Ganti Foto",
+    label = 'Ganti Foto',
     maxSizeMB = 2,
-    accept = "image/jpeg,image/png",
+    accept = 'image/jpeg,image/png',
     onChange,
 }: PhotoUploadProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [preview, setPreview] = useState<string | null>(null);
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] ?? null;
-        setError("");
+        setError('');
 
         if (!file) return;
 

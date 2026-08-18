@@ -1,4 +1,4 @@
-import { Card } from "../ui/card"
+import { Card } from '../ui/card';
 
 interface CardOrtuSectionProps {
     Icon: React.ElementType;
@@ -17,6 +17,6 @@ const CardOrtuSection = ({ Icon, title, children }: CardOrtuSectionProps) => {
                 {children}
             </div>
         </Card>
-    )
-}
+    );
+};
 export default CardOrtuSection;

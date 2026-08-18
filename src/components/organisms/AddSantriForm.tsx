@@ -1,29 +1,19 @@
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import FormField from '@/components/molecules/FormField';
-import SelectField from '@/components/molecules/SelectField';
-import { MapPinHouse, Save, UserRound, UsersRound } from 'lucide-react';
+import { Accordion } from '@/components/ui/accordion';
+import { Save } from 'lucide-react';
 import { Button } from '../ui/button';
-import { useEffect, useState, type SubmitEvent } from 'react';
-import { kamarService } from '@/services/kamar.service';
+import { useState, type SubmitEvent } from 'react';
 import type { CreateSantriPayload } from '@/types/Santri';
 import { useNavigate } from 'react-router-dom';
 import { santriService } from '@/services/santri.service';
-import type { Kamar } from '@/types/Kamar';
-import { sekolahService } from '@/services/sekolah.service';
-import type { Sekolah } from '@/types/Sekolah';
 import DataDiriSection from './DataDiriSection';
 import DataAlamatSection from './DataAlamatSection';
 import DataOrangTuaSection from './DataOrangTuaSection';
+import DataPendidikanSection from './DataPendidikanSection';
+import DataAsramaSekolah from './DataAsramaSekolah';
 
 const AddSantriForm = () => {
     const navigate = useNavigate();
-    const [kamarGroups, setKamarGroups] = useState<{ groupLabel: string; options: { label: string; value: string }[] }[]>([]);
-    const [sekolahGroups, setSekolahGroups] = useState<{ groupLabel: string; options: { label: string; value: string }[] }[]>([]);
-    const [pendidikanTerakhir, setPendidikanTerakhir] = useState('');
-    const [sekolahId, setSekolahId] = useState<string>('');
-    const [kamarId, setKamarId] = useState<string>('');
-    const [laundry, setLaundry] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
@@ -78,9 +68,9 @@ const AddSantriForm = () => {
                 provinsi: formData.get('alamat.provinsi') as string,
                 kodePos: formData.get('alamat.kodePos') as string | undefined
             },
-            kamarId: kamarId,
-            sekolahId: sekolahId,
-            laundry: laundry
+            kamarId: formData.get('kamarId') as string,
+            sekolahId: formData.get('sekolahId') as string,
+            laundry: formData.get('laundry') === 'true',
         };
 
         try {
@@ -95,44 +85,15 @@ const AddSantriForm = () => {
         }
     };
 
-    const getAllKamar = async () => {
-        try {
-            const result = await kamarService.getAllKamar();
-            const options = result.data.map((kamar: Kamar) => ({
-                label: `${kamar.asramaId?.namaAsrama ?? '-'} - ${kamar.namaKamar}`,
-                value: kamar._id,
-            }));
-            setKamarGroups([{ groupLabel: 'Pilih Kamar', options }]);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const getAllSchool = async () => {
-        try {
-            const result = await sekolahService.getAllSchool();
-            const options = result.data.map((sekolah: Sekolah) => ({
-                label: `${sekolah.nama} - ${sekolah.jenjang}`,
-                value: sekolah._id,
-            }));
-            setSekolahGroups([{ groupLabel: 'Pilih Sekolah', options }]);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-
-    useEffect(() => {
-        getAllKamar()
-        getAllSchool()
-    }, []);
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3">
-            <Accordion defaultValue={['data-diri', 'data-ortu', 'alamat', 'kamar-akun']} className="flex flex-col gap-5">
+            <Accordion defaultValue={['data-diri']} className="flex flex-col gap-5">
                 <DataDiriSection />
                 <DataAlamatSection />
                 <DataOrangTuaSection />
+                <DataPendidikanSection />
+                <DataAsramaSekolah />
             </Accordion>
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button type="submit" className="w-full text-xl hover:text-green-400 hover:font-bold bg-green-400 p-5">

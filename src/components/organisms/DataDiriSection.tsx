@@ -1,18 +1,18 @@
-import { User } from "lucide-react"
-import AccordionSection from "../molecules/AccordionSection"
-import FormRow from "../atoms/FormRow"
-import FormField from "../molecules/FormField"
-import PhotoUpload from "../molecules/PhotoUpload"
-import SelectField from "../molecules/SelectField"
-import { useState } from "react"
+import { User } from 'lucide-react';
+import AccordionSection from '../molecules/AccordionSection';
+import FormRow from '../atoms/FormRow';
+import FormField from '../molecules/FormField';
+import PhotoUpload from '../molecules/PhotoUpload';
+import SelectField from '../molecules/SelectField';
+import { useState } from 'react';
 
 
 const genderGroups = [
     {
-        groupLabel: "Jenis Kelamin",
+        groupLabel: 'Jenis Kelamin',
         options: [
-            { label: "Laki-laki", value: "L" },
-            { label: "Perempuan", value: "P" },
+            { label: 'Laki-laki', value: 'L' },
+            { label: 'Perempuan', value: 'P' },
         ],
     },
 ];
@@ -22,7 +22,7 @@ interface DataDiriSectionProps {
         nik?: string;
         nis?: string;
         namaLengkap?: string;
-        jenisKelamin?: "L" | "P";
+        jenisKelamin?: 'L' | 'P';
         noHp?: string;
         anakKe?: string;
         tempatLahir?: string;
@@ -34,8 +34,8 @@ interface DataDiriSectionProps {
 
 const DataDiriSection = ({ initialValues }: DataDiriSectionProps) => {
 
-    const [jenisKelamin, setJenisKelamin] = useState(initialValues?.jenisKelamin ?? "");
-    const [fotoUrl, setFotoUrl] = useState(initialValues?.fotoUrl ?? "");
+    const [jenisKelamin, setJenisKelamin] = useState(initialValues?.jenisKelamin ?? '');
+    const [fotoUrl, setFotoUrl] = useState(initialValues?.fotoUrl ?? '');
 
 
     return (
@@ -88,6 +88,6 @@ const DataDiriSection = ({ initialValues }: DataDiriSectionProps) => {
                 </div>
             </div>
         </AccordionSection>
-    )
-}
+    );
+};
 export default DataDiriSection;

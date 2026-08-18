@@ -45,7 +45,7 @@ const SantriTable = () => {
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         fetchData();
@@ -57,7 +57,7 @@ const SantriTable = () => {
         }
     }, [alert]);
 
-    const columns = getColumns({ onDelete: handleDelete })
+    const columns = getColumns({ onDelete: handleDelete });
     return (
         <div>
             <DataTable

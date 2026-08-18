@@ -16,7 +16,7 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<Santri>[] => [
         size: 60,
         cell: ({ row, table }) => {
             const { pageIndex, pageSize } = table.getState().pagination;
-            return <span>{pageIndex * pageSize + row.index + 1}</span>
+            return <span>{pageIndex * pageSize + row.index + 1}</span>;
         }
     },
     {

@@ -1,12 +1,12 @@
-import { MapIcon } from "lucide-react";
-import AccordionSection from "../molecules/AccordionSection";
-import FormRow from "../atoms/FormRow";
-import { Textarea } from "../ui/textarea";
-import { Field, FieldLabel } from "../ui/field";
-import FormField from "../molecules/FormField";
-import SelectField from "../molecules/SelectField";
-import { useEffect, useState } from "react";
-import { wilayahService, type WilayahItem } from "@/services/wilayah.service";
+import { MapIcon } from 'lucide-react';
+import AccordionSection from '../molecules/AccordionSection';
+import FormRow from '../atoms/FormRow';
+import { Textarea } from '../ui/textarea';
+import { Field, FieldLabel } from '../ui/field';
+import FormField from '../molecules/FormField';
+import SelectField from '../molecules/SelectField';
+import { useEffect, useState } from 'react';
+import { wilayahService, type WilayahItem } from '@/services/wilayah.service';
 
 interface AlamatSectionProps {
     initialValues?: {
@@ -21,85 +21,85 @@ const DataAlamatSection = ({ initialValues }: AlamatSectionProps) => {
     const [kecamatan, setKecamatan] = useState<WilayahItem[]>([]);
     const [desaKelurahan, setdesaKelurahan] = useState<WilayahItem[]>([]);
 
-    const [provinsiId, setProvinsiId] = useState("");
-    const [kabupatenKotaId, setKabupatenKotaId] = useState("");
-    const [kecamatanId, setKecamatanId] = useState("");
-    const [desaKelurahanId, setdesaKelurahanId] = useState("");
+    const [provinsiId, setProvinsiId] = useState('');
+    const [kabupatenKotaId, setKabupatenKotaId] = useState('');
+    const [kecamatanId, setKecamatanId] = useState('');
+    const [desaKelurahanId, setdesaKelurahanId] = useState('');
 
-    const [provinsiName, setProvinsiName] = useState("");
-    const [kabupatenKotaName, setKabupatenKotaName] = useState("");
-    const [kecamatanName, setKecamatanName] = useState("");
-    const [desaKelurahanName, setdesaKelurahanName] = useState("");
+    const [provinsiName, setProvinsiName] = useState('');
+    const [kabupatenKotaName, setKabupatenKotaName] = useState('');
+    const [kecamatanName, setKecamatanName] = useState('');
+    const [desaKelurahanName, setdesaKelurahanName] = useState('');
 
     useEffect(() => {
         wilayahService.getProvinces().then(setProvinsi);
-    }, [])
+    }, []);
 
     const handleProvinsiChange = async (id: string) => {
         try {
             setProvinsiId(id);
-            setProvinsiName(provinsi.find((p) => p.id === id)?.name ?? "");
+            setProvinsiName(provinsi.find((p) => p.id === id)?.name ?? '');
 
-            setKabupatenKotaId("")
-            setKecamatanId("")
-            setdesaKelurahanId("")
-            setKabupatenKotaName("")
-            setKecamatanName("")
-            setdesaKelurahanName("")
-            setKabupatenKota([])
-            setKecamatan([])
-            setdesaKelurahan([])
+            setKabupatenKotaId('');
+            setKecamatanId('');
+            setdesaKelurahanId('');
+            setKabupatenKotaName('');
+            setKecamatanName('');
+            setdesaKelurahanName('');
+            setKabupatenKota([]);
+            setKecamatan([]);
+            setdesaKelurahan([]);
 
             if (id) {
-                const data = await wilayahService.getRegencies(id)
-                setKabupatenKota(data)
+                const data = await wilayahService.getRegencies(id);
+                setKabupatenKota(data);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
     const handleKabKotaChange = async (id: string) => {
         try {
             setKabupatenKotaId(id);
-            setKabupatenKotaName(kabupatenKota.find((k) => k.id === id)?.name ?? "");
+            setKabupatenKotaName(kabupatenKota.find((k) => k.id === id)?.name ?? '');
 
-            setKecamatanId("")
-            setdesaKelurahanId("")
+            setKecamatanId('');
+            setdesaKelurahanId('');
 
-            setKecamatanName("")
-            setdesaKelurahanName("")
+            setKecamatanName('');
+            setdesaKelurahanName('');
 
-            setKecamatan([])
-            setdesaKelurahan([])
+            setKecamatan([]);
+            setdesaKelurahan([]);
 
             if (id) {
-                const data = await wilayahService.getDistricts(id)
-                setKecamatan(data)
+                const data = await wilayahService.getDistricts(id);
+                setKecamatan(data);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
     const handleKecamatanChange = async (id: string) => {
         try {
             setKecamatanId(id);
-            setKecamatanName(kecamatan.find((k) => k.id === id)?.name ?? "");
+            setKecamatanName(kecamatan.find((k) => k.id === id)?.name ?? '');
 
-            setdesaKelurahanId("")
-            setdesaKelurahanName("")
-            setdesaKelurahan([])
+            setdesaKelurahanId('');
+            setdesaKelurahanName('');
+            setdesaKelurahan([]);
 
             if (id) {
-                const data = await wilayahService.getVillages(id)
-                setdesaKelurahan(data)
+                const data = await wilayahService.getVillages(id);
+                setdesaKelurahan(data);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
     const handleVillageChange = (id: string) => {
         setdesaKelurahanId(id);
-        setdesaKelurahanName(desaKelurahan.find((v) => v.id === id)?.name ?? "");
+        setdesaKelurahanName(desaKelurahan.find((v) => v.id === id)?.name ?? '');
     };
     const toGroups = (items: WilayahItem[], groupLabel: string) => [
         { groupLabel, options: items.map((i) => ({ label: i.name, value: i.id })) },
@@ -125,21 +125,21 @@ const DataAlamatSection = ({ initialValues }: AlamatSectionProps) => {
             <FormRow>
                 <SelectField
                     label="Provinsi"
-                    groups={toGroups(provinsi, "Pilih provinsi")}
+                    groups={toGroups(provinsi, 'Pilih provinsi')}
                     name="alamat.kodeProvinsi"
                     value={provinsiId}
                     onChange={handleProvinsiChange}
-                    placeholder={provinsiId ? "Pilih Kab/Kota" : "Pilih provinsi dulu"}
+                    placeholder={provinsiId ? 'Pilih Kab/Kota' : 'Pilih provinsi dulu'}
                     required
                 />
                 <input type="hidden" name="alamat.provinsi" value={provinsiName} />
                 <SelectField
                     label="Kab/Kota"
-                    groups={toGroups(kabupatenKota, "Pilih Kab/kota")}
+                    groups={toGroups(kabupatenKota, 'Pilih Kab/kota')}
                     name="alamat.kodeKabupatenKota"
                     value={kabupatenKotaId}
                     onChange={handleKabKotaChange}
-                    placeholder={kabupatenKotaId ? "Pilih Kecamatan" : "Pilih Kab/Kota dulu"}
+                    placeholder={kabupatenKotaId ? 'Pilih Kecamatan' : 'Pilih Kab/Kota dulu'}
                     required
                 />
                 <input type="hidden" name="alamat.kabupatenKota" value={kabupatenKotaName} />
@@ -147,17 +147,17 @@ const DataAlamatSection = ({ initialValues }: AlamatSectionProps) => {
             <FormRow>
                 <SelectField
                     label="Kecamatan"
-                    groups={toGroups(kecamatan, "Pilih Kecamatan")}
+                    groups={toGroups(kecamatan, 'Pilih Kecamatan')}
                     name="alamat.kodeKecamatan"
                     value={kecamatanId}
                     onChange={handleKecamatanChange}
-                    placeholder={kecamatanId ? "Pilih Desa/Kelurahan" : "Pilih Kecamatan dulu"}
+                    placeholder={kecamatanId ? 'Pilih Desa/Kelurahan' : 'Pilih Kecamatan dulu'}
                     required
                 />
                 <input type="hidden" name="alamat.kecamatan" value={kecamatanName} />
                 <SelectField
                     label="Desa/Kelurahan"
-                    groups={toGroups(desaKelurahan, "Pilih Desa/Kelurahan")}
+                    groups={toGroups(desaKelurahan, 'Pilih Desa/Kelurahan')}
                     name="alamat.kodeDesaKelurahan"
                     value={desaKelurahanId}
                     onChange={handleVillageChange}
@@ -173,6 +173,6 @@ const DataAlamatSection = ({ initialValues }: AlamatSectionProps) => {
                     defaultValue={initialValues?.kodePos} placeholder="4117" id="alamat.kodePos" />
             </FormRow>
         </AccordionSection>
-    )
-}
+    );
+};
 export default DataAlamatSection;

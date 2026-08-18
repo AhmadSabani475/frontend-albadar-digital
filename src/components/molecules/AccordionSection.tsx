@@ -1,5 +1,5 @@
-import type React from "react";
-import { AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import type React from 'react';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
 interface AccordionSectionProps {
     value: string;
@@ -30,7 +30,7 @@ const AccordionSection = (props: AccordionSectionProps) => {
                 </div>
             </AccordionContent>
         </AccordionItem>
-    )
-}
+    );
+};
 
 export default AccordionSection;

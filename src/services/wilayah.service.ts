@@ -1,4 +1,4 @@
-import { fetchAPI } from "@/lib/api";
+import { fetchAPI } from '@/lib/api';
 
 export interface WilayahItem {
   id: string;
