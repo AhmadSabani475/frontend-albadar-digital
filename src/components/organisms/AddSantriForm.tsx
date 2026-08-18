@@ -14,6 +14,7 @@ import { sekolahService } from '@/services/sekolah.service';
 import type { Sekolah } from '@/types/Sekolah';
 import DataDiriSection from './DataDiriSection';
 import DataAlamatSection from './DataAlamatSection';
+import DataOrangTuaSection from './DataOrangTuaSection';
 
 const AddSantriForm = () => {
     const navigate = useNavigate();
@@ -131,6 +132,7 @@ const AddSantriForm = () => {
             <Accordion defaultValue={['data-diri', 'data-ortu', 'alamat', 'kamar-akun']} className="flex flex-col gap-5">
                 <DataDiriSection />
                 <DataAlamatSection />
+                <DataOrangTuaSection />
             </Accordion>
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button type="submit" className="w-full text-xl hover:text-green-400 hover:font-bold bg-green-400 p-5">

@@ -1,0 +1,67 @@
+import { Mars, User2, Venus } from "lucide-react";
+import AccordionSection from "../molecules/AccordionSection";
+import FormRow from "../atoms/FormRow";
+import FormField from "../molecules/FormField";
+import CardOrtuSection from "../molecules/CardOrtuSection";
+import SelectField from "../molecules/SelectField";
+import { useState } from "react";
+
+
+
+const statusHidupGroups = [
+    {
+        groupLabel: "Status Hidup",
+        options: [
+            { label: "Masih Hidup", value: "Hidup" },
+            { label: "Sudah Meninggal", value: "Meninggal" },
+        ],
+    },
+];
+const DataOrangTuaSection = () => {
+    const [statusHidupAyah, setStatusHidupAyah] = useState("");
+    const [statusHidupIbu, setStatusHidupIbu] = useState("");
+    return (
+        <AccordionSection Icon={User2} title="Data Orang Tua" value="data-ortu">
+            <FormRow>
+                <FormField type="number" label="Nomor Kartu Keluarga" name="noKk"
+                    placeholder="32454325****" id="noKk" />
+                <FormField type="text" label="Nama Kepala Keluarga" name="namaKepalaKeluarga"
+                    placeholder="contoh: Budi" id="namaKepalaKeluarga" />
+            </FormRow>
+            <FormRow>
+                <CardOrtuSection Icon={Mars} title="Data Ayah">
+                    <FormField type="text" label="NIK Ayah" name="ayah.nik"
+                        placeholder="32454325*****" id="ayah.nik" />
+                    <FormField type="text" label="Nama Ayah" name="ayah.nama"
+                        placeholder="Budi" id="ayah.nama" />
+                    <FormField type="text" label="Pendidikan Ayah" name="ayah.pendidikan"
+                        placeholder="SD/SMP/SMA/Sarjana" id="ayah.pendidikan" />
+                    <FormField type="text" label="Pekerjaan Ayah" name="ayah.pekerjaan"
+                        placeholder="Buruh" id="ayah.pekerjaan" />
+                    <FormField type="tel" label="Nomor Hp Ayah" name="ayah.noHp"
+                        placeholder="08******" id="ayah.noHp" />
+                    <SelectField groups={statusHidupGroups} label="Status Hidup" name="ayah.statusHidup" value={statusHidupAyah}
+                        onChange={setStatusHidupAyah} placeholder="Status Hidup"
+                    />
+                </CardOrtuSection>
+                <CardOrtuSection Icon={Venus} title="Data Ibu">
+                    <FormField type="text" label="NIK ibu" name="ibu.nik"
+                        placeholder="32454325*****" id="ibu.nik" />
+                    <FormField type="text" label="Nama Ibu" name="ibu.nama"
+                        placeholder="Yuni" id="ibu.nama" />
+                    <FormField type="text" label="Pendidikan Ibu" name="ibu.pendidikan"
+                        placeholder="SD/SMP/SMA/Sarjana" id="ibu.pendidikan" />
+                    <FormField type="text" label="Pekerjaan Ibu" name="ibu.pekerjaan"
+                        placeholder="Buruh" id="ibu.pekerjaan" />
+                    <FormField type="tel" label="Nomor Hp Ibu" name="ibu.noHp"
+                        placeholder="08******" id="ibu.noHp" />
+                    <SelectField groups={statusHidupGroups} label="Status Hidup" name="ibu.statusHidup" value={statusHidupIbu}
+                        onChange={setStatusHidupIbu} placeholder="Status Hidup"
+                    />
+                </CardOrtuSection>
+
+            </FormRow>
+        </AccordionSection>
+    )
+}
+export default DataOrangTuaSection;
