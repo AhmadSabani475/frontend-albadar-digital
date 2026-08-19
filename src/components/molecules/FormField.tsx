@@ -13,6 +13,7 @@ interface PropTypes {
     Icon?: LucideIcon;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     required?: boolean;
+    readOnly?: boolean;
 }
 
 const FormField = (props: PropTypes) => {
@@ -21,6 +22,7 @@ const FormField = (props: PropTypes) => {
         name,
         label,
         onChange,
+        readOnly = false,
         value,
         defaultValue,
         placeholder,
@@ -51,6 +53,7 @@ const FormField = (props: PropTypes) => {
                     onChange={onChange}
                     className={`h-11 ${Icon ? 'pl-9' : ''}`}
                     required={required}
+                    readOnly={readOnly}
                     {...(isControlled ? { value } : { defaultValue })}
                 />
             </div>

@@ -6,7 +6,9 @@ type PhotoUploadProps = {
     label?: string;
     maxSizeMB?: number;
     accept?: string;
-    onChange?: (file: File | null) => void;
+    initialPreview?: string;
+    onChange?: (file: File | null) => void | Promise<void>;
+    disabled?: boolean;
 };
 
 const PhotoUpload = ({
@@ -14,13 +16,16 @@ const PhotoUpload = ({
     label = 'Ganti Foto',
     maxSizeMB = 2,
     accept = 'image/jpeg,image/png',
+    initialPreview,
     onChange,
+    disabled = false,
 }: PhotoUploadProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const [preview, setPreview] = useState<string | null>(null);
+    const [preview, setPreview] = useState<string | null>(initialPreview ?? null);
     const [error, setError] = useState('');
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (disabled) return;
         const file = e.target.files?.[0] ?? null;
         setError('');
 
@@ -36,12 +41,22 @@ const PhotoUpload = ({
         onChange?.(file);
     };
 
+    const handleTriggerClick = () => {
+        if (disabled) return;
+        inputRef.current?.click();
+    };
+
     return (
         <div className="flex flex-col items-center gap-3">
             <button
                 type="button"
-                onClick={() => inputRef.current?.click()}
-                className="w-28 h-28 rounded-full border-2 border-dashed border-gray-300 bg-gray-100 flex items-center justify-center overflow-hidden hover:bg-gray-200 transition-colors"
+                onClick={handleTriggerClick}
+                disabled={disabled}
+                className={`w-28 h-28 rounded-full border-2 border-dashed flex items-center justify-center overflow-hidden transition-colors ${
+                    disabled
+                        ? 'border-gray-200 bg-gray-50 cursor-default'
+                        : 'border-gray-300 bg-gray-100 hover:bg-gray-200'
+                }`}
             >
                 {preview ? (
                     <img src={preview} alt="Preview foto" className="w-full h-full object-cover" />
@@ -56,18 +71,23 @@ const PhotoUpload = ({
                 accept={accept}
                 onChange={handleFileChange}
                 className="hidden"
+                disabled={disabled}
             />
 
-            <button
-                type="button"
-                onClick={() => inputRef.current?.click()}
-                className="px-4 py-1.5 rounded-full border border-green-600 text-green-600 text-sm font-medium hover:bg-green-50 transition-colors"
-            >
-                {label}
-            </button>
-            <p className="text-xs text-gray-500">
-                Format: JPG, PNG. Max {maxSizeMB}MB.
-            </p>
+            {!disabled && (
+                <>
+                    <button
+                        type="button"
+                        onClick={handleTriggerClick}
+                        className="px-4 py-1.5 rounded-full border border-green-600 text-green-600 text-sm font-medium hover:bg-green-50 transition-colors"
+                    >
+                        {label}
+                    </button>
+                    <p className="text-xs text-gray-500">
+                        Format: JPG, PNG. Max {maxSizeMB}MB.
+                    </p>
+                </>
+            )}
 
             {error && <p className="text-xs text-red-500">{error}</p>}
         </div>

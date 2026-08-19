@@ -29,6 +29,7 @@ interface PropTypes {
     error?: string;
     onChange?: (value: string) => void;
     required?: boolean;
+    disabled?: boolean;
 }
 
 const SelectField = (props: PropTypes) => {
@@ -41,9 +42,15 @@ const SelectField = (props: PropTypes) => {
         error,
         onChange,
         required = false,
+        disabled = false,
     } = props;
 
-    const allItems = groups.flatMap((group) => group.options);
+    const itemsMap = groups.reduce<Record<string, string>>((acc, group) => {
+        group.options.forEach((opt) => {
+            acc[opt.value] = opt.label;
+        });
+        return acc;
+    }, {});
 
     return (
         <Field>
@@ -51,13 +58,14 @@ const SelectField = (props: PropTypes) => {
                 {label}
             </FieldLabel>
             <Select
-                items={allItems}
+                items={itemsMap}
                 value={value}
                 onValueChange={(newValue) => onChange?.(newValue ?? '')}
                 required={required}
                 name={name}
+                disabled={disabled}
             >
-                <SelectTrigger id={name}  className="w-full">
+                <SelectTrigger id={name} className="w-full" disabled={disabled}>
                     <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
                 <SelectContent>

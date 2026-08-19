@@ -9,13 +9,22 @@ import FormRow from '../atoms/FormRow';
 import SelectField from '../molecules/SelectField';
 import { Switch } from '../ui/switch';
 
+interface DataAsramaSekolahProps {
+    initialValues?: {
+        sekolahId?: string;
+        kamarId?: string;
+        laundry?: boolean;
+    };
+    readOnly?: boolean;
+}
 
-const DataAsramaSekolah = () => {
-    const [sekolahId, setSekolahId] = useState<string>('');
-    const [kamarId, setKamarId] = useState<string>('');
-    const [laundry, setLaundry] = useState<boolean>(false);
+const DataAsramaSekolah = ({ initialValues, readOnly = false }: DataAsramaSekolahProps) => {
+    const [sekolahId, setSekolahId] = useState<string>(initialValues?.sekolahId ?? '');
+    const [kamarId, setKamarId] = useState<string>(initialValues?.kamarId ?? '');
+    const [laundry, setLaundry] = useState<boolean>(initialValues?.laundry ?? false);
     const [kamarGroups, setKamarGroups] = useState<{ groupLabel: string; options: { label: string; value: string }[] }[]>([]);
     const [sekolahGroups, setSekolahGroups] = useState<{ groupLabel: string; options: { label: string; value: string }[] }[]>([]);
+
     const getAllKamar = async () => {
         try {
             const result = await kamarService.getAllKamar();
@@ -42,22 +51,23 @@ const DataAsramaSekolah = () => {
         }
     };
 
-
     useEffect(() => {
         getAllKamar();
         getAllSchool();
     }, []);
-
     return (
-        <AccordionSection Icon={University} title="Detail Asrama & Sekolah"
-            value="data-asrama-sekolah">
+        <AccordionSection Icon={University} title="Detail Asrama & Sekolah" value="data-asrama-sekolah">
             <FormRow>
                 <SelectField
                     label="Sekolah Tujuan" name="sekolahId" value={sekolahId}
-                    onChange={setSekolahId} placeholder="Pilih Jenjang Sekolah" groups={sekolahGroups} />
+                    onChange={setSekolahId} placeholder="Pilih Jenjang Sekolah" groups={sekolahGroups}
+                    disabled={readOnly}
+                />
                 <SelectField
                     label="Penempatan Kamar" name="kamarId" value={kamarId}
-                    onChange={setKamarId} placeholder="Pilh Kamar" groups={kamarGroups} />
+                    onChange={setKamarId} placeholder="Pilh Kamar" groups={kamarGroups}
+                    disabled={readOnly}
+                />
             </FormRow>
             <div className="w-full flex justify-between rounded-2xl my-2 border p-4">
                 <div className="flex flex-col justify-center">
@@ -66,13 +76,13 @@ const DataAsramaSekolah = () => {
                 </div>
                 <Switch id="laundry"
                     checked={laundry}
-                    onCheckedChange={setLaundry} />
+                    onCheckedChange={setLaundry}
+                    disabled={readOnly}
+                />
                 <input type="hidden" name="laundry" value={laundry ? 'true' : 'false'} />
-
             </div>
         </AccordionSection>
     );
-
 };
 
 export default DataAsramaSekolah;

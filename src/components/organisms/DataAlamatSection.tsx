@@ -13,26 +13,68 @@ interface AlamatSectionProps {
         jalan?: string;
         rtRw?: string;
         kodePos?: string;
+        kodeProvinsi?: string;
+        provinsi?: string;
+        kodeKabupatenKota?: string;
+        kabupatenKota?: string;
+        kodeKecamatan?: string;
+        kecamatan?: string;
+        kodeDesaKelurahan?: string;
+        desaKelurahan?: string;
     }
 }
+
 const DataAlamatSection = ({ initialValues }: AlamatSectionProps) => {
     const [provinsi, setProvinsi] = useState<WilayahItem[]>([]);
     const [kabupatenKota, setKabupatenKota] = useState<WilayahItem[]>([]);
     const [kecamatan, setKecamatan] = useState<WilayahItem[]>([]);
     const [desaKelurahan, setdesaKelurahan] = useState<WilayahItem[]>([]);
 
-    const [provinsiId, setProvinsiId] = useState('');
-    const [kabupatenKotaId, setKabupatenKotaId] = useState('');
-    const [kecamatanId, setKecamatanId] = useState('');
-    const [desaKelurahanId, setdesaKelurahanId] = useState('');
+    const [provinsiId, setProvinsiId] = useState(initialValues?.kodeProvinsi ?? '');
+    const [kabupatenKotaId, setKabupatenKotaId] = useState(initialValues?.kodeKabupatenKota ?? '');
+    const [kecamatanId, setKecamatanId] = useState(initialValues?.kodeKecamatan ?? '');
+    const [desaKelurahanId, setdesaKelurahanId] = useState(initialValues?.kodeDesaKelurahan ?? '');
 
-    const [provinsiName, setProvinsiName] = useState('');
-    const [kabupatenKotaName, setKabupatenKotaName] = useState('');
-    const [kecamatanName, setKecamatanName] = useState('');
-    const [desaKelurahanName, setdesaKelurahanName] = useState('');
+    const [provinsiName, setProvinsiName] = useState(initialValues?.provinsi ?? '');
+    const [kabupatenKotaName, setKabupatenKotaName] = useState(initialValues?.kabupatenKota ?? '');
+    const [kecamatanName, setKecamatanName] = useState(initialValues?.kecamatan ?? '');
+    const [desaKelurahanName, setdesaKelurahanName] = useState(initialValues?.desaKelurahan ?? '');
 
+    // Load provinsi, lalu cascade-load sisanya kalau ada initialValues
     useEffect(() => {
-        wilayahService.getProvinces().then(setProvinsi);
+        let cancelled = false;
+
+        const loadInitial = async () => {
+            try {
+                const provinces = await wilayahService.getProvinces();
+                if (cancelled) return;
+                setProvinsi(provinces);
+
+                if (!initialValues?.kodeProvinsi) return;
+
+                const regencies = await wilayahService.getRegencies(initialValues.kodeProvinsi);
+                if (cancelled) return;
+                setKabupatenKota(regencies);
+
+                if (!initialValues?.kodeKabupatenKota) return;
+
+                const districts = await wilayahService.getDistricts(initialValues.kodeKabupatenKota);
+                if (cancelled) return;
+                setKecamatan(districts);
+
+                if (!initialValues?.kodeKecamatan) return;
+
+                const villages = await wilayahService.getVillages(initialValues.kodeKecamatan);
+                if (cancelled) return;
+                setdesaKelurahan(villages);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        loadInitial();
+        return () => { cancelled = true; };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleProvinsiChange = async (id: string) => {
@@ -105,7 +147,7 @@ const DataAlamatSection = ({ initialValues }: AlamatSectionProps) => {
         { groupLabel, options: items.map((i) => ({ label: i.name, value: i.id })) },
     ];
     return (
-        <AccordionSection value="alamat" Icon={MapIcon} title="Alamat">
+        <AccordionSection value="data-alamat" Icon={MapIcon} title="Alamat">
             <FormRow>
                 <Field>
                     <FieldLabel htmlFor="alamat.jalan">

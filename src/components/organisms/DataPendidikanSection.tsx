@@ -16,8 +16,18 @@ const educationGroups = [
     }
 ];
 
-const DataPendidikanSection = () => {
-    const [jenjangTerakhir, setJenjangTerakhir] = useState('');
+interface DataPendidikanSectionProps {
+    initialValues?: {
+        jenjangTerakhir?: string;
+        namaSekolah?: string;
+        tahunMasuk?: string;
+        tahunLulus?: string;
+    };
+}
+
+const DataPendidikanSection = ({ initialValues }: DataPendidikanSectionProps) => {
+    const [jenjangTerakhir, setJenjangTerakhir] = useState(initialValues?.jenjangTerakhir ?? '');
+
     return (
         <AccordionSection Icon={GraduationCap} title="Data Pendidikan Sebelumnya" value="data-pendidikan">
             <FormRow>
@@ -25,12 +35,15 @@ const DataPendidikanSection = () => {
                     placeholder="Jenjang Terakhir" name="pendidikanTerakhir.jenjangTerakhir"
                     value={jenjangTerakhir} onChange={setJenjangTerakhir} />
                 <FormField label="Nama Sekolah" name="pendidikanTerakhir.namaSekolah" id="pendidikanTerakhir.namaSekolah"
+                    defaultValue={initialValues?.namaSekolah}
                     placeholder="SDN 1 Purwakarta" required />
             </FormRow>
             <FormRow>
                 <FormField label="Tahun Masuk" name="pendidikanTerakhir.tahunMasuk"
+                    defaultValue={initialValues?.tahunMasuk}
                     placeholder="2010" required id="pendidikanTerakhir.tahunMasuk" />
                 <FormField label="Tahun Lulus" name="pendidikanTerakhir.tahunLulus" id="pendidikanTerakhir.tahunLulus"
+                    defaultValue={initialValues?.tahunLulus}
                     placeholder="2013" required />
             </FormRow>
         </AccordionSection>

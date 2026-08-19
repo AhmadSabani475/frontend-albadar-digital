@@ -1,10 +1,10 @@
 
 import { Accordion } from '@/components/ui/accordion';
-import { Save } from 'lucide-react';
+import { Save, Undo2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useState, type SubmitEvent } from 'react';
 import type { CreateSantriPayload } from '@/types/Santri';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { santriService } from '@/services/santri.service';
 import DataDiriSection from './DataDiriSection';
 import DataAlamatSection from './DataAlamatSection';
@@ -96,10 +96,21 @@ const AddSantriForm = () => {
                 <DataAsramaSekolah />
             </Accordion>
             {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" className="w-full text-xl hover:text-green-400 hover:font-bold bg-green-400 p-5">
-                <Save />
-                {isLoading ? 'menyimpan' : 'Simpan Profil'}
-            </Button>
+            <div className="flex w-full justify-end gap-2">
+                <Link to='/dashboard/santri'>
+                    <Button className="text-md hover:text-green-400 hover:font-bold bg-gray-400 p-5">
+                        <Undo2 />
+                        Kembali
+                    </Button>
+                </Link>
+                <Button type="submit" className="text-md  hover:text-green-400 hover:font-bold bg-green-400 p-5">
+                    <Save />
+                    {isLoading ? 'menyimpan' : 'Simpan Profil'}
+                </Button>
+
+
+            </div>
+
         </form>
     );
 };

@@ -30,9 +30,10 @@ interface DataDiriSectionProps {
         jumlahSaudara?: string;
         fotoUrl?: string;
     };
+    disabled?: boolean;
 }
 
-const DataDiriSection = ({ initialValues }: DataDiriSectionProps) => {
+const DataDiriSection = ({ initialValues, disabled = false }: DataDiriSectionProps) => {
 
     const [jenisKelamin, setJenisKelamin] = useState(initialValues?.jenisKelamin ?? '');
     const [fotoUrl, setFotoUrl] = useState(initialValues?.fotoUrl ?? '');
@@ -41,7 +42,12 @@ const DataDiriSection = ({ initialValues }: DataDiriSectionProps) => {
     return (
         <AccordionSection value="data-diri" Icon={User} title="Data Diri">
             <div className="flex flex-col sm:flex-row gap-4 items-center">
-                <PhotoUpload name="foto" onChange={(file) => console.log(file)} />
+                <PhotoUpload
+                    name="foto"
+                    onChange={(file) => console.log(file)}
+                    initialPreview={initialValues?.fotoUrl}
+                    disabled={disabled}
+                />
                 <input type="hidden" name="fotoUrl" value={fotoUrl} />
                 <div className="flex flex-col w-full">
                     <FormField type="text" label="Nama Lengkap"
