@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Bed, type LucideIcon, Archive } from 'lucide-react';
+import { LayoutDashboard, Users, Bed, type LucideIcon, Archive, DollarSign } from 'lucide-react';
 
 interface MenuItem {
     type: 'item';
@@ -31,4 +31,11 @@ export const SIDEBAR_MENU: MenuEntry[] = [
             { name: 'Santri', url: '/dashboard/santri', icon: Archive }
         ],
     },
+    {
+        type: 'group',
+        label: 'Keuangan',
+        items: [
+            { name: 'Tagihan', url: '/dashboard/tagihan', icon: DollarSign }
+        ]
+    }
 ];

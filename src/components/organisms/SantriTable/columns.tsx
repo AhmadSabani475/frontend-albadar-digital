@@ -46,9 +46,11 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<Santri>[] => [
                     </Button>
                 </Link>
 
-                <Button variant={'ghost'} size="icon">
-                    <Pencil className="h-4 w-4" />
-                </Button>
+                <Link to={`/dashboard/santri/edit/${row.original._id}`}>
+                    <Button variant={'ghost'} size="icon">
+                        <Pencil className="h-4 w-4" />
+                    </Button>
+                </Link>
                 <ConfirmDeleteButton
                     trigger={
                         <Button variant="ghost" size="icon">

@@ -11,6 +11,8 @@ import KamarPage from '@/pages/KamarPage/KamarPage';
 import AddSantriPage from '@/pages/SantriPage/AddSantriPage';
 import SantriPage from '@/pages/SantriPage/SantriPage';
 import ViewSantriPage from '@/pages/SantriPage/ViewSantriPage';
+import EditSantriPage from '@/pages/SantriPage/EditSantriPage';
+import TagihanPage from '@/pages/TagihanPage/TagihanPage';
 
 const routes: RouteObject[] = [
     {
@@ -53,6 +55,14 @@ const routes: RouteObject[] = [
             {
                 path: '/dashboard/santri/view/:id',
                 element: <ViewSantriPage />
+            },
+            {
+                path: '/dashboard/santri/edit/:id',
+                element: <EditSantriPage />
+            },
+            {
+                path: '/dashboard/tagihan',
+                element: <TagihanPage />
             }
         ]
     },

@@ -44,7 +44,6 @@ const DataDiriSection = ({ initialValues, disabled = false }: DataDiriSectionPro
             <div className="flex flex-col sm:flex-row gap-4 items-center">
                 <PhotoUpload
                     name="foto"
-                    onChange={(file) => console.log(file)}
                     initialPreview={initialValues?.fotoUrl}
                     disabled={disabled}
                 />

@@ -5,7 +5,7 @@ interface PropTypes {
     id?: string;
     name: string;
     label: string;
-    value?: string;
+    value?: string | number;
     defaultValue?: string;
     type?: string;
     error?: string;

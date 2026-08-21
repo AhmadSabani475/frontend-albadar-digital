@@ -104,7 +104,7 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
                         Kembali
                     </Button>
                 </Link>
-                <Link to={`/dashboard/santri/${id}/edit`}>
+                <Link to={`/dashboard/santri/edit/${id}`}>
                     <Button className="text-md bg-green-400 p-5">
                         <Pencil />
                         Edit Data
