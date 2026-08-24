@@ -4,13 +4,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 interface PropTypes {
     jenisTagihanContent: ReactNode;
     tarifKhususContent: ReactNode;
-    tagihanContent?: ReactNode;
 }
 
 const TabsTagihan = (props: PropTypes) => {
     const {
         jenisTagihanContent,
-        tagihanContent,
         tarifKhususContent
     } = props;
     return (
@@ -18,11 +16,11 @@ const TabsTagihan = (props: PropTypes) => {
             <TabsList variant="line">
                 <TabsTrigger value='jenis'>Jenis Tagihan</TabsTrigger>
                 <TabsTrigger value='tarifKhusus'>Tarif Khusus</TabsTrigger>
-                <TabsTrigger value='tagihan'>Tagihan</TabsTrigger>
+
             </TabsList>
             <TabsContent value="jenis">{jenisTagihanContent}</TabsContent>
             <TabsContent value="tarifKhusus">{tarifKhususContent}</TabsContent>
-            <TabsContent value="tagihan">{tagihanContent}</TabsContent>
+
         </Tabs>
     )
 }

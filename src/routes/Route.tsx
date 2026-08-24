@@ -13,6 +13,8 @@ import SantriPage from '@/pages/SantriPage/SantriPage';
 import ViewSantriPage from '@/pages/SantriPage/ViewSantriPage';
 import EditSantriPage from '@/pages/SantriPage/EditSantriPage';
 import TagihanPage from '@/pages/TagihanPage/TagihanPage';
+import DaftarTagihanPage from '@/pages/DaftarTagihanPage/DaftarTagihanPage';
+import DetailTagihanPage from '@/pages/DaftarTagihanPage/DetailTagihanPage';
 
 const routes: RouteObject[] = [
     {
@@ -63,6 +65,14 @@ const routes: RouteObject[] = [
             {
                 path: '/dashboard/tagihan',
                 element: <TagihanPage />
+            },
+            {
+                path: '/dashboard/daftar-tagihan',
+                element: <DaftarTagihanPage />
+            },
+            {
+                path: '/dashboard/daftar-tagihan/view/:id',
+                element: <DetailTagihanPage />
             }
         ]
     },

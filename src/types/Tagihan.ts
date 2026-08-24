@@ -1,3 +1,4 @@
+import type { Santri } from "./Santri";
 
 export interface JenisTagihan {
     _id: string;
@@ -14,3 +15,15 @@ export interface TarifKhusus {
     nominalKhusus: number;
     keterangan?: string;
 }
+
+export interface Tagihan {
+    _id: string;
+    santriId: Santri;
+    jenisTagihanId: JenisTagihan;
+    sumberNominal: string;
+    nominalTagihan: number;
+    jatuhTempo: Date;
+    periode: string;
+    status: 'belum_bayar' | 'lunas' | 'sebagian'
+}
+
