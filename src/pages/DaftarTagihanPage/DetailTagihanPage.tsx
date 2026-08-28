@@ -184,7 +184,7 @@ const DetailTagihanPage = () => {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead className="w-[60px]">No</TableHead>
+                                        <TableHead className="w-15">No</TableHead>
                                         <TableHead>Tanggal Bayar</TableHead>
                                         <TableHead>Nominal</TableHead>
                                         <TableHead>Dicatat Oleh</TableHead>

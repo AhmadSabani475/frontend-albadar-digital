@@ -15,6 +15,8 @@ import EditSantriPage from '@/pages/SantriPage/EditSantriPage';
 import TagihanPage from '@/pages/TagihanPage/TagihanPage';
 import DaftarTagihanPage from '@/pages/DaftarTagihanPage/DaftarTagihanPage';
 import DetailTagihanPage from '@/pages/DaftarTagihanPage/DetailTagihanPage';
+import RekeningPage from '@/pages/RekeningPage/RekeningPage';
+import DetailRekeningPage from '@/pages/RekeningPage/DetailRekeningPage';
 
 const routes: RouteObject[] = [
     {
@@ -73,6 +75,14 @@ const routes: RouteObject[] = [
             {
                 path: '/dashboard/daftar-tagihan/view/:id',
                 element: <DetailTagihanPage />
+            },
+            {
+                path: '/dashboard/rekening',
+                element: <RekeningPage />
+            },
+            {
+                path: '/dashboard/rekening/view/:id',
+                element: <DetailRekeningPage />
             }
         ]
     },
