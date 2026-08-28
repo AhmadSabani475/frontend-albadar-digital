@@ -6,6 +6,8 @@ import {
     getPaginationRowModel,
     flexRender,
     type ColumnDef,
+    type RowSelectionState,
+    type Row,
 } from '@tanstack/react-table';
 import {
     Table,
@@ -23,6 +25,9 @@ interface DataTableProps<T> {
     isLoading?: boolean;
     searchPlaceholder?: string;
     emptyMessage?: string;
+    rowSelection?: RowSelectionState;
+    setRowSelection?: React.Dispatch<React.SetStateAction<RowSelectionState>>;
+    enableRowSelection?: boolean | ((row: Row<T>) => boolean);
 }
 
 const DataTable = <T,>(props: DataTableProps<T>) => {
@@ -32,6 +37,9 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
         isLoading = false,
         searchPlaceholder = 'Cari...',
         emptyMessage = 'Belum ada data',
+        rowSelection = {},
+        setRowSelection,
+        enableRowSelection = false,
     } = props;
     const [globalFilter, setGlobalFilter] = useState('');
     const [pageSize, setPageSize] = useState(10);
@@ -39,8 +47,13 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
     const table = useReactTable({
         data,
         columns,
-        state: { globalFilter },
+        state: {
+            globalFilter,
+            rowSelection,
+        },
         onGlobalFilterChange: setGlobalFilter,
+        onRowSelectionChange: setRowSelection,
+        enableRowSelection,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
