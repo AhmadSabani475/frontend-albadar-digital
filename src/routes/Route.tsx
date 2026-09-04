@@ -18,6 +18,7 @@ import DetailTagihanPage from '@/pages/DaftarTagihanPage/DetailTagihanPage';
 import RekeningPage from '@/pages/RekeningPage/RekeningPage';
 import DetailRekeningPage from '@/pages/RekeningPage/DetailRekeningPage';
 import UangJajanPage from '@/pages/UangJajanPage/UangJajanPage';
+import KasirPage from '@/pages/KasirPage/KasirPage';
 
 const routes: RouteObject[] = [
     {
@@ -88,6 +89,10 @@ const routes: RouteObject[] = [
             {
                 path: '/dashboard/uang-jajan',
                 element: <UangJajanPage />
+            },
+            {
+                path: '/dashboard/kasir',
+                element: <KasirPage />
             }
         ]
     },
