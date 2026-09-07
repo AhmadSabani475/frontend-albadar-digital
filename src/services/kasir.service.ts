@@ -2,7 +2,7 @@ import { fetchAPI } from "@/lib/api";
 import type { Kwitansi } from "@/types/Kwitansi";
 import type { Rekening } from "@/types/Rekening";
 import type { Santri } from "@/types/Santri";
-import type { Tagihan } from "@/types/Tagihan";
+import type { Tagihan, TagihanKasir } from "@/types/Tagihan";
 
 interface KasirItem  {
     tipe: 'bayar_tagihan' | 'setor_rekening';
@@ -18,7 +18,7 @@ interface PayloadTransaksi {
 
 interface DataRingkasan {
     santri: Santri;
-    tagihan: Tagihan[];
+    tagihan: TagihanKasir[];
     rekening: Rekening[];
 }
 

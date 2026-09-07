@@ -28,12 +28,14 @@ interface DataTableProps<T> {
     rowSelection?: RowSelectionState;
     setRowSelection?: React.Dispatch<React.SetStateAction<RowSelectionState>>;
     enableRowSelection?: boolean | ((row: Row<T>) => boolean);
+    meta?: Record<string, unknown>;
 }
 
 const DataTable = <T,>(props: DataTableProps<T>) => {
     const {
         data,
         columns,
+        meta,
         isLoading = false,
         searchPlaceholder = 'Cari...',
         emptyMessage = 'Belum ada data',
@@ -47,6 +49,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
     const table = useReactTable({
         data,
         columns,
+        meta,
         state: {
             globalFilter,
             rowSelection,
@@ -106,7 +109,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
 
 
             <div className="overflow-x-auto">
-                <Table className="table-fixed w-full min-w-175">
+                <Table className="table-fixed w-full">
                     <TableHeader className="bg-[#1c1b1b]">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} className="hover:bg-transparent border-b border-white/10">

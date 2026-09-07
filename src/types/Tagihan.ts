@@ -26,4 +26,11 @@ export interface Tagihan {
     periode: string;
     status: 'belum_bayar' | 'lunas' | 'sebagian'
 }
-
+export interface TagihanKasir {
+    _id: string;
+    namaTagihan: string;
+    nominalTagihan: number;
+    sisaTagihan: number;
+    cicilanKe: number;
+    status: 'belum_bayar' | 'lunas' | 'sebagian';
+}
