@@ -120,13 +120,12 @@
   body * {
     visibility: hidden;
   }
-  #struk-kwitansi-print,
-  #struk-kwitansi-print * {
-    visibility: visible;
-    color: black !important;
-    background: white !important;
+  #struk-print-area,
+  #struk-print-area * {
+    visibility: visible !important;
   }
-  #struk-kwitansi-print {
+  #struk-print-area {
+    display: block !important;
     position: absolute;
     left: 0;
     top: 0;

@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useProsesTransaksi } from "@/hooks/use-proses-transaksi";
 import { useRingkasanSantri } from "@/hooks/use-ringkasan-santri";
-import { kasirService } from "@/services/kasir.service";
 import type { Kwitansi } from "@/types/Kwitansi";
 import { FileText, UserRound } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
