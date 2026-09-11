@@ -1,4 +1,5 @@
 import ConfirmDeleteButton from '@/components/molecules/ConfirmDeleteButton';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { Santri } from '@/types/Santri';
 import type { ColumnDef } from '@tanstack/react-table';
@@ -8,6 +9,12 @@ import { Link } from 'react-router-dom';
 interface PropTypes {
     onDelete: (id: string) => void;
 }
+
+const statusConfig: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' }> = {
+    aktif: { label: 'Aktif', variant: 'default' },
+    alumni: { label: 'Alumni', variant: 'secondary' },
+    dikeluarkan: { label: 'Dikeluarkan', variant: 'destructive' },
+};
 
 export const getColumns = ({ onDelete }: PropTypes): ColumnDef<Santri>[] => [
     {
@@ -22,6 +29,15 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<Santri>[] => [
     {
         accessorKey: 'namaLengkap',
         header: 'Nama'
+    },
+    {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: ({ row }) => {
+            const status = row.original.status;
+            const config = statusConfig[status] ?? { label: status, variant: 'secondary' as const };
+            return <Badge variant={config.variant}>{config.label}</Badge>;
+        }
     },
     {
         accessorKey: 'kamarId.namaKamar',

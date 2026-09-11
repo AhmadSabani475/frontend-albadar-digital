@@ -24,7 +24,7 @@ export const getTagihanBelumLunasColumn = (): ColumnDef<TagihanKasir>[] => [
                     checked={isChecked}
                     onCheckedChange={() => onToggle(tagihanId, row.original.sisaTagihan)}
                     aria-label="Pilih tagihan"
-                    className="border-gray-500 data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
+                    className="border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                 />
             );
         },

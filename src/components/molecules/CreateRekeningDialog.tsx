@@ -68,8 +68,7 @@ const CreateRekeningDialog = ({ onSuccess }: PropTypes) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger render={<Button
-                className="px-4 py-2 bg-green-400 text-[#ffff]">+ Buat Rekening</Button>} />
+            <DialogTrigger render={<Button>+ Buat Rekening</Button>} />
             <DialogContent className="sm:max-w-sm">
                 <form onSubmit={handleSubmitCreateRekening}>
                     <DialogHeader className="mb-5">

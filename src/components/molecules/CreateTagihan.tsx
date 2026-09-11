@@ -120,7 +120,7 @@ const CreateTagihan = ({ onSuccess }: PropTypes) => {
 
     return (
         <Dialog open={open} onOpenChange={handleClose}>
-            <DialogTrigger render={<Button className="px-4 py-2 bg-green-400 text-white">+ Generate Tagihan</Button>} />
+            <DialogTrigger render={<Button>+ Generate Tagihan</Button>} />
             <DialogContent className="sm:max-w-md">
                 {!hasil ? (
                     <form onSubmit={handleSubmit}>

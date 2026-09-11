@@ -29,7 +29,7 @@ export const getUangJajanColumns = (): ColumnDef<UangJajanStatus>[] => [
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
                 disabled={!row.getCanSelect()} 
                 aria-label="Pilih baris"
-                className="border-gray-500 data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
+                className="border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary"
             />
         ),
     },
@@ -79,7 +79,7 @@ export const getUangJajanColumns = (): ColumnDef<UangJajanStatus>[] => [
             if (!saldoCukup) {
                 return <Badge variant="destructive">Saldo Kurang</Badge>;
             }
-            return <Badge variant="default" className="bg-green-600 hover:bg-green-700">Tersedia</Badge>;
+            return <Badge className="bg-primary/15 text-primary hover:bg-primary/20 border-0">Tersedia</Badge>;
         }
     },
 ]

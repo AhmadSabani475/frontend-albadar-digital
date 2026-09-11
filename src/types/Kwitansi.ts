@@ -6,6 +6,7 @@ export interface KwitansiItem {
     tipe: 'bayar_tagihan' | 'setor_rekening' | 'tarik_rekening';
     referensiId: string;
     nominal: number;
+    label: string;
     keterangan?: string;
 }
 
@@ -21,7 +22,28 @@ export interface Kwitansi {
     items: KwitansiItem[];
     saldoSnapshot: SaldoSnapshot[];
     totalNominal: number;
+    metodePembayaran: 'cash' | 'transfer';
     diCatatOleh: User | string;
     createdAt: string;
     updatedAt: string;
+}
+
+
+export interface SummaryRiwayat {
+    totalSudahBayar: number;
+    totalTunggakan: number;
+}
+
+export interface MetaPagination {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+}
+
+export interface RiwayatKwitansiResponse {
+    message: string;
+    data: Kwitansi[];
+    summary: SummaryRiwayat;
+    meta: MetaPagination;
 }

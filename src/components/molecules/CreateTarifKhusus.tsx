@@ -70,8 +70,7 @@ const CreateTarifKhusus = ({ onSuccess }: PropTypes) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger render={<Button
-                className="px-4 py-2 bg-green-400 text-[#ffff]">+ Tambah Tarif Khusus</Button>} />
+            <DialogTrigger render={<Button>+ Tambah Tarif Khusus</Button>} />
             <DialogContent className="sm:max-w-sm">
                 <form onSubmit={handleSubmitCreateJenis}>
                     <DialogHeader className="mb-5">

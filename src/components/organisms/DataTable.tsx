@@ -73,10 +73,10 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
     const to = Math.min((currentPage + 1) * pageSize, totalRows);
 
     return (
-        <div className="rounded-xl border border-white/10 bg-[#141414] overflow-hidden">
+        <div className="rounded-xl border border-border bg-card overflow-hidden shadow-xs">
 
             <div className="flex items-center justify-between p-4">
-                <div className="flex items-center gap-2 text-sm text-gray-300">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <span>Tampilkan</span>
                     <select
                         value={pageSize}
@@ -85,7 +85,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                             setPageSize(newSize);
                             table.setPageSize(newSize);
                         }}
-                        className="bg-[#1c1b1b] border border-white/10 rounded-md px-3 py-1.5 font-medium focus:outline-none"
+                        className="bg-background border border-border text-foreground rounded-md px-3 py-1.5 font-medium focus:outline-none focus:ring-1 focus:ring-ring"
                     >
                         <option value={5}>5</option>
                         <option value={10}>10</option>
@@ -96,13 +96,13 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                 </div>
 
                 <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
                     <input
                         type="text"
                         value={globalFilter}
                         onChange={(e) => setGlobalFilter(e.target.value)}
                         placeholder={searchPlaceholder}
-                        className="bg-[#1c1b1b] border border-white/10 rounded-lg pl-9 pr-4 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white/20 w-64"
+                        className="bg-background border border-border rounded-lg pl-9 pr-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring w-64"
                     />
                 </div>
             </div>
@@ -110,13 +110,13 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
 
             <div className="overflow-x-auto">
                 <Table className="table-fixed w-full">
-                    <TableHeader className="bg-[#1c1b1b]">
+                    <TableHeader className="bg-muted/50 border-b border-border">
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id} className="hover:bg-transparent border-b border-white/10">
+                            <TableRow key={headerGroup.id} className="hover:bg-transparent border-b border-border">
                                 {headerGroup.headers.map((header) => (
                                     <TableHead
                                         key={header.id}
-                                        className="font-semibold text-sm pl-6 py-4 text-gray-200 whitespace-nowrap"
+                                        className="font-semibold text-sm pl-6 py-4 text-foreground whitespace-nowrap"
                                         style={{ width: header.column.columnDef.size }}
                                     >
                                         {header.isPlaceholder
@@ -130,11 +130,11 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                     <TableBody>
                         {table.getRowModel().rows.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <TableRow key={row.id} className="border-b border-white/5 hover:bg-white/3 transition-colors">
+                                <TableRow key={row.id} className="border-b border-border hover:bg-muted/40 transition-colors">
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className="pl-6 py-4 text-gray-200 whitespace-nowrap"
+                                            className="pl-6 py-4 text-foreground whitespace-nowrap"
                                             style={{ width: cell.column.columnDef.size }}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -153,7 +153,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                 </Table>
             </div>
 
-            <div className="flex items-center justify-between p-4 border-t border-white/10 text-sm text-gray-400">
+            <div className="flex items-center justify-between p-4 border-t border-border text-sm text-muted-foreground">
                 <span>
                     Menampilkan {from} sampai {to} dari {totalRows} entri
                 </span>
@@ -161,7 +161,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                     <button
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}
-                        className="flex items-center gap-1 px-3 py-1.5 rounded-md hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                     >
                         <ChevronLeft size={14} />
                         Sebelumnya
@@ -172,8 +172,8 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                             key={pageIndex}
                             onClick={() => table.setPageIndex(pageIndex)}
                             className={`w-8 h-8 rounded-md font-medium transition-colors ${pageIndex === currentPage
-                                ? 'bg-green-600 text-white'
-                                : 'hover:bg-white/5 text-gray-400'
+                                ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
+                                : 'hover:bg-muted text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             {pageIndex + 1}
@@ -183,7 +183,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                     <button
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}
-                        className="flex items-center gap-1 px-3 py-1.5 rounded-md hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                     >
                         Selanjutnya
                         <ChevronRight size={14} />

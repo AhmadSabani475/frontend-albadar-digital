@@ -3,15 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Printer } from "lucide-react";
 import { createPortal } from "react-dom";
 import type { Kwitansi } from "@/types/Kwitansi";
-import type { TagihanKasir } from "@/types/Tagihan";
-import type { Rekening } from "@/types/Rekening";
 import type { Santri } from "@/types/Santri";
 
 interface Props {
     kwitansi: Kwitansi | null;
     santri?: Santri;
-    tagihanList: TagihanKasir[];
-    rekeningList: Rekening[];
     onClose: () => void;
 }
 
@@ -20,17 +16,9 @@ const labelJenisRekening: Record<string, string> = {
     tabungan_ziarah: 'Ziarah',
 };
 
-const StrukKwitansiDialog = ({ kwitansi, santri, tagihanList, rekeningList, onClose }: Props) => {
+const StrukKwitansiDialog = ({ kwitansi, santri,onClose }: Props) => {
     if (!kwitansi) return null;
 
-    const getLabelItem = (item: Kwitansi['items'][number]) => {
-        if (item.tipe === 'bayar_tagihan') {
-            const t = tagihanList.find((x) => x._id === item.referensiId);
-            return t?.namaTagihan ?? 'Tagihan';
-        }
-        const r = rekeningList.find((x) => x._id === item.referensiId);
-        return labelJenisRekening[r?.jenisRekening ?? ''] ?? 'Rekening';
-    };
 
     const handlePrint = () => {
         window.print();
@@ -38,7 +26,6 @@ const StrukKwitansiDialog = ({ kwitansi, santri, tagihanList, rekeningList, onCl
 
     return (
         <>
-            {/* ── Dialog preview (tampil di layar) ── */}
             <Dialog open={!!kwitansi} onOpenChange={(open) => !open && onClose()}>
                 <DialogContent className="sm:max-w-sm">
                     <DialogHeader>
@@ -46,7 +33,7 @@ const StrukKwitansiDialog = ({ kwitansi, santri, tagihanList, rekeningList, onCl
                     </DialogHeader>
 
                     <div className="text-sm space-y-3">
-                        <div className="text-center border-b border-dashed border-white/20 pb-3">
+                        <div className="text-center border-b border-dashed border-border pb-3">
                             <p className="font-bold">Al-Badar Digital Portal</p>
                             <p className="text-xs text-muted-foreground">{kwitansi.nomorKwitansi}</p>
                             <p className="text-xs text-muted-foreground">
@@ -57,23 +44,24 @@ const StrukKwitansiDialog = ({ kwitansi, santri, tagihanList, rekeningList, onCl
                         <div className="text-xs">
                             <p>Santri: <span className="font-medium">{santri?.namaLengkap ?? '-'}</span></p>
                             <p className="text-muted-foreground">NIS: {santri?.nis ?? '-'}</p>
+                            <p className="text-muted-foreground">Metode: <span className="font-medium capitalize text-foreground">{kwitansi.metodePembayaran ?? 'cash'}</span></p>
                         </div>
 
-                        <div className="border-t border-dashed border-white/20 pt-3 space-y-2">
+                        <div className="border-t border-dashed border-border pt-3 space-y-2">
                             {kwitansi.items.map((item, i) => (
                                 <div key={i} className="flex justify-between">
-                                    <span>{getLabelItem(item)}</span>
+                                    <span>{item.label}</span>
                                     <span>Rp {item.nominal.toLocaleString('id-ID')}</span>
                                 </div>
                             ))}
                         </div>
 
-                        <div className="border-t border-dashed border-white/20 pt-3 flex justify-between font-bold">
+                        <div className="border-t border-dashed border-border pt-3 flex justify-between font-bold">
                             <span>Total</span>
                             <span>Rp {kwitansi.totalNominal.toLocaleString('id-ID')}</span>
                         </div>
 
-                        <div className="border-t border-dashed border-white/20 pt-3 space-y-1">
+                        <div className="border-t border-dashed border-border pt-3 space-y-1">
                             <p className="text-xs text-muted-foreground mb-1">Saldo Akhir:</p>
                             {kwitansi.saldoSnapshot.map((s, i) => (
                                 <div key={i} className="flex justify-between text-xs">
@@ -122,13 +110,14 @@ const StrukKwitansiDialog = ({ kwitansi, santri, tagihanList, rekeningList, onCl
                     <div style={{ fontSize: 12, marginBottom: 12 }}>
                         <p style={{ margin: 0 }}>Santri: <strong>{santri?.namaLengkap ?? '-'}</strong></p>
                         <p style={{ margin: '2px 0 0', color: '#666' }}>NIS: {santri?.nis ?? '-'}</p>
+                        <p style={{ margin: '2px 0 0', color: '#666' }}>Metode: <strong style={{ textTransform: 'capitalize' }}>{kwitansi.metodePembayaran ?? 'cash'}</strong></p>
                     </div>
 
                     {/* Item Pembayaran */}
                     <div style={{ borderTop: '1px dashed #999', paddingTop: 12, marginBottom: 12 }}>
                         {kwitansi.items.map((item, i) => (
                             <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                                <span>{getLabelItem(item)}</span>
+                                <span>{item.label}</span>
                                 <span>Rp {item.nominal.toLocaleString('id-ID')}</span>
                             </div>
                         ))}

@@ -17,6 +17,7 @@ const KasirPage = () => {
     const [setoranRekening, setSetoranRekening] = useState<Record<string, number>>({});
     const [openSearchSantri, setOpenSearchSantri] = useState(false);
     const [kwitansi, setKwitansi] = useState<Kwitansi | null>(null);
+    const [metodePembayaran, setMetodePembayaran] = useState<'cash' | 'transfer'>('cash')
 
     const { data, isLoading, error } = useRingkasanSantri(selectedSantriId);
     const { mutate, isPending } = useProsesTransaksi();
@@ -95,7 +96,7 @@ const KasirPage = () => {
         if (!selectedSantriId || payloadItems.length === 0) return;
 
         mutate(
-            { santriId: selectedSantriId, items: payloadItems },
+            { santriId: selectedSantriId, items: payloadItems, metodePembayaran: metodePembayaran },
             {
                 onSuccess: (res) => {
                     setKwitansi(res.data);
@@ -112,12 +113,6 @@ const KasirPage = () => {
 
     return (
         <div className="w-full flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-1.5">
-                    <h1 className="text-3xl font-bold">Kasir Pembayaran</h1>
-                    <p className="text-[#c9c5c5] text-xs">Kelola Tagihan</p>
-                </div>
-            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {/* Kolom kiri: Data Santri + Tagihan Belum Lunas */}
@@ -150,12 +145,12 @@ const KasirPage = () => {
                             )}
 
                             {selectedSantriId && data?.santri && (
-                                <div className="border border-white/10 rounded-lg p-4 flex items-center gap-4">
-                                    <div className="w-14 h-14 rounded-full bg-white/5 flex items-center justify-center overflow-hidden">
+                                <div className="border border-border rounded-lg p-4 flex items-center gap-4">
+                                    <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center overflow-hidden">
                                         {data.santri.fotoUrl ? (
                                             <img src={data.santri.fotoUrl} alt={data.santri.namaLengkap} className="w-full h-full object-cover" />
                                         ) : (
-                                            <UserRound className="w-6 h-6 text-gray-400" />
+                                            <UserRound className="w-6 h-6 text-muted-foreground" />
                                         )}
                                     </div>
                                     <div>
@@ -228,6 +223,8 @@ const KasirPage = () => {
                     ) : (
                         <RingkasanPembayaranCard
                             items={ringkasanItems}
+                            metodePembayaran={metodePembayaran}
+                            onMetodePembayaranChange={setMetodePembayaran}
                             total={totalPembayaran}
                             isPending={isPending}
                             onSubmit={handleSubmit}
@@ -239,8 +236,6 @@ const KasirPage = () => {
             <StrukKwitansiDialog
                 kwitansi={kwitansi}
                 santri={data?.santri}
-                tagihanList={data?.tagihan ?? []}
-                rekeningList={data?.rekening ?? []}
                 onClose={() => setKwitansi(null)}
             />
         </div>

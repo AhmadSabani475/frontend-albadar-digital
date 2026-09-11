@@ -36,7 +36,7 @@ interface DataDiriSectionProps {
 const DataDiriSection = ({ initialValues, disabled = false }: DataDiriSectionProps) => {
 
     const [jenisKelamin, setJenisKelamin] = useState(initialValues?.jenisKelamin ?? '');
-    const [fotoUrl, setFotoUrl] = useState(initialValues?.fotoUrl ?? '');
+    const fotoUrl = initialValues?.fotoUrl ?? '';
 
 
     return (

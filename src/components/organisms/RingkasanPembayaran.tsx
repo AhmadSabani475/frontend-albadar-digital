@@ -1,10 +1,12 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Printer } from "lucide-react";
+import { Label } from "../ui/label";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 interface RingkasanItem {
     label: string;
-    kategori: string; 
+    kategori: string;
     nominal: number;
 }
 
@@ -12,11 +14,13 @@ interface Props {
     items: RingkasanItem[];
     total: number;
     isPending: boolean;
+    metodePembayaran: 'cash' | 'transfer';           // ← pastikan ada
+    onMetodePembayaranChange: (metode: 'cash' | 'transfer') => void;  // ← pastikan ada
     onSubmit: () => void;
     onReset: () => void;
 }
 
-const RingkasanPembayaranCard = ({ items, total, isPending, onSubmit, onReset }: Props) => {
+const RingkasanPembayaranCard = ({ items, total, isPending, onSubmit, onReset, metodePembayaran, onMetodePembayaranChange }: Props) => {
     return (
         <Card>
             <CardHeader>
@@ -39,20 +43,33 @@ const RingkasanPembayaranCard = ({ items, total, isPending, onSubmit, onReset }:
                     </div>
                 )}
 
-                <div className="border-t border-white/10 pt-3 flex justify-between items-center">
+                <div className="border-t border-border pt-3 flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">TOTAL PEMBAYARAN</span>
-                    <span className="text-green-500 text-xl font-bold">Rp {total.toLocaleString('id-ID')}</span>
+                    <span className="text-primary text-xl font-bold">Rp {total.toLocaleString('id-ID')}</span>
+                </div>
+                <div className="flex flex-col gap-2">
+                    <Label>Metode Pembayaran</Label>
+                    <RadioGroup value={metodePembayaran} onValueChange={onMetodePembayaranChange} className="w-fit flex ">
+                        <div className="flex items-center gap-3">
+                            <RadioGroupItem value="cash" id="cash" />
+                            <Label htmlFor="cash">Cash</Label>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <RadioGroupItem value="transfer" id="transfer" />
+                            <Label htmlFor="transfer">Transfer</Label>
+                        </div>
+                    </RadioGroup>
                 </div>
 
                 <Button
-                    className="w-full bg-green-600 hover:bg-green-700"
+                    className="w-full cursor-pointer"
                     disabled={items.length === 0 || isPending}
                     onClick={onSubmit}
                 >
                     <Printer className="w-4 h-4 mr-2" />
                     {isPending ? 'Memproses...' : 'Proses & Cetak Struk'}
                 </Button>
-                <Button variant="outline" className="w-full" onClick={onReset}>
+                <Button variant="outline" className="w-full cursor-pointer" onClick={onReset}>
                     Reset
                 </Button>
             </CardContent>

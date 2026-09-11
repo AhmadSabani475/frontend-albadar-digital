@@ -55,7 +55,7 @@ const LoginForm = () => {
                 required={true}
             />
             {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" disabled={isLoading} className="w-full bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-900/50">
+            <Button type="submit" disabled={isLoading} className="w-full">
                 {isLoading ? 'Loading...' : <>Submit <ArrowRight className="h-4 w-4" /></>}
             </Button>
         </form >

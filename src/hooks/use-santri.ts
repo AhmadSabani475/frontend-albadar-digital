@@ -1,12 +1,11 @@
-// hooks/use-santri.ts
 import { santriService } from "@/services/santri.service";
 import { useQuery } from "@tanstack/react-query";
 
-export const useSantriList = () => {
+export const useSantriList = (status?: string) => {
     return useQuery({
-        queryKey: ['santriList'],
-        queryFn: santriService.getAllSantri,
+        queryKey: ['santriList', status],
+        queryFn: () => santriService.getAllSantri(status, 1, 1000),
         select: (res) => res.data,
-        staleTime: 5 * 60 * 1000, // cache 5 menit, karena data santri jarang berubah
+        staleTime: 5 * 60 * 1000,
     });
 };

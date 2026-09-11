@@ -149,7 +149,7 @@ const DetailTagihanPage = () => {
                             </div>
 
                             <div>
-                                <p className="text-xs text-zinc-400 mb-1.5">Status</p>
+                                <p className="text-xs text-muted-foreground mb-1.5">Status</p>
                                 <Badge
                                     className={
                                         tagihan?.status === "belum_bayar"
@@ -168,7 +168,7 @@ const DetailTagihanPage = () => {
                             </div>
 
                             <div>
-                                <p className="text-xs text-zinc-400 mb-1.5">Sumber Nominal</p>
+                                <p className="text-xs text-muted-foreground mb-1.5">Sumber Nominal</p>
                                 <Badge className="bg-zinc-800 text-zinc-300 border-0 rounded-full px-3">
                                     {tagihan?.sumberNominal === "default" ? "Default" : "Khusus"}
                                 </Badge>
@@ -221,7 +221,7 @@ const DetailTagihanPage = () => {
                                         <TableCell colSpan={2} className="font-bold text-center">
                                             Total Terbayar
                                         </TableCell>
-                                        <TableCell colSpan={2} className="font-bold text-green-500">
+                                        <TableCell colSpan={2} className="font-bold text-primary">
                                             Rp {totalDibayar.toLocaleString("id-ID")}
                                         </TableCell>
                                     </TableRow>
@@ -238,34 +238,34 @@ const DetailTagihanPage = () => {
                         </CardHeader>
                         <CardContent className="flex flex-col gap-4 pt-4">
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-zinc-400">Nominal Tagihan</span>
+                                <span className="text-muted-foreground">Nominal Tagihan</span>
                                 <span className="font-semibold">
                                     Rp {totalNominal.toLocaleString("id-ID")}
                                 </span>
                             </div>
 
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-zinc-400">Sudah Dibayar</span>
+                                <span className="text-muted-foreground">Sudah Dibayar</span>
                                 <span className="font-semibold text-emerald-400">
                                     Rp {totalDibayar.toLocaleString("id-ID")}
                                 </span>
                             </div>
 
                             <div className="pt-2 border-t border-zinc-800">
-                                <p className="text-xs text-zinc-400">Sisa Tagihan</p>
+                                <p className="text-xs text-muted-foreground">Sisa Tagihan</p>
                                 <p className="text-3xl font-bold text-rose-200 mt-1">
                                     Rp {sisaTagihan.toLocaleString("id-ID")}
                                 </p>
                             </div>
 
                             <div className="flex flex-col gap-1.5 pt-1">
-                                <div className="flex justify-between text-xs text-zinc-400 font-medium">
+                                <div className="flex justify-between text-xs text-muted-foreground font-medium">
                                     <span>Progress</span>
                                     <span>{persentase}%</span>
                                 </div>
-                                <div className="w-full bg-zinc-800 h-2 rounded-full overflow-hidden">
+                                <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
                                     <div
-                                        className="bg-emerald-500 h-full rounded-full transition-all duration-300"
+                                        className="bg-primary h-full rounded-full transition-all duration-300"
                                         style={{ width: `${persentase}%` }}
                                     />
                                 </div>
@@ -303,7 +303,7 @@ const DetailTagihanPage = () => {
                                     <Button
                                         type="submit"
                                         disabled={isSubmitting || !nominalBayar}
-                                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mt-2"
+                                        className="w-full mt-2"
                                     >
                                         {isSubmitting ? "Menyimpan..." : "Simpan Pembayaran"}
                                     </Button>

@@ -24,9 +24,9 @@ const CreateUserDialog = ({ onSuccess }: PropTypes) => {
     const [createdCredential, setCreatedCredential] = useState<{ username: string; password: string } | null>(null);
     const [copied, setCopied] = useState(false);
 
-    const fetchSantri = async () => {
+    const fetchSantri = async (status?: string) => {
         try {
-            const result = await santriService.getAllSantri();
+            const result = await santriService.getAllSantri(status, 1, 1000);
             return result.data;
         } catch (error) {
             console.log(error);
@@ -84,8 +84,7 @@ Password: ${createdCredential.password}`;
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger render={<Button
-                    className="px-4 py-2 bg-green-400 text-[#ffff]">+ Tambah User</Button>} />
+                <DialogTrigger render={<Button>+ Tambah User</Button>} />
                 <DialogContent className="sm:max-w-sm">
                     <form onSubmit={handleSubmitCreateUser}>
                         <DialogHeader className="mb-5">

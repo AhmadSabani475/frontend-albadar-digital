@@ -37,64 +37,135 @@ const routes: RouteObject[] = [
             <ProtectedRoute>
                 <DashboardLayout />
             </ProtectedRoute>
-        ), children: [
+        ),
+        handle: { breadcrumb: 'Dashboard' },
+        children: [
             {
-                path: '/dashboard',
-                element: <Dashboard />
+                index: true,
+                element: <Dashboard />,
+                handle: {
+                    title: 'Dashboard',
+                    subtitle: 'Ringkasan data pesantren',
+                },
             },
             {
-                path: '/dashboard/users',
-                element: <DataUsersPage />
+                path: 'users',
+                element: <DataUsersPage />,
+                handle: {
+                    breadcrumb: 'Data User',
+                    title: 'Data User',
+                    subtitle: 'Kelola data Pengguna',
+                },
             },
             {
-                path: '/dashboard/kamar',
-                element: <KamarPage />
+                path: 'kamar',
+                element: <KamarPage />,
+                handle: {
+                    breadcrumb: 'Kamar',
+                    title: 'Kamar',
+                    subtitle: 'Kelola data Kamar',
+                },
             },
             {
-                path: '/dashboard/santri',
-                element: <SantriPage />
+                path: 'santri',
+                element: <SantriPage />,
+                handle: {
+                    breadcrumb: 'Santri',
+                    title: 'Santri',
+                    subtitle: 'Kelola data Santri',
+                },
             },
             {
-                path: '/dashboard/santri/add',
-                element: <AddSantriPage />
+                path: 'santri/add',
+                element: <AddSantriPage />,
+                handle: {
+                    breadcrumb: 'Tambah Santri',
+                    title: 'Tambah Santri',
+                    subtitle: 'Tambahkan data santri baru',
+                },
             },
             {
-                path: '/dashboard/santri/view/:id',
-                element: <ViewSantriPage />
+                path: 'santri/view/:id',
+                element: <ViewSantriPage />,
+                handle: {
+                    breadcrumb: 'Detail Santri',
+                    title: 'Detail Santri',
+                    subtitle: 'Informasi lengkap santri',
+                },
             },
             {
-                path: '/dashboard/santri/edit/:id',
-                element: <EditSantriPage />
+                path: 'santri/edit/:id',
+                element: <EditSantriPage />,
+                handle: {
+                    breadcrumb: 'Edit Santri',
+                    title: 'Edit Santri',
+                    subtitle: 'Perbarui data santri',
+                },
             },
             {
-                path: '/dashboard/tagihan',
-                element: <TagihanPage />
+                path: 'tagihan',
+                element: <TagihanPage />,
+                handle: {
+                    breadcrumb: 'Tagihan',
+                    title: 'Tagihan',
+                    subtitle: 'Kelola data Tagihan',
+                },
             },
             {
-                path: '/dashboard/daftar-tagihan',
-                element: <DaftarTagihanPage />
+                path: 'daftar-tagihan',
+                element: <DaftarTagihanPage />,
+                handle: {
+                    breadcrumb: 'Daftar Tagihan',
+                    title: 'Daftar Tagihan',
+                    subtitle: 'Kelola daftar tagihan santri',
+                },
             },
             {
-                path: '/dashboard/daftar-tagihan/view/:id',
-                element: <DetailTagihanPage />
+                path: 'daftar-tagihan/view/:id',
+                element: <DetailTagihanPage />,
+                handle: {
+                    breadcrumb: 'Detail Tagihan',
+                    title: 'Detail Tagihan',
+                    subtitle: 'Rincian tagihan santri',
+                },
             },
             {
-                path: '/dashboard/rekening',
-                element: <RekeningPage />
+                path: 'rekening',
+                element: <RekeningPage />,
+                handle: {
+                    breadcrumb: 'Rekening',
+                    title: 'Rekening',
+                    subtitle: 'Kelola data Rekening',
+                },
             },
             {
-                path: '/dashboard/rekening/view/:id',
-                element: <DetailRekeningPage />
+                path: 'rekening/view/:id',
+                element: <DetailRekeningPage />,
+                handle: {
+                    breadcrumb: 'Detail Rekening',
+                    title: 'Detail Rekening',
+                    subtitle: 'Rincian data rekening',
+                },
             },
             {
-                path: '/dashboard/uang-jajan',
-                element: <UangJajanPage />
+                path: 'uang-jajan',
+                element: <UangJajanPage />,
+                handle: {
+                    breadcrumb: 'Uang Jajan',
+                    title: 'Uang Jajan',
+                    subtitle: 'Kelola data Uang Jajan',
+                },
             },
             {
-                path: '/dashboard/kasir',
-                element: <KasirPage />
-            }
-        ]
+                path: 'kasir',
+                element: <KasirPage />,
+                handle: {
+                    breadcrumb: 'Kasir',
+                    title: 'Kasir',
+                    subtitle: 'Kelola transaksi Kasir',
+                },
+            },
+        ],
     },
     {
         path: '/complete-profile',

@@ -27,5 +27,11 @@ export const usersService = {
             method: 'DELETE'
         }
         );
+    },
+    resetPasswordDefault: (id: string) => {
+        return fetchAPI<{ message: string, data: User & { generatedPassword: string } }>(`/users/${id}/reset-password-default`, {
+            method: 'PUT'
+        }
+        );
     }
 };

@@ -10,7 +10,7 @@ const CardOrtuSection = ({ Icon, title, children }: CardOrtuSectionProps) => {
     return (
         <Card className="border-2 px-8 rounded-2xl w-full">
             <div className="flex gap-2 items-center">
-                <Icon className="text-green-400" />
+                <Icon className="text-primary" />
                 <h3 className="text-xl font-semibold">{title}</h3>
             </div>
             <div className="flex flex-col gap-4 rounded-2xl">

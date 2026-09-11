@@ -1,39 +1,47 @@
-import { Button } from '@/components/ui/button';
-import type { Kamar } from '@/types/Kamar';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
+import type { Kamar } from '@/types/Kamar';
+import { Button } from '@/components/ui/button';
 
 
-
-const columns: ColumnDef<Kamar>[] = [
+export const getColumns = (): ColumnDef<Kamar>[] => [
     {
-        accessorKey: 'namaKamar',
-        header: 'Nama Kamar'
+        id: 'no',
+        header: 'No',
+        size: 60,
+        cell: ({ row, table }) => {
+            const { pageIndex, pageSize } = table.getState().pagination;
+            return <span>{pageIndex * pageSize + row.index + 1}</span>;
+        }
     },
     {
-        accessorKey: 'asramaId',
+        accessorKey: 'namaKamar',
+        header: 'Kamar',
+        size: 200,
+    },
+    {
+        accessorKey: 'asramaId.namaAsrama',
         header: 'Asrama',
+        size: 150,
         cell: ({ row }) => (
-            <span className="capitalize">{row.original.asramaId.namaAsrama}</span>
-        )
+            <span className="capitalize">{row.original.asramaId?.namaAsrama ?? '-'}</span>
+        ),
     },
     {
         accessorKey: 'kapasitas',
-        header: 'Kapasitas'
+        header: 'Kapasitas',
+        size: 150,
     },
     {
         id: 'actions',
         header: 'Aksi',
-        cell: ({ row }) => (
-            <div className="flex gap-2">
-                <Button variant="ghost" size="icon" onClick={() => console.log('Edit:', row.original)}>
-                    <Pencil className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="icon" onClick={() => console.log('Delete:', row.original)}>
+        size: 100,
+        cell: () => {
+            return (
+                <Button variant="ghost" size="icon">
                     <Trash2 className="h-4 w-4 text-destructive" />
                 </Button>
-            </div>
-        ),
+            );
+        },
     },
 ];
-export { columns };

@@ -1,14 +1,16 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import type { User } from '@/types/Users';
 import { Button } from '../ui/button';
-import { Trash2 } from 'lucide-react';
+import { RotateCcw, Trash2 } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import ConfirmDeleteButton from '../molecules/ConfirmDeleteButton';
+import ConfirmResetPassword from '../molecules/ConfirmResetPassword';
 
 interface PropTypes {
     onDelete: (id: string) => void;
+    onReset: (id: string) => void;
 }
-export const getColumns = ({ onDelete }: PropTypes): ColumnDef<User>[] => [
+export const getColumns = ({ onDelete, onReset }: PropTypes): ColumnDef<User>[] => [
     {
         id: 'no',
         header: 'No',
@@ -41,8 +43,8 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<User>[] => [
                 <Badge
                     className={
                         isActive
-                            ? 'bg-green-500/20 text-green-400 hover:bg-green-500/20 rounded-full border-0'
-                            : 'bg-neutral-600/40 text-neutral-300 hover:bg-neutral-600/40 rounded-full border-0'
+                            ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 rounded-full border-0'
+                            : 'bg-muted text-muted-foreground hover:bg-muted rounded-full border-0'
                     }
                 >
                     {isActive ? 'Aktif' : 'Belum Aktif'}
@@ -66,6 +68,15 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<User>[] => [
                         }
                         title={`Hapus "${row.original.username}"?`}
                         onConfirm={() => onDelete(user)}
+                    />
+                    <ConfirmResetPassword
+                        trigger={
+                            <Button variant="ghost" size="icon">
+                                <RotateCcw className="h-4 w-4 text-yellow-300" />
+                            </Button>
+                        }
+                        title={`Reset "${row.original.username}"?`}
+                        onConfirm={() => onReset(user)}
                     />
                 </div>
             );

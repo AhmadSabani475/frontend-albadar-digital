@@ -7,9 +7,9 @@ const CompleteProfile = () => {
         <AuthLayout >
             <Card className="w-full max-w-xl mx-auto gap-5">
                 <CardHeader className="flex flex-col  items-center gap-4">
-                    <img src="/logo_albadar.jpg" alt="Logo" className="h-24 w-24 mix-blend-screen" />
+                    <img src="/logo_albadar.jpg" alt="Logo" className="h-24 w-24 rounded-full dark:mix-blend-screen" />
                     <div className="text-center">
-                        <h1 className="text-xl font-bold text-green-400">Set Password</h1>
+                        <h1 className="text-xl font-bold text-primary">Set Password</h1>
                         <p className="text-sm text-muted-foreground">
                             Ubah Password Anda
                         </p>

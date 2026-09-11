@@ -27,8 +27,8 @@ export const SIDEBAR_MENU: MenuEntry[] = [
         label: 'Master Data',
         items: [
             { name: 'Data User', url: '/dashboard/users', icon: Users },
+            { name: 'Santri', url: '/dashboard/santri', icon: Archive },
             { name: 'Kamar & Asrama', url: '/dashboard/kamar', icon: Bed },
-            { name: 'Santri', url: '/dashboard/santri', icon: Archive }
         ],
     },
     {

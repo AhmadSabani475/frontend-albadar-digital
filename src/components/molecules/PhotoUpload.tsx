@@ -54,14 +54,14 @@ const PhotoUpload = ({
                 disabled={disabled}
                 className={`w-28 h-28 rounded-full border-2 border-dashed flex items-center justify-center overflow-hidden transition-colors ${
                     disabled
-                        ? 'border-gray-200 bg-gray-50 cursor-default'
-                        : 'border-gray-300 bg-gray-100 hover:bg-gray-200'
+                        ? 'border-border bg-muted/30 cursor-default'
+                        : 'border-border bg-muted/40 hover:bg-muted'
                 }`}
             >
                 {preview ? (
                     <img src={preview} alt="Preview foto" className="w-full h-full object-cover" />
                 ) : (
-                    <Camera className="text-gray-400 w-8 h-8" />
+                    <Camera className="text-muted-foreground w-8 h-8" />
                 )}
             </button>
             <input
@@ -79,17 +79,17 @@ const PhotoUpload = ({
                     <button
                         type="button"
                         onClick={handleTriggerClick}
-                        className="px-4 py-1.5 rounded-full border border-green-600 text-green-600 text-sm font-medium hover:bg-green-50 transition-colors"
+                        className="px-4 py-1.5 rounded-full border border-primary text-primary text-sm font-medium hover:bg-primary/10 transition-colors cursor-pointer"
                     >
                         {label}
                     </button>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                         Format: JPG, PNG. Max {maxSizeMB}MB.
                     </p>
                 </>
             )}
 
-            {error && <p className="text-xs text-red-500">{error}</p>}
+            {error && <p className="text-xs text-destructive">{error}</p>}
         </div>
     );
 };

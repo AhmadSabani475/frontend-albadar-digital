@@ -27,7 +27,7 @@ const SetoranSaldoCard = ({
     return (
         <Card>
             <CardHeader className="flex flex-row items-center gap-2">
-                <CreditCard className="w-4 h-4 text-green-500" />
+                <CreditCard className="w-4 h-4 text-primary" />
                 <h2 className="font-semibold text-sm">SETORAN SALDO</h2>
             </CardHeader>
             <CardContent className="p-0">
@@ -38,7 +38,7 @@ const SetoranSaldoCard = ({
                 ) : (
                     <table className="w-full text-sm">
                         <thead>
-                            <tr className="border-b border-white/10 text-gray-400 text-xs">
+                            <tr className="border-b border-border text-muted-foreground text-xs">
                                 <th className="text-left font-medium py-2 px-4">Jenis</th>
                                 <th className="text-left font-medium py-2 px-4">Saldo</th>
                                 <th className="text-left font-medium py-2 px-4">Setor</th>
@@ -46,7 +46,7 @@ const SetoranSaldoCard = ({
                         </thead>
                         <tbody>
                             {rekening.map((r) => (
-                                <tr key={r._id} className="border-b border-white/5 last:border-0">
+                                <tr key={r._id} className="border-b border-border/60 last:border-0">
                                     <td className="py-3 px-4 font-medium">
                                         {labelJenisRekening[r.jenisRekening] ?? r.jenisRekening}
                                     </td>

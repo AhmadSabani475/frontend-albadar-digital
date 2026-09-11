@@ -9,4 +9,6 @@ export interface Pembayaran {
     dicatatOleh: User,
     tanggalBayar: Date,
     nominalBayar: number,
+    metodeBayar?: 'cash' | 'transfer' | string,
+    keterangan?: string,
 }

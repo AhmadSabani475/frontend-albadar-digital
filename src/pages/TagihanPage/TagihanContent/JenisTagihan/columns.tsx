@@ -44,8 +44,8 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<JenisTagihan>[] =
                 <Badge
                     className={
                         wajib
-                            ? 'bg-green-500/20 text-green-400 hover:bg-green-500/20 rounded-full border-0'
-                            : 'bg-neutral-600/40 text-neutral-300 hover:bg-neutral-600/40 rounded-full border-0'
+                            ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 rounded-full border-0'
+                            : 'bg-muted text-muted-foreground hover:bg-muted rounded-full border-0'
                     }
                 >
                     {wajib ? 'Wajib' : 'Opsional'}

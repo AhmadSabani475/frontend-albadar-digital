@@ -44,8 +44,7 @@ const CreateMutasiDialog = ({ onSuccess, rekeningId }: PropTypes) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger render={<Button
-                className="px-4 py-2 bg-green-400 text-[#ffff]">+ Buat Mutasi</Button>} />
+            <DialogTrigger render={<Button>+ Buat Mutasi</Button>} />
             <DialogContent className="sm:max-w-sm">
                 <form onSubmit={handleSubmitCreateMutasi}>
                     <DialogHeader className="mb-5">
@@ -81,7 +80,7 @@ const CreateMutasiDialog = ({ onSuccess, rekeningId }: PropTypes) => {
                             label="Kategori"
                             name="kategori"
                             value={kategori}
-                            onChange={setKategori}
+                            onChange={(val) => setKategori(val as 'manual' | 'harian')}
                             groups={[
                                 {
                                     groupLabel: 'Pilih Kategori', options: [

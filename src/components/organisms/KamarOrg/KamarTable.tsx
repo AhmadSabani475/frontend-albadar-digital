@@ -1,25 +1,14 @@
 import { useEffect, useState } from 'react';
-import {
-    useReactTable,
-    getCoreRowModel,
-    flexRender,
-} from '@tanstack/react-table';
-import { columns } from './columns';
-import {
-    Table,
-    TableHeader,
-    TableRow,
-    TableHead,
-    TableBody,
-    TableCell,
-} from '../../ui/table';
+import { getColumns } from './columns';
 import type { Kamar } from '@/types/Kamar';
 import { kamarService } from '@/services/kamar.service';
+import DataTable from '../DataTable';
 
 
 const KamarTable = () => {
     const [data, setData] = useState<Kamar[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+
 
     const fetchKamar = () => {
         setIsLoading(true);
@@ -32,51 +21,19 @@ const KamarTable = () => {
         fetchKamar();
     }, []);
 
-    const table = useReactTable({
-        data,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-    });
+    const columns = getColumns();
 
     if (isLoading) {
         return <p className="text-sm text-muted-foreground">Memuat data...</p>;
     }
 
     return (
-        <Table>
-            <TableHeader className="bg-green-400">
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                            <TableHead key={header.id}>
-                                {header.isPlaceholder
-                                    ? null
-                                    : flexRender(header.column.columnDef.header, header.getContext())}
-                            </TableHead>
-                        ))}
-                    </TableRow>
-                ))}
-            </TableHeader>
-            <TableBody>
-                {table.getRowModel().rows.length ? (
-                    table.getRowModel().rows.map((row) => (
-                        <TableRow key={row.id}>
-                            {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id}>
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    ))
-                ) : (
-                    <TableRow>
-                        <TableCell colSpan={columns.length} className="text-center text-muted-foreground">
-                            Belum ada data kamar
-                        </TableCell>
-                    </TableRow>
-                )}
-            </TableBody>
-        </Table>
+        <DataTable
+            data={data}
+            columns={columns}
+            isLoading={isLoading}
+            searchPlaceholder="Cari kamar..."
+            emptyMessage="Belum ada data kamar" />
     );
 };
 

@@ -55,8 +55,7 @@ const UangJajanPage = () => {
         <div className="w-full flex flex-col gap-6">
             <div className="flex justify-between items-center">
                 <div className="flex flex-col gap-1.5">
-                    <h1 className="text-3xl font-bold">Bagikan Uang Jajan Hari ini</h1>
-                    <div className="text-[#c9c5c5] text-lg flex gap-2 items-center">
+                    <div className="text-muted-foreground text-xs flex gap-2 items-center">
                         <Calendar className="h-4 w-4" />
                         {new Date().toDateString()}
                     </div>
@@ -65,7 +64,7 @@ const UangJajanPage = () => {
                 <Button
                     onClick={handleBagikan}
                     disabled={!hasSelection || isSubmitting}
-                    className="bg-green-600 hover:bg-green-700 text-white"
+                    className="cursor-pointer"
                 >
                     {isSubmitting ? "Memproses..." : `Bagikan (${Object.keys(rowSelection).length})`}
                 </Button>
@@ -74,20 +73,20 @@ const UangJajanPage = () => {
                 <Card className="w-full">
                     <CardContent className="flex justify-between items-center px-5 py-4">
                         <div className="flex flex-col gap-1">
-                            <p className="text-sm font-medium text-gray-400">Sudah Diambil</p>
-                            <span className="text-3xl text-green-500 font-bold">{sudahDiambil.length}</span>
+                            <p className="text-sm font-medium text-muted-foreground">Sudah Diambil</p>
+                            <span className="text-3xl text-primary font-bold">{sudahDiambil.length}</span>
                         </div>
-                        <CheckCircle className="w-8 h-8 text-gray-400" />
+                        <CheckCircle className="w-8 h-8 text-muted-foreground" />
                     </CardContent>
                 </Card>
 
                 <Card className="w-full">
                     <CardContent className="flex justify-between items-center px-5 py-4">
                         <div className="flex flex-col gap-1">
-                            <p className="text-sm font-medium text-gray-400">Belum Diambil</p>
-                            <span className="text-3xl text-red-500 font-bold">{belumDiambil.length}</span>
+                            <p className="text-sm font-medium text-muted-foreground">Belum Diambil</p>
+                            <span className="text-3xl text-destructive font-bold">{belumDiambil.length}</span>
                         </div>
-                        <CircleEllipsis className="w-8 h-8 text-gray-400" />
+                        <CircleEllipsis className="w-8 h-8 text-muted-foreground" />
                     </CardContent>
                 </Card>
             </div>

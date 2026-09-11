@@ -2,6 +2,7 @@ import { authService } from '@/services/auth.service';
 import { useState, type SubmitEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormField from '../molecules/FormField';
+import { Button } from '../ui/button';
 import { Key } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 
@@ -49,13 +50,13 @@ const SetPasswordForm = () => {
                 onChange={(e) => setPassword(e.target.value)}
             />
 
-            <button
+            <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full rounded-md bg-blue-600 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+                className="w-full"
             >
                 {isLoading ? 'Menyimpan...' : 'Simpan Password'}
-            </button>
+            </Button>
         </form>
     );
 };

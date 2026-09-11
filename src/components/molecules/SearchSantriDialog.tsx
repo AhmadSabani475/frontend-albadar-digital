@@ -11,7 +11,7 @@ interface Props {
 
 const SearchSantriDialog = ({ open, onOpenChange, onSelect }: Props) => {
     const [keyword, setKeyword] = useState('');
-    const { data: santriList, isLoading } = useSantriList();
+    const { data: santriList, isLoading } = useSantriList('aktif');
 
     const filtered = useMemo(() => {
         if (!santriList) return [];

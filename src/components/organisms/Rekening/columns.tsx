@@ -55,7 +55,7 @@ export const getColumns = (): ColumnDef<Rekening>[] => [
             return (
                 <div className="flex justify-center items-center w-full">
                     <Link to={`/dashboard/rekening/view/${row.original._id}`} className="inline-block">
-                        <Button size="sm" className="text-green-400 bg-black border border-gray-500">
+                        <Button size="sm" variant="outline" className="text-primary hover:text-primary cursor-pointer">
                             Mutasi
                         </Button>
                     </Link>

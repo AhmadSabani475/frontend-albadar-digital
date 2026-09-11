@@ -18,7 +18,7 @@ const TabelTagihanBelumLunas = ({ tagihan, selectedTagihan, onToggle, onChangeNo
     return (
         <table className="w-full text-sm">
             <thead>
-                <tr className="border-b border-white/10 text-gray-300">
+                <tr className="border-b border-border text-muted-foreground">
                     <th className="text-left py-2 w-8"></th>
                     <th className="text-left py-2">Nama Tagihan</th>
                     <th className="text-right py-2">Sisa Tagihan</th>
@@ -29,12 +29,12 @@ const TabelTagihanBelumLunas = ({ tagihan, selectedTagihan, onToggle, onChangeNo
                 {tagihan.map((t) => {
                     const isChecked = t._id in selectedTagihan;
                     return (
-                        <tr key={t._id} className="border-b border-white/5">
+                        <tr key={t._id} className="border-b border-border/60">
                             <td className="py-3">
                                 <Checkbox
                                     checked={isChecked}
                                     onCheckedChange={() => onToggle(t._id, t.sisaTagihan)}
-                                    className="data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
+                                    className="data-[state=checked]:bg-primary data-[state=checked]:border-primary cursor-pointer"
                                 />
                             </td>
                             <td className="py-3">

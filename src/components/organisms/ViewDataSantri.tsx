@@ -10,6 +10,7 @@ import DataAlamatSection from './DataAlamatSection';
 import DataOrangTuaSection from './DataOrangTuaSection';
 import DataPendidikanSection from './DataPendidikanSection';
 import DataAsramaSekolah from './DataAsramaSekolah';
+import DataRiwayatPembayaran from './DataRiwayatPembayaran';
 
 type ViewDataSantriProps = {
     id: string;
@@ -59,7 +60,7 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
     return (
         <div className="flex flex-col items-center gap-3">
             <fieldset disabled className="w-full contents">
-                <Accordion defaultValue={['data-diri', 'data-alamat', 'data-ortu', 'data-pendidikan', 'data-asrama-sekolah']} className="flex flex-col gap-5">
+                <Accordion defaultValue={['data-diri', 'data-alamat', 'data-ortu', 'data-pendidikan', 'data-asrama-sekolah', 'riwayat-pembayaran']} className="flex flex-col gap-5">
                     <DataDiriSection
                         disabled
                         initialValues={{
@@ -94,19 +95,22 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
                             laundry: data.laundry,
                         }}
                     />
+                    <DataRiwayatPembayaran
+                        santriId={id}
+                        santri={data} />
                 </Accordion>
             </fieldset>
 
             <div className="flex w-full justify-end gap-2">
                 <Link to="/dashboard/santri">
-                    <Button className="text-md bg-gray-400 p-5">
-                        <Undo2 />
+                    <Button variant="outline" className="text-md p-5 cursor-pointer">
+                        <Undo2 className="w-4 h-4 mr-1" />
                         Kembali
                     </Button>
                 </Link>
                 <Link to={`/dashboard/santri/edit/${id}`}>
-                    <Button className="text-md bg-green-400 p-5">
-                        <Pencil />
+                    <Button className="text-md p-5 cursor-pointer">
+                        <Pencil className="w-4 h-4 mr-1" />
                         Edit Data
                     </Button>
                 </Link>

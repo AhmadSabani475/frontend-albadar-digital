@@ -20,7 +20,7 @@ const AccordionSection = (props: AccordionSectionProps) => {
         <AccordionItem value={value} className="border-2 px-8 rounded-2xl">
             <AccordionTrigger className="hover:no-underline py-5">
                 <div className="flex gap-2 items-center">
-                    <Icon className="text-green-400" />
+                    <Icon className="text-primary" />
                     <h3 className="text-xl font-semibold">{title}</h3>
                 </div>
             </AccordionTrigger>

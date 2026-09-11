@@ -98,14 +98,14 @@ const AddSantriForm = () => {
             {error && <p className="text-sm text-destructive">{error}</p>}
             <div className="flex w-full justify-end gap-2">
                 <Link to='/dashboard/santri'>
-                    <Button className="text-md hover:text-green-400 hover:font-bold bg-gray-400 p-5">
-                        <Undo2 />
+                    <Button variant="outline" className="text-md p-5 cursor-pointer">
+                        <Undo2 className="w-4 h-4 mr-1" />
                         Kembali
                     </Button>
                 </Link>
-                <Button type="submit" className="text-md  hover:text-green-400 hover:font-bold bg-green-400 p-5">
-                    <Save />
-                    {isLoading ? 'menyimpan' : 'Simpan Profil'}
+                <Button type="submit" disabled={isLoading} className="text-md p-5 cursor-pointer">
+                    <Save className="w-4 h-4 mr-1" />
+                    {isLoading ? 'Menyimpan...' : 'Simpan Profil'}
                 </Button>
 
 

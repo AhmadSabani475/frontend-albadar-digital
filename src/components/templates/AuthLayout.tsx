@@ -1,8 +1,12 @@
 import type { ReactNode } from 'react';
+import ThemeToggle from '../molecules/ThemeToggle';
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
     return (
-        <div className="min-h-screen flex flex-col bg-black bg-[radial-gradient(ellipse_at_top,_rgba(16,120,80,0.25),_transparent_60%)]">
+        <div className="min-h-screen flex flex-col bg-background bg-[radial-gradient(ellipse_at_top,_rgba(16,120,80,0.20),_transparent_60%)] relative">
+            <div className="absolute top-4 right-4">
+                <ThemeToggle />
+            </div>
             <div className="flex-1 flex items-center justify-center p-4">
                 {children}
             </div>
