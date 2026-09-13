@@ -164,17 +164,15 @@ const EditSantriForm = ({ id }: PropTypes) => {
             {error && <p className="text-sm text-destructive">{error}</p>}
             <div className="flex w-full justify-end gap-2">
                 <Link to='/dashboard/santri'>
-                    <Button variant="outline" className="text-md p-5 cursor-pointer">
+                    <Button variant="outline">
                         <Undo2 className="w-4 h-4 mr-1" />
                         Kembali
                     </Button>
                 </Link>
-                <Button type="submit" disabled={isSaving} className="text-md p-5 cursor-pointer">
+                <Button type="submit" disabled={isSaving}>
                     <Save className="w-4 h-4 mr-1" />
                     {isSaving ? 'Menyimpan...' : 'Simpan Perubahan'}
                 </Button>
-
-
             </div>
 
         </form>

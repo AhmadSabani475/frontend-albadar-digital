@@ -4,13 +4,11 @@ import PieChartStatusTagihan from '@/components/organisms/PieChartStatusTagihan'
 import TransaksiTerakhirList from '@/components/organisms/TransaksiTerakhirList';
 import { useDashboardSummary } from '@/hooks/use-dashboard-summary';
 import { formatIDR } from '@/lib/utils';
-import { useAuthStore } from '@/store/authStore';
 import { CreditCard, User2 } from 'lucide-react';
 
 
 
 const Dashboard = () => {
-    const { user } = useAuthStore((state) => state);
     const { data, isLoading } = useDashboardSummary();
     const stats = [
         {

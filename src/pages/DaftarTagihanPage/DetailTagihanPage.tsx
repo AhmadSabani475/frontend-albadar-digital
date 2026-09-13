@@ -95,11 +95,10 @@ const DetailTagihanPage = () => {
         <div className="w-full flex flex-col gap-4">
             <div className="flex flex-col gap-1">
                 <Link to='/dashboard/daftar-tagihan'>
-                    <Button className='bg-background-none text-white'>
-                        <StepBackIcon />
+                    <Button variant="outline" size="sm" className="w-fit">
+                        <StepBackIcon className="w-4 h-4 mr-1" />
                         Kembali
                     </Button>
-
                 </Link>
                 <h2 className="text-2xl font-bold">{santri?.namaLengkap}</h2>
                 <p className="text-xs font-light text-zinc-400">

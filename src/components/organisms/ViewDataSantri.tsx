@@ -103,13 +103,13 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
 
             <div className="flex w-full justify-end gap-2">
                 <Link to="/dashboard/santri">
-                    <Button variant="outline" className="text-md p-5 cursor-pointer">
+                    <Button variant="outline">
                         <Undo2 className="w-4 h-4 mr-1" />
                         Kembali
                     </Button>
                 </Link>
                 <Link to={`/dashboard/santri/edit/${id}`}>
-                    <Button className="text-md p-5 cursor-pointer">
+                    <Button>
                         <Pencil className="w-4 h-4 mr-1" />
                         Edit Data
                     </Button>

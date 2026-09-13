@@ -12,8 +12,8 @@ interface PropTypes {
 const ConfirmDeleteButton = (props: PropTypes) => {
     const {
         trigger,
-        title = 'Yakin mau hapus?',
-        description = 'Tindakan ini gak bisa dibatalin. Data bakal kehapus permanen.',
+        title = 'Hapus Data?',
+        description = 'Tindakan ini tidak dapat dibatalkan. Data akan dihapus secara permanen.',
         onConfirm,
         loading
     } = props;
@@ -31,7 +31,7 @@ const ConfirmDeleteButton = (props: PropTypes) => {
                     <AlertDialogAction
                         onClick={onConfirm}
                         disabled={loading}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        variant="destructive"
                     >
                         {loading ? 'Menghapus...' : 'Hapus'}
                     </AlertDialogAction>

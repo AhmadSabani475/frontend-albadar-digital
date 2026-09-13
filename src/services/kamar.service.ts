@@ -7,5 +7,9 @@ export const kamarService = {
         fetchAPI('/kamar', {
             method: 'POST',
             body: JSON.stringify({ namaKamar, asramaId, kapasitas })
+        }),
+    deleteById: (id?: string) =>
+        fetchAPI<{ message: string, data: Kamar }>(`/kamar/${id}`, {
+            method: 'DELETE'
         })
 };

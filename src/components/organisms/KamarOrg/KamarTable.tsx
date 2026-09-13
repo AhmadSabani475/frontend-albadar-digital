@@ -17,11 +17,22 @@ const KamarTable = () => {
             .finally(() => setIsLoading(false));
     };
 
+    const handleDelete = async (id?: string) => {
+        try {
+            setIsLoading(true);
+            await kamarService.deleteById(id);
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     useEffect(() => {
         fetchKamar();
     }, []);
 
-    const columns = getColumns();
+    const columns = getColumns({ onDelete: handleDelete });
 
     if (isLoading) {
         return <p className="text-sm text-muted-foreground">Memuat data...</p>;

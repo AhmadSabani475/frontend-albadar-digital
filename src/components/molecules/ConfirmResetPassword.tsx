@@ -12,8 +12,8 @@ interface PropTypes {
 const ConfirmResetPassword = (props: PropTypes) => {
     const {
         trigger,
-        title = 'Yakin mau reset?',
-        description = 'Tindakan ini gak bisa dibatalin. Password Akan kembali default.',
+        title = 'Reset Password?',
+        description = 'Tindakan ini tidak dapat dibatalkan. Password akan dikembalikan ke default.',
         onConfirm,
         loading
     } = props;
@@ -31,7 +31,7 @@ const ConfirmResetPassword = (props: PropTypes) => {
                     <AlertDialogAction
                         onClick={onConfirm}
                         disabled={loading}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        variant="destructive"
                     >
                         {loading ? 'Mereset...' : 'Reset'}
                     </AlertDialogAction>
