@@ -3,42 +3,33 @@ import type { JenisTagihan } from '@/types/Tagihan';
 import { useEffect, useState } from 'react';
 import { getColumns } from './columns';
 import DataTable from '@/components/organisms/DataTable';
-import StatusAlert from '@/components/molecules/StatusAlert';
+import { toast } from '@/hooks/use-toast';
 import CreateJenisTagihan from '@/components/molecules/CreateJenisTagihan';
-
 
 const TableJenisTagihan = () => {
     const [data, setData] = useState<JenisTagihan[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [alert, setAlert] = useState<{
-        variant: 'success' | 'error' | 'info' | 'warning';
-        title: string;
-        description?: string;
-    } | null>(null);
-
 
     const handleDelete = async (id: string) => {
         try {
             setIsLoading(true);
             await JenisTagihanService.deleteById(id);
             await fetchJenisTagihan();
-            setAlert({
+            toast({
                 variant: 'success',
-                title: 'User berhasil dihapus',
-                description: 'Data user telah dihapus dari sistem.',
+                title: 'Jenis Tagihan berhasil dihapus',
+                description: 'Data jenis tagihan telah dihapus.',
             });
         } catch {
-            setAlert({
-                variant: 'error',
-                title: 'Gagal menghapus user',
+            toast({
+                variant: 'destructive',
+                title: 'Gagal menghapus jenis tagihan',
                 description: 'Terjadi kesalahan, coba lagi.',
             });
         } finally {
             setIsLoading(false);
         }
     };
-
-
 
     const fetchJenisTagihan = async () => {
         try {
@@ -56,13 +47,6 @@ const TableJenisTagihan = () => {
         fetchJenisTagihan();
     }, []);
 
-    useEffect(() => {
-        if (alert) {
-            const timer = setTimeout(() => setAlert(null), 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [alert]);
-
     const columns = getColumns({ onDelete: handleDelete });
 
     return (
@@ -76,19 +60,8 @@ const TableJenisTagihan = () => {
                 isLoading={isLoading}
                 searchPlaceholder="Cari Tagihan..."
                 emptyMessage="Belum ada data tagihan" />
-
-            {alert && (
-                <div className="fixed top-4 right-4 z-50 w-full max-w-sm">
-                    <StatusAlert
-                        variant={alert.variant}
-                        title={alert.title}
-                        description={alert.description}
-                    />
-                </div>
-            )}
         </div>
     );
-
 };
 
 export default TableJenisTagihan;

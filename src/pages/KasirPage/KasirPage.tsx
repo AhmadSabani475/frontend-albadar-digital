@@ -5,17 +5,32 @@ import SetoranSaldoCard from "@/components/organisms/TableSetoranRekening/Setora
 import TabelTagihanBelumLunas from "@/components/organisms/TableTagihanBelumLunas/TableTagihanBelumLunas";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useProsesTransaksi } from "@/hooks/use-proses-transaksi";
 import { useRingkasanSantri } from "@/hooks/use-ringkasan-santri";
 import type { Kwitansi } from "@/types/Kwitansi";
 import { FileText, UserRound } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 
+import { toast } from "@/hooks/use-toast";
+import { getPeriodeKeterangan } from "@/lib/utils";
+
 const KasirPage = () => {
     const [selectedSantriId, setSelectedSantriId] = useState<string | undefined>();
     const [selectedTagihan, setSelectedTagihan] = useState<Record<string, number>>({});
     const [setoranRekening, setSetoranRekening] = useState<Record<string, number>>({});
     const [openSearchSantri, setOpenSearchSantri] = useState(false);
+    const [confirmOpen, setConfirmOpen] = useState(false);
     const [kwitansi, setKwitansi] = useState<Kwitansi | null>(null);
     const [metodePembayaran, setMetodePembayaran] = useState<'cash' | 'transfer'>('cash')
 
@@ -56,7 +71,19 @@ const KasirPage = () => {
     const ringkasanItems = useMemo(() => {
         const tagihanItems = Object.entries(selectedTagihan).map(([id, nominal]) => {
             const t = data?.tagihan.find((x) => x._id === id);
-            return { label: t?.namaTagihan ?? '-', kategori: 'Tagihan', nominal };
+            const label = t?.namaTagihan ?? '-';
+            const periodeInfo = getPeriodeKeterangan(t);
+            const hasPeriodeInLabel = Boolean(
+                periodeInfo && label.toLowerCase().includes(periodeInfo.toLowerCase())
+            );
+            const displayLabel = (periodeInfo && !hasPeriodeInLabel) ? `${label} (${periodeInfo})` : label;
+
+            return {
+                label: displayLabel,
+                kategori: 'Tagihan',
+                nominal,
+                keterangan: periodeInfo ? `Periode: ${periodeInfo}` : undefined,
+            };
         });
 
         const rekeningItems = Object.entries(setoranRekening)
@@ -75,11 +102,16 @@ const KasirPage = () => {
     );
 
     const payloadItems = useMemo(() => {
-        const tagihanItems = Object.entries(selectedTagihan).map(([tagihanId, nominal]) => ({
-            tipe: 'bayar_tagihan' as const,
-            tagihanId,
-            nominal,
-        }));
+        const tagihanItems = Object.entries(selectedTagihan).map(([tagihanId, nominal]) => {
+            const t = data?.tagihan.find((x) => x._id === tagihanId);
+            const periodeInfo = getPeriodeKeterangan(t);
+            return {
+                tipe: 'bayar_tagihan' as const,
+                tagihanId,
+                nominal,
+                keterangan: periodeInfo ? `Periode: ${periodeInfo}` : undefined,
+            };
+        });
 
         const rekeningItems = Object.entries(setoranRekening)
             .filter(([, nominal]) => nominal > 0)
@@ -90,22 +122,37 @@ const KasirPage = () => {
             }));
 
         return [...tagihanItems, ...rekeningItems];
-    }, [selectedTagihan, setoranRekening]);
+    }, [selectedTagihan, setoranRekening, data]);
 
-    const handleSubmit = async () => {
+    const handleConfirmClick = () => {
+        if (!selectedSantriId || payloadItems.length === 0) return;
+        setConfirmOpen(true);
+    };
+
+    const handleProcessSubmit = async () => {
         if (!selectedSantriId || payloadItems.length === 0) return;
 
+        setConfirmOpen(false);
         mutate(
             { santriId: selectedSantriId, items: payloadItems, metodePembayaran: metodePembayaran },
             {
                 onSuccess: (res) => {
+                    toast({
+                        variant: 'success',
+                        title: 'Transaksi Berhasil',
+                        description: 'Pembayaran telah diproses & kwitansi diterbitkan.',
+                    });
                     setKwitansi(res.data);
                     setSelectedTagihan({});
                     setSetoranRekening({});
                 },
                 onError: (err) => {
                     console.error(err);
-                    // tampilkan toast error di sini
+                    toast({
+                        variant: 'destructive',
+                        title: 'Transaksi Gagal',
+                        description: (err as Error).message || 'Terjadi kesalahan saat memproses transaksi.',
+                    });
                 },
             }
         );
@@ -133,9 +180,13 @@ const KasirPage = () => {
                             )}
 
                             {selectedSantriId && isLoading && (
-                                <p className="text-sm text-muted-foreground py-6 text-center">
-                                    Memuat data santri...
-                                </p>
+                                <div className="border border-border rounded-lg p-4 flex items-center gap-4">
+                                    <Skeleton className="w-14 h-14 rounded-full" />
+                                    <div className="flex flex-col gap-2 flex-1">
+                                        <Skeleton className="h-5 w-40" />
+                                        <Skeleton className="h-4 w-28" />
+                                    </div>
+                                </div>
                             )}
 
                             {selectedSantriId && error && (
@@ -157,9 +208,7 @@ const KasirPage = () => {
                                         <p className="font-semibold text-lg">{data.santri.namaLengkap}</p>
                                         <div className="text-sm text-muted-foreground flex gap-4 mt-1">
                                             <span>NIS: {data.santri.nis}</span>
-                                            {/* <span>Asrama: {data.santri.kamarId.asramaId.namaAsrama ?? '-'}</span> */}
                                         </div>
-                                        {/* <p className="text-sm text-muted-foreground">Kelas: {data.santri.kelas ?? '-'}</p> */}
                                     </div>
                                 </div>
                             )}
@@ -227,12 +276,56 @@ const KasirPage = () => {
                             onMetodePembayaranChange={setMetodePembayaran}
                             total={totalPembayaran}
                             isPending={isPending}
-                            onSubmit={handleSubmit}
+                            onSubmit={handleConfirmClick}
                             onReset={() => { setSelectedTagihan({}); setSetoranRekening({}); }}
                         />
                     )}
                 </div>
             </div>
+
+            {/* Confirmation Alert Dialog */}
+            <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+                <AlertDialogContent className="sm:max-w-md">
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Konfirmasi Pembayaran</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Apakah Anda yakin ingin memproses transaksi pembayaran ini?
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+
+                    <div className="rounded-xl border border-border bg-muted/40 p-4 space-y-2.5 text-sm my-2">
+                        <div className="flex justify-between items-center">
+                            <span className="text-muted-foreground">Nama Santri:</span>
+                            <span className="font-semibold text-foreground">{data?.santri?.namaLengkap ?? '-'}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="text-muted-foreground">Metode Pembayaran:</span>
+                            <span className="font-medium uppercase bg-primary/10 text-primary px-2 py-0.5 rounded text-xs">
+                                {metodePembayaran}
+                            </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="text-muted-foreground">Jumlah Item:</span>
+                            <span className="font-medium">{ringkasanItems.length} item</span>
+                        </div>
+                        <div className="flex justify-between items-center border-t border-border pt-2.5 mt-2">
+                            <span className="font-semibold text-foreground">Total Pembayaran:</span>
+                            <span className="font-bold text-lg text-primary">Rp {totalPembayaran.toLocaleString('id-ID')}</span>
+                        </div>
+                    </div>
+
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Batal</AlertDialogCancel>
+                        <AlertDialogAction
+                            disabled={isPending}
+                            onClick={handleProcessSubmit}
+                        >
+                            {isPending ? 'Memproses...' : 'Ya, Proses Transaksi'}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
             <StrukKwitansiDialog
                 kwitansi={kwitansi}
                 santri={data?.santri}

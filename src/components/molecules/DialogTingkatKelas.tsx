@@ -9,7 +9,7 @@ import {
     DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { Pencil } from "lucide-react";
+import { Loader2, Pencil } from "lucide-react";
 import { FieldGroup } from "../ui/field";
 import FormField from "./FormField";
 import SearchableSelectField from "./SearchableSelectField";
@@ -148,7 +148,14 @@ const DialogTingkatKelas = ({ type, initialValues, onSuccess }: PropTypes) => {
                     <DialogFooter>
                         <DialogClose render={<Button variant="outline">Batal</Button>} />
                         <Button type="submit" disabled={isLoading}>
-                            {isLoading ? 'Menyimpan...' : 'Simpan'}
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Menyimpan...
+                                </>
+                            ) : (
+                                'Simpan'
+                            )}
                         </Button>
                     </DialogFooter>
                 </form>

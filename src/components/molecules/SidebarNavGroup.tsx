@@ -20,16 +20,14 @@ const SidebarNavGroup = (props: PropTypes) => {
     const location = useLocation().pathname;
     return (
         <Collapsible defaultOpen className="group/collapsible">
-            <SidebarGroup>
-                <SidebarGroupLabel render={<CollapsibleTrigger />}>
-
-                    {label}
+            <SidebarGroup className="p-0 py-1">
+                <SidebarGroupLabel render={<CollapsibleTrigger className="w-full flex items-center justify-between cursor-pointer hover:text-sidebar-foreground" />}>
+                    <span>{label}</span>
                     <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-
                 </SidebarGroupLabel>
                 <CollapsibleContent>
                     <SidebarGroupContent>
-                        <SidebarMenu>
+                        <SidebarMenu className="gap-0.5">
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.name}>
                                     <SidebarMenuButton isActive={location === item.url}
@@ -42,7 +40,6 @@ const SidebarNavGroup = (props: PropTypes) => {
                                 </SidebarMenuItem>
                             ))}
                         </SidebarMenu>
-
                     </SidebarGroupContent>
                 </CollapsibleContent>
             </SidebarGroup>

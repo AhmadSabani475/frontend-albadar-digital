@@ -69,7 +69,7 @@ const UangJajanPage = () => {
                     {isSubmitting ? "Memproses..." : `Bagikan (${Object.keys(rowSelection).length})`}
                 </Button>
             </div>
-            <div className="flex gap-4 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                 <Card className="w-full">
                     <CardContent className="flex justify-between items-center px-5 py-4">
                         <div className="flex flex-col gap-1">

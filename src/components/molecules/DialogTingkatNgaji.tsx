@@ -3,12 +3,11 @@ import type { PayloadTingkatNgaji, TingkatNgaji } from "@/types/TingkatNgaji";
 import { useEffect, useState } from "react";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { Pencil } from "lucide-react";
+import { Loader2, Pencil } from "lucide-react";
 import { FieldGroup } from "../ui/field";
 import FormField from "./FormField";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
-
 
 interface PropTypes {
     type: 'create' | 'update';
@@ -126,7 +125,14 @@ const DialogTingkatNgaji = ({ type, initialValues, onSuccess }: PropTypes) => {
                     <DialogFooter>
                         <DialogClose render={<Button variant="outline">Batal</Button>} />
                         <Button type="submit" disabled={isLoading}>
-                            {isLoading ? 'Menyimpan...' : 'Simpan'}
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Menyimpan...
+                                </>
+                            ) : (
+                                'Simpan'
+                            )}
                         </Button>
                     </DialogFooter>
                 </form>

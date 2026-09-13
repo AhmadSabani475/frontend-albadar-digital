@@ -1,6 +1,7 @@
 import CreateMutasiDialog from "@/components/molecules/CreateMutasiDialog";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { mutasiService } from "@/services/mutasi.service";
 import { rekeningService } from "@/services/rekening.service";
@@ -36,14 +37,42 @@ const DetailRekeningPage = () => {
     }, [id])
 
     if (isLoading) {
-        return <div className="p-4 text-center">Memuat data...</div>;
+        return (
+            <div className="w-full flex flex-col gap-4">
+                <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-2">
+                        <Skeleton className="h-4 w-36" />
+                        <Skeleton className="h-8 w-48" />
+                    </div>
+                    <Skeleton className="h-10 w-32 rounded-md" />
+                </div>
+                <Card className="w-full flex flex-col sm:flex-row p-6 justify-between items-center gap-4">
+                    <div className="flex flex-col gap-2 w-full max-w-sm">
+                        <Skeleton className="h-6 w-3/4" />
+                        <Skeleton className="h-4 w-full" />
+                    </div>
+                    <div className="flex flex-col gap-2 items-start sm:items-end w-full max-w-[160px]">
+                        <Skeleton className="h-3 w-28" />
+                        <Skeleton className="h-8 w-36" />
+                    </div>
+                </Card>
+                <Card className="w-full p-6 space-y-4">
+                    <Skeleton className="h-6 w-40" />
+                    <div className="space-y-3">
+                        {Array.from({ length: 4 }).map((_, i) => (
+                            <Skeleton key={i} className="h-10 w-full" />
+                        ))}
+                    </div>
+                </Card>
+            </div>
+        );
     }
 
     return (
         <div className="w-full flex flex-col gap-4">
-            <div className="flex justify-between px-2 items-center">
-                <div className="flex flex-col gap-1 ">
-                    <div className="flex gap-2 items-center ">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div className="flex flex-col gap-1">
+                    <div className="flex gap-2 items-center">
                         <ArrowLeft className="text-primary h-4 w-4" />
                         <Link to='/dashboard/rekening'>
                             <span className="text-primary text-xs font-medium hover:underline">
@@ -58,20 +87,24 @@ const DetailRekeningPage = () => {
                 <CreateMutasiDialog rekeningId={id}
                     onSuccess={() => fetchRekeningData(id)} />
             </div>
-            <Card className="w-full flex-row px-4 justify-between items-center">
+            <Card className="w-full flex flex-col sm:flex-row p-6 justify-between items-start sm:items-center gap-4">
                 <div className="flex flex-col gap-2">
-                    <h3 className="text-xl font-semibold">{dataRekening?.santriId.namaLengkap}</h3>
+                    <h3 className="text-xl font-semibold">{dataRekening?.santriId?.namaLengkap ?? '-'}</h3>
                     <div className="flex gap-2">
-                        <div className="flex gap-2 items-center text-muted-foreground">
+                        <div className="flex gap-2 items-center text-muted-foreground text-sm">
                             <IdCardIcon className="h-4 w-4" />
-                            <span>Kamar {dataRekening?.santriId.kamarId.namaKamar} - Albadar {dataRekening?.santriId.kamarId.asramaId.namaAsrama}</span>
+                            <span>
+                                {dataRekening?.santriId?.kamarId
+                                    ? `Kamar ${dataRekening.santriId.kamarId.namaKamar ?? '-'} - Albadar ${dataRekening.santriId.kamarId.asramaId?.namaAsrama ?? '-'}`
+                                    : 'Belum ada Kamar/Asrama'}
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col gap-2 items-center">
+                <div className="flex flex-col gap-1 items-start sm:items-end">
                     <span className="text-muted-foreground text-xs">Total Saldo Saat ini</span>
                     <h3
-                        className="text-primary text-2xl font-semibold"
+                        className="text-primary text-2xl font-bold"
                     >{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dataRekening?.saldo ?? 0)}</h3>
                 </div>
             </Card>

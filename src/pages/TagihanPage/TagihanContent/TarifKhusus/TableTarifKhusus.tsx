@@ -2,43 +2,34 @@ import type { TarifKhusus } from '@/types/Tagihan';
 import { useEffect, useState } from 'react';
 import { getColumns } from './columns';
 import DataTable from '@/components/organisms/DataTable';
-import StatusAlert from '@/components/molecules/StatusAlert';
+import { toast } from '@/hooks/use-toast';
 import { tarifKhususService } from '@/services/tarifKhusus.service';
 import CreateTarifKhusus from '@/components/molecules/CreateTarifKhusus';
-
 
 const TableTarifKhusus = () => {
     const [data, setData] = useState<TarifKhusus[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [alert, setAlert] = useState<{
-        variant: 'success' | 'error' | 'info' | 'warning';
-        title: string;
-        description?: string;
-    } | null>(null);
-
 
     const handleDelete = async (id: string) => {
         try {
             setIsLoading(true);
             await tarifKhususService.deleteTarifKhusus(id);
             await fetchTarifKhusus();
-            setAlert({
+            toast({
                 variant: 'success',
-                title: 'User berhasil dihapus',
-                description: 'Data user telah dihapus dari sistem.',
+                title: 'Tarif Khusus berhasil dihapus',
+                description: 'Data tarif khusus telah dihapus.',
             });
         } catch {
-            setAlert({
-                variant: 'error',
-                title: 'Gagal menghapus user',
+            toast({
+                variant: 'destructive',
+                title: 'Gagal menghapus tarif khusus',
                 description: 'Terjadi kesalahan, coba lagi.',
             });
         } finally {
             setIsLoading(false);
         }
     };
-
-
 
     const fetchTarifKhusus = async () => {
         try {
@@ -56,13 +47,6 @@ const TableTarifKhusus = () => {
         fetchTarifKhusus();
     }, []);
 
-    useEffect(() => {
-        if (alert) {
-            const timer = setTimeout(() => setAlert(null), 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [alert]);
-
     const columns = getColumns({ onDelete: handleDelete });
 
     return (
@@ -74,19 +58,8 @@ const TableTarifKhusus = () => {
                 data={data}
                 columns={columns}
                 isLoading={isLoading} />
-
-            {alert && (
-                <div className="fixed top-4 right-4 z-50 w-full max-w-sm">
-                    <StatusAlert
-                        variant={alert.variant}
-                        title={alert.title}
-                        description={alert.description}
-                    />
-                </div>
-            )}
         </div>
     );
-
 };
 
 export default TableTarifKhusus;

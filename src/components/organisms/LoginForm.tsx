@@ -4,7 +4,7 @@ import FormField from '../molecules/FormField';
 import { Button } from '../ui/button';
 import { authService } from '../../services/auth.service';
 import { useAuthStore } from '../../store/authStore';
-import { ArrowRight, Lock, User } from 'lucide-react';
+import { ArrowRight, Loader2, Lock, User } from 'lucide-react';
 
 const LoginForm = () => {
     const [username, setUsername] = useState<string>('');
@@ -56,7 +56,16 @@ const LoginForm = () => {
             />
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button type="submit" disabled={isLoading} className="w-full">
-                {isLoading ? 'Loading...' : <>Submit <ArrowRight className="h-4 w-4" /></>}
+                {isLoading ? (
+                    <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Memproses...
+                    </>
+                ) : (
+                    <>
+                        Submit <ArrowRight className="ml-1 h-4 w-4" />
+                    </>
+                )}
             </Button>
         </form >
     );

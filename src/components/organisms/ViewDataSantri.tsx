@@ -1,4 +1,5 @@
 import { Accordion } from '@/components/ui/accordion';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Undo2, Pencil } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useEffect, useState } from 'react';
@@ -11,6 +12,7 @@ import DataOrangTuaSection from './DataOrangTuaSection';
 import DataPendidikanSection from './DataPendidikanSection';
 import DataAsramaSekolah from './DataAsramaSekolah';
 import DataRiwayatPembayaran from './DataRiwayatPembayaran';
+import DataRiwayatAkademik from './DataRiwayatAkademik';
 
 type ViewDataSantriProps = {
     id: string;
@@ -46,7 +48,13 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
     }, [id]);
 
     if (isLoading) {
-        return <p className="text-center text-gray-500 py-10">Memuat data...</p>;
+        return (
+            <div className="w-full flex flex-col gap-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                    <Skeleton key={i} className="h-20 w-full rounded-2xl" />
+                ))}
+            </div>
+        );
     }
 
     if (error) {
@@ -60,7 +68,7 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
     return (
         <div className="flex flex-col items-center gap-3">
             <fieldset disabled className="w-full contents">
-                <Accordion defaultValue={['data-diri', 'data-alamat', 'data-ortu', 'data-pendidikan', 'data-asrama-sekolah', 'riwayat-pembayaran']} className="flex flex-col gap-5">
+                <Accordion defaultValue={['data-diri', 'data-alamat', 'data-ortu', 'data-pendidikan', 'data-asrama-sekolah', 'riwayat-akademik', 'riwayat-pembayaran']} className="w-full flex flex-col gap-5">
                     <DataDiriSection
                         disabled
                         initialValues={{
@@ -95,6 +103,7 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
                             laundry: data.laundry,
                         }}
                     />
+                    <DataRiwayatAkademik santriId={id} />
                     <DataRiwayatPembayaran
                         santriId={id}
                         santri={data} />

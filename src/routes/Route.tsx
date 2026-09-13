@@ -19,7 +19,7 @@ import RekeningPage from '@/pages/RekeningPage/RekeningPage';
 import DetailRekeningPage from '@/pages/RekeningPage/DetailRekeningPage';
 import UangJajanPage from '@/pages/UangJajanPage/UangJajanPage';
 import KasirPage from '@/pages/KasirPage/KasirPage';
-import AkademikPage from '@/pages/AkademikPage/AkademikPage';
+import SettingsPage from '@/pages/SettingsPage/SettingsPage';
 
 const routes: RouteObject[] = [
     {
@@ -167,12 +167,21 @@ const routes: RouteObject[] = [
                 },
             },
             {
-                path: 'akademik',
-                element: <AkademikPage />,
+                path: 'settings',
+                element: <SettingsPage />,
                 handle: {
-                    breadcrumb: 'Akademik',
-                    title: 'Akademik',
-                    subtitle: 'Kelola tingkat kelas dan tingkat ngaji',
+                    breadcrumb: 'Pengaturan',
+                    title: 'Pengaturan Master Data',
+                    subtitle: 'Kelola acuan tingkat kelas, tingkat ngaji, dan tahun ajaran',
+                },
+            },
+            {
+                path: 'akademik',
+                element: <SettingsPage />,
+                handle: {
+                    breadcrumb: 'Pengaturan',
+                    title: 'Pengaturan Master Data',
+                    subtitle: 'Kelola acuan tingkat kelas, tingkat ngaji, dan tahun ajaran',
                 },
             },
         ],

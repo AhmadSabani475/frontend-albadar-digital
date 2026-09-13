@@ -10,6 +10,8 @@ import { santriService } from '@/services/santri.service';
 import type { Santri } from '@/types/Santri';
 import SearchableSelectField from './SearchableSelectField';
 
+import { toast } from '@/hooks/use-toast';
+
 interface PropTypes {
     onSuccess?: () => void;
 }
@@ -39,6 +41,11 @@ const CreateUserDialog = ({ onSuccess }: PropTypes) => {
         setError('');
         try {
             const result = await usersService.createUser(username, role as 'admin' | 'pengurus', santriId);
+            toast({
+                variant: 'success',
+                title: 'User Berhasil Dibuat',
+                description: `User ${result.data.username} telah dibuat.`,
+            });
             setCreatedCredential({
                 username: result.data.username,
                 password: result.data.generatedPassword,
@@ -49,7 +56,13 @@ const CreateUserDialog = ({ onSuccess }: PropTypes) => {
             setOpen(false);
             onSuccess?.();
         } catch (err) {
-            setError((err as Error).message);
+            const errMsg = (err as Error).message;
+            setError(errMsg);
+            toast({
+                variant: 'destructive',
+                title: 'Gagal Membuat User',
+                description: errMsg || 'Terjadi kesalahan saat membuat user.',
+            });
         } finally {
             setIsLoading(false);
         }

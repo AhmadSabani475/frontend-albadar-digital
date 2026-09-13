@@ -32,5 +32,6 @@ export interface TagihanKasir {
     nominalTagihan: number;
     sisaTagihan: number;
     cicilanKe: number;
+    periode?: string;
     status: 'belum_bayar' | 'lunas' | 'sebagian';
 }

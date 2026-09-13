@@ -5,7 +5,7 @@ import TabelTingkatKelas from "@/components/organisms/Akademik/TableTingkatKelas
 
 const AkademikPage = () => {
     return (
-        <div className="p-6">
+        <div className="w-full flex flex-col gap-4">
             <TabsAkademik
                 tingkatKelasContent={<TabelTingkatKelas />}
                 tingkatNgajiContent={<TabelTingkatNgaji />}

@@ -4,6 +4,7 @@ import { SidebarProvider, SidebarTrigger } from '../ui/sidebar';
 import { Separator } from '../ui/separator';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '../ui/breadcrumb';
 import ThemeToggle from '../molecules/ThemeToggle';
+import { Toaster } from '../ui/toast';
 
 type RouteHandle = {
     title?: string;
@@ -61,6 +62,7 @@ const DashboardLayout = () => {
                     <Outlet />
                 </div>
             </main>
+            <Toaster />
         </SidebarProvider>
     );
 };

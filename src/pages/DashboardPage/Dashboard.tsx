@@ -2,6 +2,7 @@ import StatCards from '@/components/molecules/StatCards';
 import GrafikPemasukanHarian from '@/components/organisms/GrafikPemasukanHarian';
 import PieChartStatusTagihan from '@/components/organisms/PieChartStatusTagihan';
 import TransaksiTerakhirList from '@/components/organisms/TransaksiTerakhirList';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useDashboardSummary } from '@/hooks/use-dashboard-summary';
 import { formatIDR } from '@/lib/utils';
 import { CreditCard, User2 } from 'lucide-react';
@@ -10,7 +11,8 @@ import { CreditCard, User2 } from 'lucide-react';
 
 const Dashboard = () => {
     const { data, isLoading } = useDashboardSummary();
-    const stats = [
+
+    const topStats = [
         {
             title: 'Total Santri Aktif',
             icon: User2,
@@ -22,6 +24,14 @@ const Dashboard = () => {
             value: formatIDR(data?.totalTagihanBelumLunas),
         },
         {
+            title: 'Pemasukan Hari Ini',
+            icon: CreditCard,
+            value: formatIDR(data?.pemasukanHariIni),
+        },
+    ];
+
+    const bottomStats = [
+        {
             title: 'Saldo Tabungan Ziarah',
             icon: CreditCard,
             value: formatIDR(data?.saldoTabunganZiarah),
@@ -31,30 +41,32 @@ const Dashboard = () => {
             icon: CreditCard,
             value: formatIDR(data?.saldoUangJajan),
         },
-        {
-            title: 'Pemasukan Hari Ini',
-            icon: CreditCard,
-            value: formatIDR(data?.pemasukanHariIni),
-        },
-    ]
+    ];
+
     return (
         <div className="w-full flex flex-col gap-6">
-            {/* <div className="rounded-2xl  p-8 border">
-                <h1 className="text-2xl font-bold text-white">
-                    Selamat datang, {user?.santriId?.namaLengkap} 👋
-                </h1>
-                <p className="text-sm text-emerald-200/80 mt-1">
-                    {user?.role === 'admin' ? 'Administrator' : 'Pengurus'} — Al-Badar Digital Portal
-                </p>
-            </div> */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-                {isLoading
-                    ? Array.from({ length: 5 }).map((_, i) => (
-                        <div key={i} className="h-28 rounded-xl border animate-pulse bg-muted" />
-                    ))
-                    : stats.map((stat) => (
-                        <StatCards key={stat.title} title={stat.title} Icon={stat.icon} value={stat.value} />
-                    ))}
+            <div className="flex flex-col gap-4">
+                {/* Baris Atas: 3 Card */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {isLoading
+                        ? Array.from({ length: 3 }).map((_, i) => (
+                            <Skeleton key={i} className="h-28 rounded-xl" />
+                        ))
+                        : topStats.map((stat) => (
+                            <StatCards key={stat.title} title={stat.title} Icon={stat.icon} value={stat.value} />
+                        ))}
+                </div>
+
+                {/* Baris Bawah: 2 Card (Saldo Tabungan Ziarah & Saldo Uang Jajan) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {isLoading
+                        ? Array.from({ length: 2 }).map((_, i) => (
+                            <Skeleton key={i} className="h-28 rounded-xl" />
+                        ))
+                        : bottomStats.map((stat) => (
+                            <StatCards key={stat.title} title={stat.title} Icon={stat.icon} value={stat.value} />
+                        ))}
+                </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <div className="lg:col-span-2">

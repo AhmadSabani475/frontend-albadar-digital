@@ -48,12 +48,25 @@ const StrukKwitansiDialog = ({ kwitansi, santri,onClose }: Props) => {
                         </div>
 
                         <div className="border-t border-dashed border-border pt-3 space-y-2">
-                            {kwitansi.items.map((item, i) => (
-                                <div key={i} className="flex justify-between">
-                                    <span>{item.label}</span>
-                                    <span>Rp {item.nominal.toLocaleString('id-ID')}</span>
-                                </div>
-                            ))}
+                            {kwitansi.items.map((item, i) => {
+                                const showKeterangan = Boolean(
+                                    item.keterangan &&
+                                    !item.label.toLowerCase().includes(item.keterangan.toLowerCase().replace('periode:', '').trim())
+                                );
+                                return (
+                                    <div key={i} className="flex justify-between items-start">
+                                        <div className="flex flex-col">
+                                            <span className="font-medium">{item.label}</span>
+                                            {showKeterangan && (
+                                                <span className="text-[11px] text-muted-foreground">
+                                                    {item.keterangan}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <span className="font-mono">Rp {item.nominal.toLocaleString('id-ID')}</span>
+                                    </div>
+                                );
+                            })}
                         </div>
 
                         <div className="border-t border-dashed border-border pt-3 flex justify-between font-bold">
@@ -115,12 +128,23 @@ const StrukKwitansiDialog = ({ kwitansi, santri,onClose }: Props) => {
 
                     {/* Item Pembayaran */}
                     <div style={{ borderTop: '1px dashed #999', paddingTop: 12, marginBottom: 12 }}>
-                        {kwitansi.items.map((item, i) => (
-                            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                                <span>{item.label}</span>
-                                <span>Rp {item.nominal.toLocaleString('id-ID')}</span>
-                            </div>
-                        ))}
+                        {kwitansi.items.map((item, i) => {
+                            const showKeterangan = Boolean(
+                                item.keterangan &&
+                                !item.label.toLowerCase().includes(item.keterangan.toLowerCase().replace('periode:', '').trim())
+                            );
+                            return (
+                                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6, alignItems: 'flex-start' }}>
+                                    <div>
+                                        <div style={{ fontWeight: 600 }}>{item.label}</div>
+                                        {showKeterangan && (
+                                            <div style={{ fontSize: 11, color: '#555' }}>{item.keterangan}</div>
+                                        )}
+                                    </div>
+                                    <span>Rp {item.nominal.toLocaleString('id-ID')}</span>
+                                </div>
+                            );
+                        })}
                     </div>
 
                     {/* Total */}

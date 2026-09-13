@@ -3,7 +3,7 @@ import { getColumns } from './columns';
 import type { User } from '@/types/Users';
 import { usersService } from '@/services/users.service';
 import DataTable from './DataTable';
-import StatusAlert from '../molecules/StatusAlert';
+import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Button } from '../ui/button';
 import { Check, Copy } from 'lucide-react';
@@ -11,26 +11,20 @@ import { Check, Copy } from 'lucide-react';
 const UserTable = () => {
     const [data, setData] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [alert, setAlert] = useState<{
-        variant: 'success' | 'error' | 'info' | 'warning';
-        title: string;
-        description?: string;
-    } | null>(null);
-
 
     const handleDelete = async (id: string) => {
         try {
             setIsLoading(true);
             await usersService.deleteUserById(id);
             await fetchUsers();
-            setAlert({
+            toast({
                 variant: 'success',
                 title: 'User berhasil dihapus',
                 description: 'Data user telah dihapus dari sistem.',
             });
         } catch {
-            setAlert({
-                variant: 'error',
+            toast({
+                variant: 'destructive',
                 title: 'Gagal menghapus user',
                 description: 'Terjadi kesalahan, coba lagi.',
             });
@@ -51,14 +45,14 @@ const UserTable = () => {
                 username: result.data.username,
                 password: result.data.generatedPassword,
             });
-            setAlert({
+            toast({
                 variant: 'success',
                 title: 'Reset Password Berhasil',
                 description: 'Password kembali default.',
             });
         } catch (error) {
-            setAlert({
-                variant: 'error',
+            toast({
+                variant: 'destructive',
                 title: 'Gagal reset password user',
                 description: 'Terjadi kesalahan, coba lagi.',
             });
@@ -79,8 +73,6 @@ const UserTable = () => {
         }
     };
 
-
-
     const fetchUsers = () => {
         setIsLoading(true);
         usersService.getAllUsers()
@@ -92,13 +84,6 @@ const UserTable = () => {
         fetchUsers();
     }, []);
 
-    useEffect(() => {
-        if (alert) {
-            const timer = setTimeout(() => setAlert(null), 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [alert]);
-
     const columns = getColumns({ onDelete: handleDelete, onReset: handleResetPassword });
 
     return (
@@ -109,16 +94,6 @@ const UserTable = () => {
                 isLoading={isLoading}
                 searchPlaceholder="Cari user..."
                 emptyMessage="Belum ada data user" />
-
-            {alert && (
-                <div className="fixed top-4 right-4 z-50 w-full max-w-sm">
-                    <StatusAlert
-                        variant={alert.variant}
-                        title={alert.title}
-                        description={alert.description}
-                    />
-                </div>
-            )}
 
             <Dialog
                 open={!!resetCredential}

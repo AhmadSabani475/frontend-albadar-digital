@@ -9,6 +9,8 @@ interface TagihanTableMeta {
     onChangeNominal: (tagihanId: string, nominal: number) => void;
 }
 
+import { getPeriodeKeterangan } from "@/lib/utils";
+
 export const getTagihanBelumLunasColumn = (): ColumnDef<TagihanKasir>[] => [
     {
         id: 'select',
@@ -42,7 +44,16 @@ export const getTagihanBelumLunasColumn = (): ColumnDef<TagihanKasir>[] => [
         accessorKey: 'namaTagihan',
         header: 'Nama Tagihan',
         minSize: 200,
-        cell: ({ row }) => row.original.namaTagihan || '-',
+        cell: ({ row }) => {
+            const t = row.original;
+            const periodeStr = getPeriodeKeterangan(t);
+            return (
+                <div className="flex flex-col">
+                    <span className="font-medium">{t.namaTagihan || '-'}</span>
+                    {periodeStr && <span className="text-xs text-muted-foreground">{periodeStr}</span>}
+                </div>
+            );
+        },
     },
     {
         accessorKey: 'sisaTagihan',

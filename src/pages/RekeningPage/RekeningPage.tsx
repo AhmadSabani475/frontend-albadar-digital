@@ -1,6 +1,7 @@
 import CreateRekeningDialog from "@/components/molecules/CreateRekeningDialog";
 import StatCards from "@/components/molecules/StatCards";
 import TableRekening from "@/components/organisms/Rekening/TableRekening";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useDashboardSummary } from "@/hooks/use-dashboard-summary";
 import { formatIDR } from "@/lib/utils";
 import { CreditCard } from "lucide-react";
@@ -23,10 +24,10 @@ const RekeningPage = () => {
     ]
     return (
         <div className="w-full flex flex-col gap-4">
-            <div className="flex ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {isLoading
-                    ? Array.from({ length: 5 }).map((_, i) => (
-                        <div key={i} className="h-28 rounded-xl border animate-pulse bg-muted" />
+                    ? Array.from({ length: 2 }).map((_, i) => (
+                        <Skeleton key={i} className="h-28 rounded-xl" />
                     ))
                     : stats.map((stat) => (
                         <StatCards key={stat.title} title={stat.title} Icon={stat.icon} value={stat.value} />

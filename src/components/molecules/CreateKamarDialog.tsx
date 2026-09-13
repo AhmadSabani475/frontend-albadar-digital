@@ -9,6 +9,8 @@ import { kamarService } from '@/services/kamar.service';
 import { asramaService } from '@/services/asrama.service';
 import type { Asrama } from '@/types/Kamar';
 
+import { toast } from '@/hooks/use-toast';
+
 interface PropTypes {
     onSuccess?: () => void;
 }
@@ -20,8 +22,6 @@ const CreateKamarDialog = ({ onSuccess }: PropTypes) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [open, setOpen] = useState(false);
-
-
 
     useEffect(() => {
         if (!open) return;
@@ -52,13 +52,24 @@ const CreateKamarDialog = ({ onSuccess }: PropTypes) => {
         setError('');
         try {
             await kamarService.createKamar(namaKamar, asramaId, Number(kapasitas));
+            toast({
+                variant: 'success',
+                title: 'Berhasil',
+                description: `Kamar ${namaKamar} telah berhasil ditambahkan.`,
+            });
             setNamaKamar('');
             setKapasitas('');
             setAsramaId('');
             setOpen(false);
             onSuccess?.();
         } catch (err) {
-            setError((err as Error).message);
+            const errMsg = (err as Error).message;
+            setError(errMsg);
+            toast({
+                variant: 'destructive',
+                title: 'Gagal',
+                description: errMsg || 'Gagal menambahkan kamar.',
+            });
         } finally {
             setIsLoading(false);
         }

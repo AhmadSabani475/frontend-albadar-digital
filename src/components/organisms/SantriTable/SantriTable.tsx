@@ -3,18 +3,13 @@ import type { Santri } from '@/types/Santri';
 import { useEffect, useState } from 'react';
 import { getColumns } from './columns';
 import DataTable from '../DataTable';
-import StatusAlert from '@/components/molecules/StatusAlert';
+import { toast } from '@/hooks/use-toast';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const SantriTable = () => {
     const [data, setData] = useState<Santri[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
-    const [alert, setAlert] = useState<{
-        variant: 'success' | 'error' | 'info' | 'warning';
-        title: string;
-        description?: string;
-    } | null>(null);
 
     const fetchData = async (status?: string) => {
         try {
@@ -33,15 +28,15 @@ const SantriTable = () => {
             setIsLoading(true);
             await santriService.deleteSantriById(id);
             await fetchData(statusFilter);
-            setAlert({
+            toast({
                 variant: 'success',
                 title: 'Santri berhasil dihapus',
                 description: 'Data Santri telah dihapus dari sistem.',
             });
         } catch (error) {
-            setAlert({
-                variant: 'error',
-                title: 'Gagal menghapus user',
+            toast({
+                variant: 'destructive',
+                title: 'Gagal menghapus santri',
                 description: 'Terjadi kesalahan, coba lagi.',
             });
         } finally {
@@ -52,12 +47,6 @@ const SantriTable = () => {
     useEffect(() => {
         fetchData(statusFilter);
     }, [statusFilter]);
-    useEffect(() => {
-        if (alert) {
-            const timer = setTimeout(() => setAlert(null), 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [alert]);
 
     const columns = getColumns({ onDelete: handleDelete });
     return (
@@ -80,15 +69,6 @@ const SantriTable = () => {
                 columns={columns}
                 isLoading={isLoading}
             />
-            {alert && (
-                <div className="fixed top-4 right-4 z-50 w-full max-w-sm">
-                    <StatusAlert
-                        variant={alert.variant}
-                        title={alert.title}
-                        description={alert.description}
-                    />
-                </div>
-            )}
         </div>
     );
 };

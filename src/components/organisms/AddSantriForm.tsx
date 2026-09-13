@@ -1,25 +1,33 @@
-
 import { Accordion } from '@/components/ui/accordion';
-import { Save, Undo2 } from 'lucide-react';
+import { Loader2, Save, Undo2 } from 'lucide-react';
 import { Button } from '../ui/button';
-import { useState, type SubmitEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import type { CreateSantriPayload } from '@/types/Santri';
 import { Link, useNavigate } from 'react-router-dom';
 import { santriService } from '@/services/santri.service';
+import { tahunAjaranService } from '@/services/tahunAjaran.service';
+import { kelasSantriService } from '@/services/kelasSantri.service';
+import { riwayatKelasNgajiService } from '@/services/riwayatKelasNgaji.service';
 import DataDiriSection from './DataDiriSection';
 import DataAlamatSection from './DataAlamatSection';
 import DataOrangTuaSection from './DataOrangTuaSection';
 import DataPendidikanSection from './DataPendidikanSection';
 import DataAsramaSekolah from './DataAsramaSekolah';
 
+import { toast } from '@/hooks/use-toast';
+
 const AddSantriForm = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
-    const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
+
+        const tingkatKelasId = formData.get('tingkatKelasId') as string;
+        const tingkatNgajiId = formData.get('tingkatNgajiId') as string;
+
         const santri: CreateSantriPayload = {
             nik: formData.get('nik') as string | undefined,
             nis: formData.get('nis') as string | undefined,
@@ -76,19 +84,58 @@ const AddSantriForm = () => {
         try {
             setIsLoading(true);
             setError('');
-            await santriService.createSantri(santri);
+            const newSantriRes = await santriService.createSantri(santri);
+            const createdSantriId = newSantriRes.data?._id;
+
+            if (createdSantriId && (tingkatKelasId || tingkatNgajiId)) {
+                try {
+                    const taRes = await tahunAjaranService.getAllTahunAjaran();
+                    const activeTa = taRes.data?.find((t) => t.is_active) || taRes.data?.[0];
+
+                    if (activeTa) {
+                        if (tingkatKelasId) {
+                            await kelasSantriService.create({
+                                santriId: createdSantriId,
+                                tahunAjaranId: activeTa._id,
+                                tingkatKelasId,
+                                status: 'aktif',
+                            });
+                        }
+                        if (tingkatNgajiId) {
+                            await riwayatKelasNgajiService.create({
+                                santriId: createdSantriId,
+                                tahunAjaranId: activeTa._id,
+                                tingkatNgajiId,
+                            });
+                        }
+                    }
+                } catch (assignErr) {
+                    console.error('Gagal assign kelas/ngaji awal santri:', assignErr);
+                }
+            }
+
+            toast({
+                variant: 'success',
+                title: 'Berhasil',
+                description: 'Data Santri baru berhasil ditambahkan',
+            });
             navigate('/dashboard/santri');
         } catch (err) {
-            setError((err as Error).message);
+            const errMsg = (err as Error).message;
+            setError(errMsg);
+            toast({
+                variant: 'destructive',
+                title: 'Gagal',
+                description: errMsg || 'Gagal menambahkan santri baru',
+            });
         } finally {
             setIsLoading(false);
         }
     };
 
-
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3">
-            <Accordion defaultValue={['data-diri']} className="flex flex-col gap-5">
+            <Accordion defaultValue={['data-diri', 'data-asrama-sekolah']} className="w-full flex flex-col gap-5">
                 <DataDiriSection />
                 <DataAlamatSection />
                 <DataOrangTuaSection />
@@ -104,11 +151,19 @@ const AddSantriForm = () => {
                     </Button>
                 </Link>
                 <Button type="submit" disabled={isLoading}>
-                    <Save className="w-4 h-4 mr-1" />
-                    {isLoading ? 'Menyimpan...' : 'Simpan Profil'}
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+                            Menyimpan...
+                        </>
+                    ) : (
+                        <>
+                            <Save className="w-4 h-4 mr-1.5" />
+                            Simpan Profil
+                        </>
+                    )}
                 </Button>
             </div>
-
         </form>
     );
 };

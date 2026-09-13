@@ -17,6 +17,7 @@ import {
     TableBody,
     TableCell,
 } from '../ui/table';
+import { Skeleton } from '../ui/skeleton';
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 
 interface DataTableProps<T> {
@@ -63,10 +64,6 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
         initialState: { pagination: { pageSize } },
     });
 
-    if (isLoading) {
-        return <p className="text-sm text-muted-foreground">Memuat data...</p>;
-    }
-
     const totalRows = table.getFilteredRowModel().rows.length;
     const currentPage = table.getState().pagination.pageIndex;
     const from = totalRows === 0 ? 0 : currentPage * pageSize + 1;
@@ -75,7 +72,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
     return (
         <div className="rounded-xl border border-border bg-card overflow-hidden shadow-xs">
 
-            <div className="flex items-center justify-between p-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <span>Tampilkan</span>
                     <select
@@ -95,14 +92,14 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                     <span>entri</span>
                 </div>
 
-                <div className="relative">
+                <div className="relative w-full sm:w-auto">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
                     <input
                         type="text"
                         value={globalFilter}
                         onChange={(e) => setGlobalFilter(e.target.value)}
                         placeholder={searchPlaceholder}
-                        className="bg-background border border-border rounded-lg pl-9 pr-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring w-64"
+                        className="bg-background border border-border rounded-lg pl-9 pr-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring w-full sm:w-64"
                     />
                 </div>
             </div>
@@ -116,7 +113,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                                 {headerGroup.headers.map((header) => (
                                     <TableHead
                                         key={header.id}
-                                        className="font-semibold text-sm pl-6 py-4 text-foreground whitespace-nowrap"
+                                        className="font-semibold text-sm px-6 py-3.5 text-foreground whitespace-nowrap"
                                         style={{ width: header.column.columnDef.size }}
                                     >
                                         {header.isPlaceholder
@@ -128,13 +125,23 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows.length ? (
+                        {isLoading ? (
+                            Array.from({ length: 5 }).map((_, rIdx) => (
+                                <TableRow key={rIdx} className="border-b border-border">
+                                    {columns.map((_, cIdx) => (
+                                        <TableCell key={cIdx} className="px-6 py-3.5">
+                                            <Skeleton className="h-5 w-full max-w-[140px] rounded-md" />
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        ) : table.getRowModel().rows.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow key={row.id} className="border-b border-border hover:bg-muted/40 transition-colors">
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className="pl-6 py-4 text-foreground whitespace-nowrap"
+                                            className="px-6 py-3.5 text-foreground whitespace-nowrap"
                                             style={{ width: cell.column.columnDef.size }}
                                         >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -153,11 +160,11 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
                 </Table>
             </div>
 
-            <div className="flex items-center justify-between p-4 border-t border-border text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border-t border-border text-sm text-muted-foreground">
                 <span>
                     Menampilkan {from} sampai {to} dari {totalRows} entri
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 flex-wrap">
                     <button
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}

@@ -1,14 +1,16 @@
-
 export interface TahunAjaran {
+    _id: string;
     nama: string;
-    tanggalMulai: Date;
-    tanggalSelesai?: Date;
-    is_active: boolean;
+    tanggalMulai: string | Date;
+    tanggalSelesai?: string | Date;
+    is_active?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface PayloadTahunAjaran {
-    _id: string;
-    tanggalMulai: Date;
-    tanggalSelesai?: Date;
-    is_active: boolean;
+    nama: string;
+    tanggalMulai: string;
+    tanggalSelesai?: string;
+    is_active?: boolean;
 }
