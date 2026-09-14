@@ -29,9 +29,10 @@ export interface PayloadNaikKelas {
     tahunAjaranAsalId: string;
     tahunAjaranTujuanId: string;
 }
-
 export interface SantriButuhKeputusanKelas {
-    santriId: string | Santri;
+    santriId: string;
+    namaSantri: string;   
+    nis: string;            
     tingkatKelasSekarang: TingkatKelas;
 }
 

@@ -15,6 +15,7 @@ export interface RiwayatKelasNgaji {
 export interface PayloadRiwayatKelasNgaji {
     santriId: string;
     tahunAjaranId: string;
+
     tingkatNgajiId?: string | null;
     statusLain?: string;
 }
@@ -34,7 +35,9 @@ export interface PayloadNaikKelasNgaji {
 }
 
 export interface SantriButuhKeputusanNgaji {
-    santriId: string | Santri;
+    santriId: string;
+    namaSantri: string;
+    nis: string;
     tingkatNgajiSekarang: TingkatNgaji;
 }
 

@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Bed, type LucideIcon, Archive, DollarSign, Wallet, WalletCards, Banknote, BanknoteArrowUp } from 'lucide-react';
+import { LayoutDashboard, Users, Bed, type LucideIcon, Archive, DollarSign, Wallet, WalletCards, Banknote, BanknoteArrowUp, CircleFadingArrowUp } from 'lucide-react';
 
 interface MenuItem {
     type: 'item';
@@ -52,5 +52,11 @@ export const SIDEBAR_MENU: MenuEntry[] = [
             { name: 'Rekening', url: '/dashboard/rekening', icon: Banknote },
             { name: 'Uang Jajan', url: '/dashboard/uang-jajan', icon: BanknoteArrowUp }
         ]
-    }
+    },
+    {
+        type: 'item',
+        title: 'Kenaikan Kelas',
+        icon: CircleFadingArrowUp,
+        url: '/dashboard/kenaikan-kelas'
+    },
 ];

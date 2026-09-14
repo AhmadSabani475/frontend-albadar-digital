@@ -20,6 +20,7 @@ import DetailRekeningPage from '@/pages/RekeningPage/DetailRekeningPage';
 import UangJajanPage from '@/pages/UangJajanPage/UangJajanPage';
 import KasirPage from '@/pages/KasirPage/KasirPage';
 import SettingsPage from '@/pages/SettingsPage/SettingsPage';
+import KenaikanKelasPage from '@/pages/KenaikanKelasPage/KenaikanKelasPage';
 
 const routes: RouteObject[] = [
     {
@@ -164,6 +165,15 @@ const routes: RouteObject[] = [
                     breadcrumb: 'Kasir',
                     title: 'Kasir',
                     subtitle: 'Kelola transaksi Kasir',
+                },
+            },
+            {
+                path: 'kenaikan-kelas',
+                element: <KenaikanKelasPage />,
+                handle: {
+                    breadcrumb: 'Kenaikan Kelas',
+                    title: 'Kenaikan Kelas',
+                    subtitle: 'Kelola Kelas Sekolah & Ngaji',
                 },
             },
             {
