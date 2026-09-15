@@ -1,4 +1,4 @@
-import EditSantriForm from "@/components/organisms/EditSantriForm";
+import EditSantriForm from "@/components/organisms/Santri/EditSantriForm";
 import { useParams } from "react-router-dom";
 
 const EditSantriPage = () => {

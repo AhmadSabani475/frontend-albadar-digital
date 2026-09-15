@@ -4,7 +4,7 @@ import { getColumns } from './columns';
 import DataTable from '@/components/organisms/DataTable';
 import { toast } from '@/hooks/use-toast';
 import { tarifKhususService } from '@/services/tarifKhusus.service';
-import CreateTarifKhusus from '@/components/molecules/CreateTarifKhusus';
+import CreateTarifKhusus from '@/components/organisms/Tagihan/CreateTarifKhusus';
 
 const TableTarifKhusus = () => {
     const [data, setData] = useState<TarifKhusus[]>([]);

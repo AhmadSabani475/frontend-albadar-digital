@@ -1,17 +1,16 @@
-﻿
 import type { ColumnDef } from '@tanstack/react-table';
+import type { User } from '@/types/Users';
+import { Button } from '../../ui/button';
+import { RotateCcw, Trash2 } from 'lucide-react';
+import { Badge } from '../../ui/badge';
+import ConfirmActionButton from '../../molecules/ConfirmActionButton';
 
-
-import { Trash2 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import type { JenisTagihan } from '@/types/Tagihan';
-import ConfirmActionButton from '@/components/molecules/ConfirmActionButton';
-import { Button } from '@/components/ui/button';
 
 interface PropTypes {
     onDelete: (id: string) => void;
+    onReset: (id: string) => void;
 }
-export const getColumns = ({ onDelete }: PropTypes): ColumnDef<JenisTagihan>[] => [
+export const getColumns = ({ onDelete, onReset }: PropTypes): ColumnDef<User>[] => [
     {
         id: 'no',
         header: 'No',
@@ -22,33 +21,33 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<JenisTagihan>[] =
         }
     },
     {
-        accessorKey: 'nama',
-        header: 'Nama Tagihan',
+        accessorKey: 'username',
+        header: 'Username',
         size: 200,
     },
     {
-        accessorKey: 'tipePeriode',
-        header: 'Tipe',
+        accessorKey: 'role',
+        header: 'Role',
         size: 150,
         cell: ({ row }) => (
-            <span className="capitalize">{row.original.tipePeriode}</span>
+            <span className="capitalize">{row.original.role}</span>
         ),
     },
     {
-        accessorKey: 'wajib',
-        header: 'Wajib',
+        accessorKey: 'is_active',
+        header: 'Status',
         size: 150,
         cell: ({ row }) => {
-            const wajib = row.original.wajib === true;
+            const isActive = row.original.is_active === true;
             return (
                 <Badge
                     className={
-                        wajib
+                        isActive
                             ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 rounded-full border-0'
                             : 'bg-muted text-muted-foreground hover:bg-muted rounded-full border-0'
                     }
                 >
-                    {wajib ? 'Wajib' : 'Opsional'}
+                    {isActive ? 'Aktif' : 'Belum Aktif'}
                 </Badge>
             );
         },
@@ -58,7 +57,7 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<JenisTagihan>[] =
         header: 'Aksi',
         size: 100,
         cell: ({ row }) => {
-            const jenis = row.original._id;
+            const user = row.original._id;
             return (
                 <div className="flex gap-2">
                     <ConfirmActionButton
@@ -67,8 +66,19 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<JenisTagihan>[] =
                                 <Trash2 className="h-4 w-4 text-destructive" />
                             </Button>
                         }
-                        title={`Hapus "${row.original.nama}"?`}
-                        onConfirm={() => onDelete(jenis)}
+                        title={`Hapus "${row.original.username}"?`}
+                        onConfirm={() => onDelete(user)}
+                    />
+                    <ConfirmActionButton
+                        trigger={
+                            <Button variant="ghost" size="icon">
+                                <RotateCcw className="h-4 w-4 text-yellow-300" />
+                            </Button>
+                        }
+                        title={`Reset "${row.original.username}"?`}
+                        onConfirm={() => onReset(user)}
+                        actionLabel="Reset"
+                        actionVariant="default"
                     />
                 </div>
             );

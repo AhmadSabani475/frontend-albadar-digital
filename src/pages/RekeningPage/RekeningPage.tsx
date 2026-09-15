@@ -1,5 +1,5 @@
-import CreateRekeningDialog from "@/components/molecules/CreateRekeningDialog";
-import StatCards from "@/components/molecules/StatCards";
+import CreateRekeningDialog from "@/components/organisms/Rekening/CreateRekeningDialog";
+import StatCards from "@/components/atoms/StatCards";
 import TableRekening from "@/components/organisms/Rekening/TableRekening";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDashboardSummary } from "@/hooks/use-dashboard-summary";

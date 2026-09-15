@@ -7,7 +7,7 @@ const Logo = (props: PropTypes) => {
     const { src, alt } = props;
     return (
         <img src={src} alt={alt}
-            className="h-10 w-10 rounded-full dark:mix-blend-screen" />
+            className="h-10 w-10  dark:mix-blend-screen" />
     );
 };
 

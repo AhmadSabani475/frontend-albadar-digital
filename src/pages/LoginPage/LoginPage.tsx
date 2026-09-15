@@ -7,7 +7,7 @@ const LoginPage = () => {
         <AuthLayout>
             <Card className="w-full max-w-sm">
                 <CardHeader className="flex flex-col items-center gap-4 pt-8 pb-2">
-                    <img src="/logo_albadar.jpg" alt="Logo" className="h-24 w-24 rounded-full dark:mix-blend-screen" />
+                    <img src="/logo_albadar.png" alt="Logo" className="h-24 w-24  dark:mix-blend-screen" />
                     <div className="text-center">
                         <h1 className="text-xl font-bold">Login Ke Akun Anda</h1>
                         <p className="text-sm text-muted-foreground">

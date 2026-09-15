@@ -1,4 +1,4 @@
-import SantriTable from '@/components/organisms/SantriTable/SantriTable';
+import SantriTable from '@/components/organisms/Santri/SantriTable/SantriTable';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';

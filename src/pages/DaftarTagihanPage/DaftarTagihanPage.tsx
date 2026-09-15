@@ -1,5 +1,5 @@
-import CreateTagihan from "@/components/molecules/CreateTagihan";
-import TableTagihan from "@/components/organisms/DaftarTagihan/TableTagihan";
+import CreateTagihan from "@/components/organisms/Tagihan/CreateTagihan";
+import TableTagihan from "@/components/organisms/Tagihan/DaftarTagihan/TableTagihan";
 
 const TagihanPage = () => {
     return (

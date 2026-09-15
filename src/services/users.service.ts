@@ -6,13 +6,13 @@ interface CreateUserResponse {
     data: {
         _id: string;
         username: string;
-        role: 'admin' | 'pengurus';
+        role: 'admin' | 'bendahara';
         is_active: boolean;
         generatedPassword: string;
     };
 }
 export const usersService = {
-    createUser: (username: string, role: 'admin' | 'pengurus', santriId: string) => {
+    createUser: (username: string, role: 'admin' | 'bendahara', santriId: string) => {
         return fetchAPI<CreateUserResponse>('/users', {
             method: 'POST',
             body: JSON.stringify({ username, role, santriId }),

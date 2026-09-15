@@ -1,4 +1,4 @@
-import AddSantriForm from '@/components/organisms/AddSantriForm';
+import AddSantriForm from '@/components/organisms/Santri/AddSantriForm';
 
 const AddSantriPage = () => {
     return (

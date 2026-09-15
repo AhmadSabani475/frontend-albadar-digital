@@ -1,6 +1,6 @@
 import SearchSantriDialog from "@/components/molecules/SearchSantriDialog";
-import RingkasanPembayaranCard from "@/components/organisms/RingkasanPembayaran";
-import StrukKwitansiDialog from "@/components/organisms/StrukKwitansiDialog";
+import RingkasanPembayaranCard from "@/components/organisms/Kasir/RingkasanPembayaran";
+import StrukKwitansiDialog from "@/components/organisms/Kasir/StrukKwitansiDialog";
 import SetoranSaldoCard from "@/components/organisms/TableSetoranRekening/SetoranSaldoCard";
 import TabelTagihanBelumLunas from "@/components/organisms/TableTagihanBelumLunas/TableTagihanBelumLunas";
 import { Button } from "@/components/ui/button";

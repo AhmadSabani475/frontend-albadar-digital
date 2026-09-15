@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import KamarTable from '@/components/organisms/KamarOrg/KamarTable';
-import CreateKamarDialog from '@/components/molecules/CreateKamarDialog';
-import DialogKelolaAsrama from '@/components/organisms/KamarOrg/DialogKelolaAsrama';
+import KamarTable from '@/components/organisms/Kamar/KamarTable';
+import CreateKamarDialog from '@/components/organisms/Kamar/CreateKamarDialog';
+import DialogKelolaAsrama from '@/components/organisms/Kamar/DialogKelolaAsrama';
 
 const KamarPage = () => {
     const [refreshKey, setRefreshKey] = useState(0);

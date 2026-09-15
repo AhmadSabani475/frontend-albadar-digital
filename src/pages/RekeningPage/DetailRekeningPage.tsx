@@ -1,4 +1,4 @@
-import CreateMutasiDialog from "@/components/molecules/CreateMutasiDialog";
+import CreateMutasiDialog from "@/components/organisms/Rekening/CreateMutasiDialog";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";

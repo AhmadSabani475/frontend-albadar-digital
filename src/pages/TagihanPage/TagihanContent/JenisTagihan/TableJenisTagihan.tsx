@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getColumns } from './columns';
 import DataTable from '@/components/organisms/DataTable';
 import { toast } from '@/hooks/use-toast';
-import CreateJenisTagihan from '@/components/molecules/CreateJenisTagihan';
+import CreateJenisTagihan from '@/components/organisms/Tagihan/CreateJenisTagihan';
 
 const TableJenisTagihan = () => {
     const [data, setData] = useState<JenisTagihan[]>([]);

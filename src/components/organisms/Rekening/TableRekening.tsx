@@ -2,7 +2,7 @@ import { rekeningService } from "@/services/rekening.service";
 import type { Rekening } from "@/types/Rekening";
 import { useEffect, useState } from "react";
 import { getColumns } from "./columns";
-import DataTable from "../DataTable";
+import DataTable from '../DataTable';
 
 const TableRekening = () => {
     const [data, setData] = useState<Rekening[]>([]);

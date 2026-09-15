@@ -1,7 +1,7 @@
-
+﻿
 import type { ColumnDef } from '@tanstack/react-table';
 import { Trash2 } from 'lucide-react';
-import ConfirmDeleteButton from '@/components/molecules/ConfirmDeleteButton';
+import ConfirmActionButton from '@/components/molecules/ConfirmActionButton';
 import { Button } from '@/components/ui/button';
 import type { TarifKhusus } from '@/types/Tagihan';
 
@@ -51,7 +51,7 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<TarifKhusus>[] =>
             const item = row.original._id;
             return (
                 <div className="flex gap-2">
-                    <ConfirmDeleteButton
+                    <ConfirmActionButton
                         trigger={
                             <Button variant="ghost" size="icon">
                                 <Trash2 className="h-4 w-4 text-destructive" />

@@ -1,7 +1,7 @@
-import StatCards from '@/components/molecules/StatCards';
-import GrafikPemasukanHarian from '@/components/organisms/GrafikPemasukanHarian';
-import PieChartStatusTagihan from '@/components/organisms/PieChartStatusTagihan';
-import TransaksiTerakhirList from '@/components/organisms/TransaksiTerakhirList';
+import StatCards from '@/components/atoms/StatCards';
+import GrafikPemasukanHarian from '@/components/organisms/Dashboard/GrafikPemasukanHarian';
+import PieChartStatusTagihan from '@/components/organisms/Dashboard/PieChartStatusTagihan';
+import TransaksiTerakhirList from '@/components/organisms/Dashboard/TransaksiTerakhirList';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDashboardSummary } from '@/hooks/use-dashboard-summary';
 import { formatIDR } from '@/lib/utils';

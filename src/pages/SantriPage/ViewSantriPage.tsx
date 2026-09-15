@@ -1,5 +1,5 @@
 
-import ViewDataSantri from '@/components/organisms/ViewDataSantri';
+import ViewDataSantri from '@/components/organisms/Santri/ViewDataSantri';
 import { useParams } from 'react-router-dom';
 
 const ViewSantriPage = () => {
