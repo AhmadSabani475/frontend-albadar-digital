@@ -37,8 +37,8 @@ export const SIDEBAR_MENU: MenuEntry[] = [
         label: 'Keuangan',
         items: [
             { name: 'Kasir', url: '/dashboard/kasir', icon: Wallet, roles: ['admin', 'bendahara'] },
-            { name: 'Daftar Tagihan', url: '/dashboard/tagihan', icon: FileText, roles: ['admin', 'bendahara'] },
-            { name: 'Manajemen Tagihan', url: '/dashboard/daftar-tagihan', icon: DollarSign, roles: ['admin', 'bendahara'] },
+            { name: 'Daftar Tagihan', url: '/dashboard/daftar-tagihan', icon: FileText, roles: ['admin', 'bendahara'] },
+            { name: 'Manajemen Tagihan', url: '/dashboard/tagihan', icon: DollarSign, roles: ['admin', 'bendahara'] },
         ]
     },
     {
