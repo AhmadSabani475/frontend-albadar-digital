@@ -19,6 +19,7 @@ import RekeningPage from '@/pages/RekeningPage/RekeningPage';
 import DetailRekeningPage from '@/pages/RekeningPage/DetailRekeningPage';
 import UangJajanPage from '@/pages/UangJajanPage/UangJajanPage';
 import KasirPage from '@/pages/KasirPage/KasirPage';
+import RiwayatTransaksiPage from '@/pages/RiwayatTransaksiPage/RiwayatTransaksiPage';
 import SettingsPage from '@/pages/SettingsPage/SettingsPage';
 import KenaikanKelasPage from '@/pages/KenaikanKelasPage/KenaikanKelasPage';
 import TunggakanPage from '@/pages/TunggakanPage/TunggakanPage';
@@ -223,6 +224,19 @@ const routes: RouteObject[] = [
                     breadcrumb: 'Kasir',
                     title: 'Kasir',
                     subtitle: 'Kelola transaksi Kasir',
+                },
+            },
+            {
+                path: 'riwayat-transaksi',
+                element: (
+                    <ProtectedRoute allowedRoles={['admin', 'bendahara']}>
+                        <RiwayatTransaksiPage />
+                    </ProtectedRoute>
+                ),
+                handle: {
+                    breadcrumb: 'Riwayat Transaksi',
+                    title: 'Riwayat Transaksi',
+                    subtitle: 'Laporan transaksi kasir & kelola bukti transfer',
                 },
             },
             {

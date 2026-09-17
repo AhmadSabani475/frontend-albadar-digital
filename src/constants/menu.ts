@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, type LucideIcon, Archive, DollarSign, Wallet, Banknote, BanknoteArrowUp, CircleFadingArrowUp, FileText, FileWarning } from 'lucide-react';
+import { LayoutDashboard, Users, type LucideIcon, Archive, DollarSign, Wallet, Banknote, BanknoteArrowUp, CircleFadingArrowUp, FileText, FileWarning, History } from 'lucide-react';
 
 interface MenuItem {
     type: 'item';
@@ -36,6 +36,7 @@ export const SIDEBAR_MENU: MenuEntry[] = [
         label: 'Keuangan',
         items: [
             { name: 'Kasir', url: '/dashboard/kasir', icon: Wallet, roles: ['admin', 'bendahara'] },
+            { name: 'Riwayat Transaksi', url: '/dashboard/riwayat-transaksi', icon: History, roles: ['admin', 'bendahara'] },
             { name: 'Daftar Tagihan', url: '/dashboard/daftar-tagihan', icon: FileText, roles: ['admin', 'bendahara'] },
             { name: 'Manajemen Tagihan', url: '/dashboard/tagihan', icon: DollarSign, roles: ['admin', 'bendahara'] },
             { name: 'Tunggakan', url: '/dashboard/tunggakan', icon: FileWarning, roles: ['admin', 'bendahara'] },

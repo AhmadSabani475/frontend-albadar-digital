@@ -22,6 +22,7 @@ import type { Kwitansi } from "@/types/Kwitansi";
 import { FileText, UserRound } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 
+import { uploadFileToSupabase } from "@/utils/uploadSupabase";
 import { toast } from "@/hooks/use-toast";
 import { getPeriodeKeterangan } from "@/lib/utils";
 
@@ -32,7 +33,8 @@ const KasirPage = () => {
     const [openSearchSantri, setOpenSearchSantri] = useState(false);
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [kwitansi, setKwitansi] = useState<Kwitansi | null>(null);
-    const [metodePembayaran, setMetodePembayaran] = useState<'cash' | 'transfer'>('cash')
+    const [metodePembayaran, setMetodePembayaran] = useState<'cash' | 'transfer'>('cash');
+    const [buktiTransferFile, setBuktiTransferFile] = useState<File | null>(null);
 
     const { data, isLoading, error } = useRingkasanSantri(selectedSantriId);
     const { mutate, isPending } = useProsesTransaksi();
@@ -133,8 +135,23 @@ const KasirPage = () => {
         if (!selectedSantriId || payloadItems.length === 0) return;
 
         setConfirmOpen(false);
+
+        let uploadedUrl: string | undefined = undefined;
+        if (metodePembayaran === 'transfer' && buktiTransferFile) {
+            try {
+                uploadedUrl = await uploadFileToSupabase(buktiTransferFile, 'bukti-transfer');
+            } catch (uploadErr) {
+                console.error('Gagal upload bukti transfer saat kasir:', uploadErr);
+            }
+        }
+
         mutate(
-            { santriId: selectedSantriId, items: payloadItems, metodePembayaran: metodePembayaran },
+            {
+                santriId: selectedSantriId,
+                items: payloadItems,
+                metodePembayaran: metodePembayaran,
+                buktiTransferUrl: uploadedUrl,
+            },
             {
                 onSuccess: (res) => {
                     toast({
@@ -145,6 +162,7 @@ const KasirPage = () => {
                     setKwitansi(res.data);
                     setSelectedTagihan({});
                     setSetoranRekening({});
+                    setBuktiTransferFile(null);
                 },
                 onError: (err) => {
                     console.error(err);
@@ -156,7 +174,7 @@ const KasirPage = () => {
                 },
             }
         );
-    }
+    };
 
     return (
         <div className="w-full flex flex-col gap-4">
@@ -274,10 +292,12 @@ const KasirPage = () => {
                             items={ringkasanItems}
                             metodePembayaran={metodePembayaran}
                             onMetodePembayaranChange={setMetodePembayaran}
+                            buktiTransferFile={buktiTransferFile}
+                            onBuktiTransferFileChange={setBuktiTransferFile}
                             total={totalPembayaran}
                             isPending={isPending}
                             onSubmit={handleConfirmClick}
-                            onReset={() => { setSelectedTagihan({}); setSetoranRekening({}); }}
+                            onReset={() => { setSelectedTagihan({}); setSetoranRekening({}); setBuktiTransferFile(null); }}
                         />
                     )}
                 </div>

@@ -21,7 +21,10 @@ const SidebarNavGroup = (props: PropTypes) => {
     return (
         <Collapsible defaultOpen className="group/collapsible">
             <SidebarGroup className="p-0 py-1">
-                <SidebarGroupLabel render={<CollapsibleTrigger className="w-full flex items-center justify-between cursor-pointer hover:text-sidebar-foreground" />}>
+                <SidebarGroupLabel
+                    className="group-data-[collapsible=icon]:hidden"
+                    render={<CollapsibleTrigger className="w-full flex items-center justify-between cursor-pointer hover:text-sidebar-foreground" />}
+                >
                     <span>{label}</span>
                     <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                 </SidebarGroupLabel>
@@ -37,6 +40,7 @@ const SidebarNavGroup = (props: PropTypes) => {
                                     <SidebarMenuItem key={item.name}>
                                         <SidebarMenuButton
                                             isActive={isActive}
+                                            tooltip={item.name}
                                             render={<Link to={item.url} />}
                                         >
                                             {item.icon && <item.icon />}
@@ -49,7 +53,7 @@ const SidebarNavGroup = (props: PropTypes) => {
                     </SidebarGroupContent>
                 </CollapsibleContent>
             </SidebarGroup>
-        </Collapsible >
+        </Collapsible>
     );
 };
 export default SidebarNavGroup;

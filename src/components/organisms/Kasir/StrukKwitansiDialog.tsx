@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Printer } from "lucide-react";
+import { Printer, ExternalLink, FileText, CheckCircle2 } from "lucide-react";
 import { createPortal } from "react-dom";
 import type { Kwitansi } from "@/types/Kwitansi";
 import type { Santri } from "@/types/Santri";
@@ -16,9 +16,12 @@ const labelJenisRekening: Record<string, string> = {
     tabungan_ziarah: 'Ziarah',
 };
 
-const StrukKwitansiDialog = ({ kwitansi, santri,onClose }: Props) => {
+const StrukKwitansiDialog = ({ kwitansi, santri, onClose }: Props) => {
     if (!kwitansi) return null;
 
+    const santriObj = santri ?? (typeof kwitansi.santriId === 'object' ? kwitansi.santriId : undefined);
+    const isTransfer = kwitansi.metodePembayaran === 'transfer';
+    const hasBukti = Boolean(kwitansi.buktiTransferUrl);
 
     const handlePrint = () => {
         window.print();
@@ -27,7 +30,7 @@ const StrukKwitansiDialog = ({ kwitansi, santri,onClose }: Props) => {
     return (
         <>
             <Dialog open={!!kwitansi} onOpenChange={(open) => !open && onClose()}>
-                <DialogContent className="sm:max-w-sm">
+                <DialogContent className="sm:max-w-sm max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>Struk Pembayaran</DialogTitle>
                     </DialogHeader>
@@ -41,11 +44,47 @@ const StrukKwitansiDialog = ({ kwitansi, santri,onClose }: Props) => {
                             </p>
                         </div>
 
-                        <div className="text-xs">
-                            <p>Santri: <span className="font-medium">{santri?.namaLengkap ?? '-'}</span></p>
-                            <p className="text-muted-foreground">NIS: {santri?.nis ?? '-'}</p>
-                            <p className="text-muted-foreground">Metode: <span className="font-medium capitalize text-foreground">{kwitansi.metodePembayaran ?? 'cash'}</span></p>
+                        <div className="text-xs space-y-0.5">
+                            <p>Santri: <span className="font-medium">{santriObj?.namaLengkap ?? '-'}</span></p>
+                            {santriObj?.nis && <p className="text-muted-foreground">NIS: {santriObj.nis}</p>}
+                            <p className="text-muted-foreground">
+                                Metode: <span className="font-medium capitalize text-foreground">{kwitansi.metodePembayaran ?? 'cash'}</span>
+                            </p>
                         </div>
+
+                        {/* Transfer Proof Preview if available */}
+                        {isTransfer && (
+                            <div className="p-2.5 rounded-lg border border-border bg-muted/30 flex flex-col gap-1.5">
+                                <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1">
+                                    {hasBukti ? <CheckCircle2 className="w-3 h-3 text-emerald-500" /> : null}
+                                    Bukti Transfer:
+                                </span>
+                                {hasBukti ? (
+                                    kwitansi.buktiTransferUrl?.match(/\.(jpeg|jpg|png|webp)/i) ? (
+                                        <a href={kwitansi.buktiTransferUrl} target="_blank" rel="noreferrer" className="block group">
+                                            <img
+                                                src={kwitansi.buktiTransferUrl}
+                                                alt="Bukti Transfer"
+                                                className="max-h-36 w-full object-contain rounded border border-border group-hover:opacity-90 transition-opacity"
+                                            />
+                                        </a>
+                                    ) : (
+                                        <a
+                                            href={kwitansi.buktiTransferUrl}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="text-xs text-primary flex items-center gap-1 hover:underline"
+                                        >
+                                            <FileText className="w-3.5 h-3.5" />
+                                            Buka Dokumen Bukti TF
+                                            <ExternalLink className="w-3 h-3" />
+                                        </a>
+                                    )
+                                ) : (
+                                    <span className="text-xs text-amber-600 dark:text-amber-400 italic">Belum diunggah</span>
+                                )}
+                            </div>
+                        )}
 
                         <div className="border-t border-dashed border-border pt-3 space-y-2">
                             {kwitansi.items.map((item, i) => {
@@ -95,7 +134,7 @@ const StrukKwitansiDialog = ({ kwitansi, santri,onClose }: Props) => {
                 </DialogContent>
             </Dialog>
 
-            {/* ── Area cetak: di-render langsung ke body, bypass Dialog portal ── */}
+            {/* ── Area cetak ── */}
             {createPortal(
                 <div
                     id="struk-print-area"
@@ -110,7 +149,6 @@ const StrukKwitansiDialog = ({ kwitansi, santri,onClose }: Props) => {
                         padding: 24,
                     }}
                 >
-                    {/* Header */}
                     <div style={{ textAlign: 'center', borderBottom: '1px dashed #999', paddingBottom: 12, marginBottom: 12 }}>
                         <p style={{ fontWeight: 700, fontSize: 16, margin: 0 }}>Al-Badar Digital Portal</p>
                         <p style={{ fontSize: 11, color: '#666', margin: '4px 0 0' }}>{kwitansi.nomorKwitansi}</p>
@@ -119,14 +157,12 @@ const StrukKwitansiDialog = ({ kwitansi, santri,onClose }: Props) => {
                         </p>
                     </div>
 
-                    {/* Info Santri */}
                     <div style={{ fontSize: 12, marginBottom: 12 }}>
-                        <p style={{ margin: 0 }}>Santri: <strong>{santri?.namaLengkap ?? '-'}</strong></p>
-                        <p style={{ margin: '2px 0 0', color: '#666' }}>NIS: {santri?.nis ?? '-'}</p>
+                        <p style={{ margin: 0 }}>Santri: <strong>{santriObj?.namaLengkap ?? '-'}</strong></p>
+                        {santriObj?.nis && <p style={{ margin: '2px 0 0', color: '#666' }}>NIS: {santriObj.nis}</p>}
                         <p style={{ margin: '2px 0 0', color: '#666' }}>Metode: <strong style={{ textTransform: 'capitalize' }}>{kwitansi.metodePembayaran ?? 'cash'}</strong></p>
                     </div>
 
-                    {/* Item Pembayaran */}
                     <div style={{ borderTop: '1px dashed #999', paddingTop: 12, marginBottom: 12 }}>
                         {kwitansi.items.map((item, i) => {
                             const showKeterangan = Boolean(
@@ -147,13 +183,11 @@ const StrukKwitansiDialog = ({ kwitansi, santri,onClose }: Props) => {
                         })}
                     </div>
 
-                    {/* Total */}
                     <div style={{ borderTop: '1px dashed #999', paddingTop: 12, marginBottom: 12, display: 'flex', justifyContent: 'space-between', fontWeight: 700 }}>
                         <span>Total</span>
                         <span>Rp {kwitansi.totalNominal.toLocaleString('id-ID')}</span>
                     </div>
 
-                    {/* Saldo Akhir */}
                     <div style={{ borderTop: '1px dashed #999', paddingTop: 12 }}>
                         <p style={{ fontSize: 12, color: '#666', margin: '0 0 6px' }}>Saldo Akhir:</p>
                         {kwitansi.saldoSnapshot.map((s, i) => (
