@@ -1,13 +1,23 @@
 import Brand from '../atoms/Brand';
 import SidebarNavItem from '../molecules/SidebarNavItem';
 import SidebarNavGroup from '../molecules/SidebarNavGroup';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '../ui/sidebar';
 import { useAuthStore } from '@/store/authStore';
 import { SIDEBAR_MENU } from '@/constants/menu';
 import { LogOut, SlidersHorizontal } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const AppSidebar = () => {
     const { user, logout } = useAuthStore();
+    const { isMobile, setOpenMobile } = useSidebar();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (isMobile) {
+            setOpenMobile(false);
+        }
+    }, [location.pathname]);
 
     const filteredMenu = SIDEBAR_MENU
         .map((entry) => {
