@@ -66,7 +66,7 @@ export interface Santri extends Omit<CreateSantriPayload, 'kamarId' | 'sekolahId
     nama: string;
     jenjang?: string;
   };
-  status: 'aktif' | 'alumni' | 'dikeluarkan';
+  status: 'aktif' | 'alumni';
   tanggalTerdaftar: string;
   tanggalKeluar?: string;
   createdAt?: string;

@@ -38,5 +38,12 @@ export const santriService = {
             `/santri/${id}`, {
             method: 'DELETE'
         }
-        )
+        ),
+    updateStatus: (id: string, status: 'aktif' | 'alumni') =>
+        fetchAPI<{ message: string, data: Santri }>(
+            `/santri/${id}/status`, {
+            method: 'PUT',
+            body: JSON.stringify({ status }),
+        }
+        ),
 };

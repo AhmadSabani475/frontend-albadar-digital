@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Bed, type LucideIcon, Archive, DollarSign, Wallet, Banknote, BanknoteArrowUp, CircleFadingArrowUp, FileText } from 'lucide-react';
+import { LayoutDashboard, Users, type LucideIcon, Archive, DollarSign, Wallet, Banknote, BanknoteArrowUp, CircleFadingArrowUp, FileText } from 'lucide-react';
 
 interface MenuItem {
     type: 'item';
@@ -28,7 +28,6 @@ export const SIDEBAR_MENU: MenuEntry[] = [
         label: 'Master Data',
         items: [
             { name: 'Data User', url: '/dashboard/users', icon: Users, roles: ['admin'] },
-            { name: 'Kamar & Asrama', url: '/dashboard/kamar', icon: Bed, roles: ['admin'] },
             { name: 'Santri', url: '/dashboard/santri', icon: Archive, roles: ['admin'] },
         ]
     },

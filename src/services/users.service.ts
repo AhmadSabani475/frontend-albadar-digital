@@ -33,5 +33,11 @@ export const usersService = {
             method: 'PUT'
         }
         );
+    },
+    updateRole: (id: string, role: 'admin' | 'bendahara') => {
+        return fetchAPI<{ message: string, data: User }>(`/users/${id}/role`, {
+            method: 'PUT',
+            body: JSON.stringify({ role }),
+        });
     }
 };

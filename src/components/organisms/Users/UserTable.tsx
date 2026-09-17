@@ -61,6 +61,27 @@ const UserTable = () => {
         }
     }
 
+    const handleChangeRole = async (id: string, role: 'admin' | 'bendahara') => {
+        try {
+            setIsLoading(true);
+            await usersService.updateRole(id, role);
+            await fetchUsers();
+            toast({
+                variant: 'success',
+                title: 'Role berhasil diubah',
+                description: `Role user telah diubah menjadi ${role}.`,
+            });
+        } catch {
+            toast({
+                variant: 'destructive',
+                title: 'Gagal mengubah role',
+                description: 'Terjadi kesalahan, coba lagi.',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleCopyCredential = async () => {
         if (!resetCredential) return;
         const text = `Username: ${resetCredential.username}\nPassword: ${resetCredential.password}`;
@@ -84,7 +105,7 @@ const UserTable = () => {
         fetchUsers();
     }, []);
 
-    const columns = getColumns({ onDelete: handleDelete, onReset: handleResetPassword });
+    const columns = getColumns({ onDelete: handleDelete, onReset: handleResetPassword, onChangeRole: handleChangeRole });
 
     return (
         <div>

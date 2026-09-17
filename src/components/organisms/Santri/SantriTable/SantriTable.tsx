@@ -1,7 +1,7 @@
-﻿import { santriService } from '@/services/santri.service';
+import { santriService } from '@/services/santri.service';
 import type { Santri } from '@/types/Santri';
 import { useEffect, useState } from 'react';
-import { getColumns } from './columns';
+import { getColumns, getAlumniColumns } from './columns';
 import DataTable from '../../DataTable';
 import { toast } from '@/hooks/use-toast';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -48,7 +48,10 @@ const SantriTable = () => {
         fetchData(statusFilter);
     }, [statusFilter]);
 
-    const columns = getColumns({ onDelete: handleDelete });
+    const isAlumniView = statusFilter === 'alumni';
+    const columns = isAlumniView
+        ? getAlumniColumns({ onDelete: handleDelete })
+        : getColumns({ onDelete: handleDelete });
     return (
         <div>
             <Tabs
@@ -60,7 +63,6 @@ const SantriTable = () => {
                     <TabsTrigger value="semua">Semua</TabsTrigger>
                     <TabsTrigger value="aktif">Aktif</TabsTrigger>
                     <TabsTrigger value="alumni">Alumni</TabsTrigger>
-                    <TabsTrigger value="dikeluarkan">Dikeluarkan</TabsTrigger>
                 </TabsList>
             </Tabs>
 

@@ -4,13 +4,15 @@ import { Button } from '../../ui/button';
 import { RotateCcw, Trash2 } from 'lucide-react';
 import { Badge } from '../../ui/badge';
 import ConfirmActionButton from '../../molecules/ConfirmActionButton';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 
 
 interface PropTypes {
     onDelete: (id: string) => void;
     onReset: (id: string) => void;
+    onChangeRole: (id: string, role: 'admin' | 'bendahara') => void;
 }
-export const getColumns = ({ onDelete, onReset }: PropTypes): ColumnDef<User>[] => [
+export const getColumns = ({ onDelete, onReset, onChangeRole }: PropTypes): ColumnDef<User>[] => [
     {
         id: 'no',
         header: 'No',
@@ -29,9 +31,31 @@ export const getColumns = ({ onDelete, onReset }: PropTypes): ColumnDef<User>[] 
         accessorKey: 'role',
         header: 'Role',
         size: 150,
-        cell: ({ row }) => (
-            <span className="capitalize">{row.original.role}</span>
-        ),
+        cell: ({ row }) => {
+            const roleItems: Record<string, string> = {
+                admin: 'Admin',
+                bendahara: 'Bendahara',
+            };
+            return (
+                <Select
+                    items={roleItems}
+                    value={row.original.role}
+                    onValueChange={(newValue) => {
+                        if (newValue && newValue !== row.original.role) {
+                            onChangeRole(row.original._id, newValue as 'admin' | 'bendahara');
+                        }
+                    }}
+                >
+                    <SelectTrigger size="sm">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="bendahara">Bendahara</SelectItem>
+                    </SelectContent>
+                </Select>
+            );
+        },
     },
     {
         accessorKey: 'is_active',

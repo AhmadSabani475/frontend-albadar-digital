@@ -1,6 +1,6 @@
-﻿import { Accordion } from '@/components/ui/accordion';
+import { Accordion } from '@/components/ui/accordion';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Undo2, Pencil } from 'lucide-react';
+import { Undo2, Pencil, ChevronDown, UserCheck, GraduationCap } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { useEffect, useState } from 'react';
 import type { Santri } from '@/types/Santri';
@@ -13,25 +13,63 @@ import DataPendidikanSection from './DataPendidikanSection';
 import DataAsramaSekolah from './DataAsramaSekolah';
 import DataRiwayatPembayaran from './DataRiwayatPembayaran';
 import DataRiwayatAkademik from './DataRiwayatAkademik';
+import { Badge } from '@/components/ui/badge';
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuLabel,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import { toast } from '@/hooks/use-toast';
 
 type ViewDataSantriProps = {
     id: string;
 };
 
+const STATUS_CONFIG = {
+    aktif: {
+        label: 'Aktif',
+        className: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 rounded-full border-0',
+        icon: UserCheck,
+    },
+    alumni: {
+        label: 'Alumni',
+        className: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 rounded-full border-0',
+        icon: GraduationCap,
+    },
+} as const;
+
 const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
     const [data, setData] = useState<Santri>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
+    const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
+
+    const fetchDataById = async () => {
+        setIsLoading(true);
+        setError('');
+        try {
+            const result = await santriService.getSantriById(id);
+            setData(result.data);
+        } catch (err) {
+            console.error(err);
+            setError('Gagal memuat data santri');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
         let cancelled = false;
 
-        const fetchDataById = async () => {
+        const fetch = async () => {
             setIsLoading(true);
             setError('');
             try {
                 const result = await santriService.getSantriById(id);
-                console.log(result.data)
                 if (!cancelled) setData(result.data);
             } catch (err) {
                 if (!cancelled) {
@@ -43,9 +81,31 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
             }
         };
 
-        fetchDataById();
+        fetch();
         return () => { cancelled = true; };
     }, [id]);
+
+    const handleUpdateStatus = async (newStatus: 'aktif' | 'alumni') => {
+        if (!data || data.status === newStatus) return;
+        try {
+            setIsUpdatingStatus(true);
+            await santriService.updateStatus(id, newStatus);
+            await fetchDataById();
+            toast({
+                variant: 'success',
+                title: 'Status berhasil diubah',
+                description: `Status santri telah diubah menjadi ${STATUS_CONFIG[newStatus].label}.`,
+            });
+        } catch {
+            toast({
+                variant: 'destructive',
+                title: 'Gagal mengubah status',
+                description: 'Terjadi kesalahan, coba lagi.',
+            });
+        } finally {
+            setIsUpdatingStatus(false);
+        }
+    };
 
     if (isLoading) {
         return (
@@ -65,8 +125,52 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
         return <p className="text-center text-gray-500 py-10">Data tidak ditemukan</p>;
     }
 
+    const currentStatus = data.status ?? 'aktif';
+    const statusInfo = STATUS_CONFIG[currentStatus];
+
     return (
         <div className="flex flex-col items-center gap-3">
+            {/* Status bar */}
+            <div className="w-full flex items-center justify-between rounded-lg border border-border bg-card p-4">
+                <div className="flex items-center gap-3">
+                    <span className="text-sm text-muted-foreground">Status:</span>
+                    <Badge className={statusInfo.className}>
+                        {statusInfo.label}
+                    </Badge>
+                </div>
+                <DropdownMenu>
+                    <DropdownMenuTrigger
+                        render={
+                            <Button variant="outline" size="sm" disabled={isUpdatingStatus} className="gap-1.5">
+                                {isUpdatingStatus ? 'Memproses...' : 'Ubah Status'}
+                                <ChevronDown className="h-3.5 w-3.5" />
+                            </Button>
+                        }
+                    />
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuGroup>
+                            <DropdownMenuLabel>Ubah Status Santri</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            {(Object.entries(STATUS_CONFIG) as [keyof typeof STATUS_CONFIG, typeof STATUS_CONFIG[keyof typeof STATUS_CONFIG]][]).map(([key, config]) => {
+                                const Icon = config.icon;
+                                const isActive = currentStatus === key;
+                                return (
+                                    <DropdownMenuItem
+                                        key={key}
+                                        onClick={() => handleUpdateStatus(key)}
+                                        className={isActive ? 'opacity-50 pointer-events-none' : ''}
+                                    >
+                                        <Icon className="h-4 w-4 mr-1.5" />
+                                        {config.label}
+                                        {isActive && <span className="ml-auto text-xs text-muted-foreground">(saat ini)</span>}
+                                    </DropdownMenuItem>
+                                );
+                            })}
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+
             <fieldset disabled className="w-full contents">
                 <Accordion defaultValue={['data-diri', 'data-alamat', 'data-ortu', 'data-pendidikan', 'data-asrama-sekolah', 'riwayat-akademik', 'riwayat-pembayaran']} className="w-full flex flex-col gap-5">
                     <DataDiriSection

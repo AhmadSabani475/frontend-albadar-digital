@@ -7,7 +7,7 @@ import LandingPage from '@/pages/LandingPage/LandingPage';
 import DashboardLayout from '@/components/templates/DashboardLayout';
 import Dashboard from '@/pages/DashboardPage/Dashboard';
 import DataUsersPage from '@/pages/DataUsers/DataUsersPage';
-import KamarPage from '@/pages/KamarPage/KamarPage';
+
 import AddSantriPage from '@/pages/SantriPage/AddSantriPage';
 import SantriPage from '@/pages/SantriPage/SantriPage';
 import ViewSantriPage from '@/pages/SantriPage/ViewSantriPage';
@@ -59,15 +59,7 @@ const routes: RouteObject[] = [
                     subtitle: 'Kelola data Pengguna',
                 },
             },
-            {
-                path: 'kamar',
-                element: <KamarPage />,
-                handle: {
-                    breadcrumb: 'Kamar',
-                    title: 'Kamar',
-                    subtitle: 'Kelola data Kamar',
-                },
-            },
+
             {
                 path: 'santri',
                 element: <SantriPage />,
@@ -182,7 +174,7 @@ const routes: RouteObject[] = [
                 handle: {
                     breadcrumb: 'Pengaturan',
                     title: 'Pengaturan Master Data',
-                    subtitle: 'Kelola acuan tingkat kelas, tingkat ngaji, dan tahun ajaran',
+                    subtitle: 'Kelola acuan tingkat kelas, ngaji, tahun ajaran, asrama & kamar',
                 },
             },
             {
@@ -191,7 +183,7 @@ const routes: RouteObject[] = [
                 handle: {
                     breadcrumb: 'Pengaturan',
                     title: 'Pengaturan Master Data',
-                    subtitle: 'Kelola acuan tingkat kelas, tingkat ngaji, dan tahun ajaran',
+                    subtitle: 'Kelola acuan tingkat kelas, ngaji, tahun ajaran, asrama & kamar',
                 },
             },
         ],

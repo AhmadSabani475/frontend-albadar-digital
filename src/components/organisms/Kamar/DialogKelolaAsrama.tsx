@@ -1,4 +1,4 @@
-﻿import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import ConfirmActionButton from "@/components/molecules/ConfirmActionButton";
 
 
-const DialogKelolaAsrama = () => {
+const DialogKelolaAsrama = ({ trigger }: { trigger?: React.ReactElement }) => {
     const [dataAsrama, setDataAsrama] = useState<Asrama[] | null>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -61,7 +61,7 @@ const DialogKelolaAsrama = () => {
     }, [open]);
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger render={<Button variant="outline">Kelola Asrama</Button>} />
+            <DialogTrigger render={trigger ?? <Button variant="outline">Kelola Asrama</Button>} />
             <DialogContent className="sm:max-w-sm">
                 <DialogHeader className="mb-5">
                     <DialogTitle>Kelola Asrama</DialogTitle>
