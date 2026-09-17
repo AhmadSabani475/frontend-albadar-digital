@@ -8,7 +8,7 @@ interface SantriMeta {
 }
 
 export const santriService = {
-    getAllSantri: (status?: string, page = 1, limit = 10) => {
+    getAllSantri: (status?: string, page = 1, limit = 1000) => {
         const params = new URLSearchParams();
         if (status) params.append('status', status);
         params.append('page', String(page));

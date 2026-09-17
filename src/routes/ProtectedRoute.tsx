@@ -5,10 +5,11 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 interface PropTypes {
     children: ReactNode;
+    allowedRoles?: ('admin' | 'bendahara')[];
 }
 
 const ProtectedRoute = (props: PropTypes) => {
-    const { children } = props;
+    const { children, allowedRoles } = props;
     const { token, isTokenValid, logout, user } = useAuthStore();
     const currentRoute = useLocation().pathname;
 
@@ -30,6 +31,12 @@ const ProtectedRoute = (props: PropTypes) => {
 
     if ((isAuthenticated && user?.is_active === true && currentRoute === '/complete-profile')) {
         return <Navigate to='/dashboard' replace />;
+    }
+
+    if (isAuthenticated && allowedRoles && user?.role) {
+        if (!allowedRoles.includes(user.role)) {
+            return <Navigate to='/dashboard' replace />;
+        }
     }
 
     return <>{children}</>;

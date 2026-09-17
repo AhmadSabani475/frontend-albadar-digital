@@ -11,10 +11,12 @@ interface PropTypes {
 const SidebarNavItem = (props: PropTypes) => {
     const { title, url, Icon } = props;
     const location = useLocation().pathname;
+    const isActive = url === '/dashboard' ? location === '/dashboard' : (location === url || location.startsWith(url + '/'));
+
     return (
         <SidebarMenuItem>
             <SidebarMenuButton
-                isActive={location === url}
+                isActive={isActive}
                 render={<Link to={url} className="flex gap-3" />}
             >
                 {Icon && <Icon className="h-4 w-4" />}

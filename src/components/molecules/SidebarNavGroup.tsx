@@ -28,17 +28,23 @@ const SidebarNavGroup = (props: PropTypes) => {
                 <CollapsibleContent>
                     <SidebarGroupContent>
                         <SidebarMenu className="gap-0.5">
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.name}>
-                                    <SidebarMenuButton isActive={location === item.url}
-                                        render={<Link to={item.url} />}>
+                            {items.map((item) => {
+                                const isActive = item.url === '/dashboard'
+                                    ? location === '/dashboard'
+                                    : (location === item.url || location.startsWith(item.url + '/'));
 
-                                        {item.icon && <item.icon />}
-                                        <span>{item.name}</span>
-
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
+                                return (
+                                    <SidebarMenuItem key={item.name}>
+                                        <SidebarMenuButton
+                                            isActive={isActive}
+                                            render={<Link to={item.url} />}
+                                        >
+                                            {item.icon && <item.icon />}
+                                            <span>{item.name}</span>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                );
+                            })}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </CollapsibleContent>

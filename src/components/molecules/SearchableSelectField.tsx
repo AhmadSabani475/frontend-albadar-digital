@@ -63,7 +63,7 @@ const SearchableSelectField = (props: PropTypes) => {
                                 {options.map((opt) => (
                                     <CommandItem
                                         key={opt.value}
-                                        value={opt.label}
+                                        value={`${opt.label} ${opt.value}`}
                                         onSelect={() => {
                                             onChange(opt.value);
                                             setOpen(false);

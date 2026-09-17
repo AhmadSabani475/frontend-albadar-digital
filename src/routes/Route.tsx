@@ -1,5 +1,5 @@
 import LoginPage from '@/pages/LoginPage';
-import type { RouteObject } from 'react-router-dom';
+import { Outlet, type RouteObject } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 
 import CompleteProfile from '@/pages/SetPasswordPage/SetPasswordPage';
@@ -21,6 +21,7 @@ import UangJajanPage from '@/pages/UangJajanPage/UangJajanPage';
 import KasirPage from '@/pages/KasirPage/KasirPage';
 import SettingsPage from '@/pages/SettingsPage/SettingsPage';
 import KenaikanKelasPage from '@/pages/KenaikanKelasPage/KenaikanKelasPage';
+import TunggakanPage from '@/pages/TunggakanPage/TunggakanPage';
 
 const routes: RouteObject[] = [
     {
@@ -52,7 +53,11 @@ const routes: RouteObject[] = [
             },
             {
                 path: 'users',
-                element: <DataUsersPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={['admin']}>
+                        <DataUsersPage />
+                    </ProtectedRoute>
+                ),
                 handle: {
                     breadcrumb: 'Data User',
                     title: 'Data User',
@@ -62,43 +67,59 @@ const routes: RouteObject[] = [
 
             {
                 path: 'santri',
-                element: <SantriPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={['admin']}>
+                        <Outlet />
+                    </ProtectedRoute>
+                ),
                 handle: {
                     breadcrumb: 'Santri',
-                    title: 'Santri',
-                    subtitle: 'Kelola data Santri',
                 },
-            },
-            {
-                path: 'santri/add',
-                element: <AddSantriPage />,
-                handle: {
-                    breadcrumb: 'Tambah Santri',
-                    title: 'Tambah Santri',
-                    subtitle: 'Tambahkan data santri baru',
-                },
-            },
-            {
-                path: 'santri/view/:id',
-                element: <ViewSantriPage />,
-                handle: {
-                    breadcrumb: 'Detail Santri',
-                    title: 'Detail Santri',
-                    subtitle: 'Informasi lengkap santri',
-                },
-            },
-            {
-                path: 'santri/edit/:id',
-                element: <EditSantriPage />,
-                handle: {
-                    breadcrumb: 'Edit Santri',
-                    title: 'Edit Santri',
-                    subtitle: 'Perbarui data santri',
-                },
+                children: [
+                    {
+                        index: true,
+                        element: <SantriPage />,
+                        handle: {
+                            title: 'Santri',
+                            subtitle: 'Kelola data Santri',
+                        },
+                    },
+                    {
+                        path: 'add',
+                        element: <AddSantriPage />,
+                        handle: {
+                            breadcrumb: 'Tambah Santri',
+                            title: 'Tambah Santri',
+                            subtitle: 'Tambahkan data santri baru',
+                        },
+                    },
+                    {
+                        path: 'view/:id',
+                        element: <ViewSantriPage />,
+                        handle: {
+                            breadcrumb: 'Detail Santri',
+                            title: 'Detail Santri',
+                            subtitle: 'Informasi lengkap santri',
+                        },
+                    },
+                    {
+                        path: 'edit/:id',
+                        element: <EditSantriPage />,
+                        handle: {
+                            breadcrumb: 'Edit Santri',
+                            title: 'Edit Santri',
+                            subtitle: 'Perbarui data santri',
+                        },
+                    },
+                ],
             },
             {
                 path: 'tagihan',
-                element: <TagihanPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={['admin', 'bendahara']}>
+                        <TagihanPage />
+                    </ProtectedRoute>
+                ),
                 handle: {
                     breadcrumb: 'Tagihan',
                     title: 'Tagihan',
@@ -107,43 +128,84 @@ const routes: RouteObject[] = [
             },
             {
                 path: 'daftar-tagihan',
-                element: <DaftarTagihanPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={['admin', 'bendahara']}>
+                        <Outlet />
+                    </ProtectedRoute>
+                ),
                 handle: {
                     breadcrumb: 'Daftar Tagihan',
-                    title: 'Daftar Tagihan',
-                    subtitle: 'Kelola daftar tagihan santri',
                 },
+                children: [
+                    {
+                        index: true,
+                        element: <DaftarTagihanPage />,
+                        handle: {
+                            title: 'Daftar Tagihan',
+                            subtitle: 'Kelola daftar tagihan santri',
+                        },
+                    },
+                    {
+                        path: 'view/:id',
+                        element: <DetailTagihanPage />,
+                        handle: {
+                            breadcrumb: 'Detail Tagihan',
+                            title: 'Detail Tagihan',
+                            subtitle: 'Rincian tagihan santri',
+                        },
+                    },
+                ],
             },
             {
-                path: 'daftar-tagihan/view/:id',
-                element: <DetailTagihanPage />,
+                path: 'tunggakan',
+                element: (
+                    <ProtectedRoute allowedRoles={['admin', 'bendahara']}>
+                        <TunggakanPage />
+                    </ProtectedRoute>
+                ),
                 handle: {
-                    breadcrumb: 'Detail Tagihan',
-                    title: 'Detail Tagihan',
-                    subtitle: 'Rincian tagihan santri',
+                    breadcrumb: 'Tunggakan',
+                    title: 'Daftar Tunggakan',
+                    subtitle: 'Kelola Tunggakan Santri',
                 },
             },
             {
                 path: 'rekening',
-                element: <RekeningPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={['admin', 'bendahara']}>
+                        <Outlet />
+                    </ProtectedRoute>
+                ),
                 handle: {
                     breadcrumb: 'Rekening',
-                    title: 'Rekening',
-                    subtitle: 'Kelola data Rekening',
                 },
-            },
-            {
-                path: 'rekening/view/:id',
-                element: <DetailRekeningPage />,
-                handle: {
-                    breadcrumb: 'Detail Rekening',
-                    title: 'Detail Rekening',
-                    subtitle: 'Rincian data rekening',
-                },
+                children: [
+                    {
+                        index: true,
+                        element: <RekeningPage />,
+                        handle: {
+                            title: 'Rekening',
+                            subtitle: 'Kelola data Rekening',
+                        },
+                    },
+                    {
+                        path: 'view/:id',
+                        element: <DetailRekeningPage />,
+                        handle: {
+                            breadcrumb: 'Detail Rekening',
+                            title: 'Detail Rekening',
+                            subtitle: 'Rincian data rekening',
+                        },
+                    },
+                ],
             },
             {
                 path: 'uang-jajan',
-                element: <UangJajanPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={['admin', 'bendahara']}>
+                        <UangJajanPage />
+                    </ProtectedRoute>
+                ),
                 handle: {
                     breadcrumb: 'Uang Jajan',
                     title: 'Uang Jajan',
@@ -152,7 +214,11 @@ const routes: RouteObject[] = [
             },
             {
                 path: 'kasir',
-                element: <KasirPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={['admin', 'bendahara']}>
+                        <KasirPage />
+                    </ProtectedRoute>
+                ),
                 handle: {
                     breadcrumb: 'Kasir',
                     title: 'Kasir',
@@ -161,7 +227,11 @@ const routes: RouteObject[] = [
             },
             {
                 path: 'kenaikan-kelas',
-                element: <KenaikanKelasPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={['admin']}>
+                        <KenaikanKelasPage />
+                    </ProtectedRoute>
+                ),
                 handle: {
                     breadcrumb: 'Kenaikan Kelas',
                     title: 'Kenaikan Kelas',
@@ -170,7 +240,11 @@ const routes: RouteObject[] = [
             },
             {
                 path: 'settings',
-                element: <SettingsPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={['admin']}>
+                        <SettingsPage />
+                    </ProtectedRoute>
+                ),
                 handle: {
                     breadcrumb: 'Pengaturan',
                     title: 'Pengaturan Master Data',
@@ -179,7 +253,11 @@ const routes: RouteObject[] = [
             },
             {
                 path: 'akademik',
-                element: <SettingsPage />,
+                element: (
+                    <ProtectedRoute allowedRoles={['admin']}>
+                        <SettingsPage />
+                    </ProtectedRoute>
+                ),
                 handle: {
                     breadcrumb: 'Pengaturan',
                     title: 'Pengaturan Master Data',

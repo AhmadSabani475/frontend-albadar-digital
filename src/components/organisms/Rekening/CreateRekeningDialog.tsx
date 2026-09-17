@@ -1,11 +1,10 @@
-﻿import { Wallet } from 'lucide-react';
+import { Wallet } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { FieldGroup } from '../../ui/field';
 import FormField from '../../molecules/FormField';
-import { useEffect, useState, type SubmitEvent } from 'react';
-import type { Santri } from '@/types/Santri';
-import { santriService } from '@/services/santri.service';
+import { useState, type SubmitEvent } from 'react';
+import { useSantriList } from '@/hooks/use-santri';
 import SearchableSelectField from '../../molecules/SearchableSelectField';
 import SelectField from '../../molecules/SelectField';
 import { rekeningService } from '@/services/rekening.service';
@@ -17,22 +16,12 @@ interface PropTypes {
 
 const CreateRekeningDialog = ({ onSuccess }: PropTypes) => {
     const [santriId, setSantriId] = useState("");
-    const [santriData, setSantriData] = useState<Santri[]>([]);
+    const { data: santriData } = useSantriList();
     const [jenisRekening, setJenisRekening] = useState("uang_jajan");
     const [nominalHarian, setNominalHarian] = useState<number | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [open, setOpen] = useState(false);
-
-    const fetchSantri = async () => {
-        try {
-            const result = await santriService.getAllSantri();
-            setSantriData(result.data);
-        
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     const handleJenisChange = (value: string) => {
         setJenisRekening(value);
@@ -62,10 +51,6 @@ const CreateRekeningDialog = ({ onSuccess }: PropTypes) => {
         }
     };
 
-    useEffect(() => {
-        fetchSantri();
-    }, []);
-
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger render={<Button>+ Buat Rekening</Button>} />
@@ -81,7 +66,7 @@ const CreateRekeningDialog = ({ onSuccess }: PropTypes) => {
                             value={santriId}
                             onChange={setSantriId}
                             options={(santriData ?? []).map((s) => ({
-                                label: s.namaLengkap,
+                                label: s.nis ? `${s.namaLengkap} (NIS: ${s.nis})` : s.namaLengkap,
                                 value: s._id,
                             }))}
                             placeholder="Pilih Santri"

@@ -1,16 +1,14 @@
-﻿import { Check, Copy, User } from 'lucide-react';
+import { Check, Copy, User } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { FieldGroup } from '../../ui/field';
 import FormField from '../../molecules/FormField';
-import { useEffect, useState, type SubmitEvent } from 'react';
+import {  useState, type SubmitEvent } from 'react';
 import SelectField from '../../molecules/SelectField';
 import { usersService } from '@/services/users.service';
-import { santriService } from '@/services/santri.service';
-import type { Santri } from '@/types/Santri';
 import SearchableSelectField from '../../molecules/SearchableSelectField';
-
 import { toast } from '@/hooks/use-toast';
+import { useSantriList } from '@/hooks/use-santri';
 
 interface PropTypes {
     onSuccess?: () => void;
@@ -19,21 +17,12 @@ const CreateUserDialog = ({ onSuccess }: PropTypes) => {
     const [username, setUsername] = useState<string>('');
     const [role, setRole] = useState<'admin' | 'bendahara' | string>('bendahara');
     const [santriId, setSantriId] = useState('');
-    const [santri, setSantri] = useState<Santri[] | undefined>([]);
+    const { data: santriList } = useSantriList();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [open, setOpen] = useState(false);
     const [createdCredential, setCreatedCredential] = useState<{ username: string; password: string } | null>(null);
     const [copied, setCopied] = useState(false);
-
-    const fetchSantri = async (status?: string) => {
-        try {
-            const result = await santriService.getAllSantri(status, 1, 1000);
-            return result.data;
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const handleSubmitCreateUser = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -87,13 +76,6 @@ Password: ${createdCredential.password}`;
         }
     };
 
-    useEffect(() => {
-        (async () => {
-            const data = await fetchSantri();
-            setSantri(data);
-        })();
-    }, [santri]);
-
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -129,8 +111,8 @@ Password: ${createdCredential.password}`;
                                 name="santriId"
                                 value={santriId}
                                 onChange={setSantriId}
-                                options={(santri ?? []).map((s) => ({
-                                    label: s.namaLengkap,
+                                options={(santriList ?? []).map((s) => ({
+                                    label: s.nis ? `${s.namaLengkap} (NIS: ${s.nis})` : s.namaLengkap,
                                     value: s._id,
                                 }))}
                                 placeholder="Pilih Santri"

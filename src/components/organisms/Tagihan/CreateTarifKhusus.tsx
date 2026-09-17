@@ -1,14 +1,13 @@
-﻿import { Wallet } from 'lucide-react';
+import { Wallet } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { FieldGroup } from '../../ui/field';
 import FormField from '../../molecules/FormField';
 import { useEffect, useState, type SubmitEvent } from 'react';
 import { JenisTagihanService } from '@/services/jenisTagihan.service';
-import type { Santri } from '@/types/Santri';
 import type { JenisTagihan } from '@/types/Tagihan';
 import { tarifKhususService } from '@/services/tarifKhusus.service';
-import { santriService } from '@/services/santri.service';
+import { useSantriList } from '@/hooks/use-santri';
 import SearchableSelectField from '../../molecules/SearchableSelectField';
 import SelectField from '../../molecules/SelectField';
 
@@ -17,7 +16,7 @@ interface PropTypes {
 }
 const CreateTarifKhusus = ({ onSuccess }: PropTypes) => {
     const [santriId, setSantriId] = useState("");
-    const [santriData, setSantriData] = useState<Santri[]>([]);
+    const { data: santriData } = useSantriList();
     const [jenisTagihan, setJenisTagihan] = useState<JenisTagihan[]>([]);
     const [jenisTagihanId, setJenisTagihanId] = useState("");
     const [nominalKhusus, setNominalKhusus] = useState<number>(0);
@@ -25,15 +24,6 @@ const CreateTarifKhusus = ({ onSuccess }: PropTypes) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [open, setOpen] = useState(false);
-
-    const fetchSantri = async () => {
-        try {
-            const result = await santriService.getAllSantri();
-            setSantriData(result.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     const fetchJenisTagihan = async () => {
         try {
@@ -64,7 +54,6 @@ const CreateTarifKhusus = ({ onSuccess }: PropTypes) => {
     };
 
     useEffect(() => {
-        fetchSantri();
         fetchJenisTagihan();
     }, []);
 
@@ -83,7 +72,7 @@ const CreateTarifKhusus = ({ onSuccess }: PropTypes) => {
                             value={santriId}
                             onChange={setSantriId}
                             options={(santriData ?? []).map((s) => ({
-                                label: s.namaLengkap,
+                                label: s.nis ? `${s.namaLengkap} (NIS: ${s.nis})` : s.namaLengkap,
                                 value: s._id,
                             }))}
                             placeholder="Pilih Santri"

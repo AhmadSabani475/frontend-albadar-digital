@@ -1,4 +1,4 @@
-﻿import { Calendar, Users } from 'lucide-react';
+import { Calendar, Users } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog';
 import { FieldGroup } from '../../ui/field';
@@ -7,11 +7,10 @@ import { useEffect, useState, type SubmitEvent, } from 'react';
 
 import { JenisTagihanService } from '@/services/jenisTagihan.service';
 
-import { santriService } from '@/services/santri.service';
+import { useSantriList } from '@/hooks/use-santri';
 import { RadioGroup, RadioGroupItem } from '../../ui/radio-group';
 import { Label } from '../../ui/label';
 import { Badge } from '../../ui/badge';
-import type { Santri } from '@/types/Santri';
 import type { JenisTagihan } from '@/types/Tagihan';
 import SelectField from '../../molecules/SelectField';
 import { tagihanService } from '@/services/tagihan.service';
@@ -32,7 +31,8 @@ const CreateTagihan = ({ onSuccess }: PropTypes) => {
     const [periode, setPeriode] = useState<string>('');
     const [jatuhTempo, setJatuhTempo] = useState<string>('');
     const [target, setTarget] = useState<'semua_aktif' | 'custom' | 'laundry'>('semua_aktif');
-    const [santriData, setSantriData] = useState<Santri[]>([]);
+    const { data: rawSantriData = [] } = useSantriList();
+    const santriData = rawSantriData ?? [];
     const [santriIdsTerpilih, setSantriIdsTerpilih] = useState<string[]>([]);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -49,18 +49,8 @@ const CreateTagihan = ({ onSuccess }: PropTypes) => {
         }
     };
 
-    const fetchSantri = async () => {
-        try {
-            const result = await santriService.getAllSantri();
-            setSantriData(result.data);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
     useEffect(() => {
         fetchJenisTagihan();
-        fetchSantri();
     }, []);
 
     const santriAktif = santriData.filter((s) => s.status === 'aktif');
