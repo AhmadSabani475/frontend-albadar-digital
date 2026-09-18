@@ -20,15 +20,17 @@ export const DetailDataAsramaSekolah = ({ data }: DetailDataAsramaSekolahProps) 
         ? `${namaAsrama} - ${namaKamar}`
         : namaKamar ?? namaAsrama;
 
-    const namaSekolah = typeof data.sekolahId === 'object' && data.sekolahId
-        ? `${data.sekolahId.nama}${data.sekolahId.jenjang ? ` (${data.sekolahId.jenjang})` : ''}`
-        : undefined;
+    const sekolahVal = data.sekolah || (typeof data.sekolahId === 'object' && data.sekolahId ? data.sekolahId.nama : undefined);
+    const sekolahKelasFull = sekolahVal
+        ? `${sekolahVal}${data.kelasFormal ? ` (${data.kelasFormal})` : ''}`
+        : data.kelasFormal ?? '-';
 
     return (
         <AccordionSection value="data-asrama-sekolah" Icon={Building} title="Asrama & Sekolah">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                 <DetailItem label="Asrama & Kamar" value={asramaKamarFull} icon={Home} />
-                <DetailItem label="Sekolah Santri" value={namaSekolah} icon={School} />
+                <DetailItem label="Sekolah Santri" value={sekolahKelasFull} icon={School} />
+                <DetailItem label="Kelas Ngaji" value={data.kelasNgaji ?? '-'} icon={Building} />
                 <DetailItem
                     label="Status Langganan Laundry"
                     value={data.laundry ? 'Langganan Laundry (Ya)' : 'Tidak Langganan Laundry'}

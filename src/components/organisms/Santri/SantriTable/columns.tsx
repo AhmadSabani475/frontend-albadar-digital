@@ -33,8 +33,23 @@ export const getColumns = ({ onDelete }: PropTypes): ColumnDef<Santri>[] => [
         },
     },
     {
-        accessorKey: 'sekolahId.nama',
-        header: 'Sekolah'
+        id: 'sekolah',
+        header: 'Sekolah & Kelas',
+        cell: ({ row }) => {
+            const s = row.original.sekolah || (typeof row.original.sekolahId === 'object' ? row.original.sekolahId?.nama : undefined);
+            const k = row.original.kelasFormal;
+            if (!s && !k) return <span className="text-muted-foreground">-</span>;
+            return <span>{s ?? ''}{k ? ` (${k})` : ''}</span>;
+        }
+    },
+    {
+        id: 'kelasNgaji',
+        header: 'Kelas Ngaji',
+        cell: ({ row }) => {
+            const ngaji = row.original.kelasNgaji;
+            if (!ngaji) return <span className="text-muted-foreground">-</span>;
+            return <span>{ngaji}</span>;
+        }
     },
     {
         id: 'actions',

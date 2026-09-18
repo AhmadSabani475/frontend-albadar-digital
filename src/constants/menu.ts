@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, type LucideIcon, Archive, DollarSign, Wallet, Banknote, BanknoteArrowUp, CircleFadingArrowUp, FileText, FileWarning, History } from 'lucide-react';
+import { LayoutDashboard, Users, type LucideIcon, Archive, DollarSign, Wallet, Banknote, BanknoteArrowUp, FileText, FileWarning, History } from 'lucide-react';
 
 interface MenuItem {
     type: 'item';
@@ -49,12 +49,5 @@ export const SIDEBAR_MENU: MenuEntry[] = [
             { name: 'Rekening', url: '/dashboard/rekening', icon: Banknote, roles: ['admin', 'bendahara'] },
             { name: 'Uang Jajan', url: '/dashboard/uang-jajan', icon: BanknoteArrowUp, roles: ['admin', 'bendahara'] },
         ]
-    },
-    {
-        type: 'item',
-        title: 'Kenaikan Kelas',
-        icon: CircleFadingArrowUp,
-        url: '/dashboard/kenaikan-kelas',
-        roles: ['admin']
     },
 ];

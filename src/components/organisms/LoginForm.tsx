@@ -63,7 +63,7 @@ const LoginForm = () => {
                     </>
                 ) : (
                     <>
-                        Submit <ArrowRight className="ml-1 h-4 w-4" />
+                        Masuk <ArrowRight className="ml-1 h-4 w-4" />
                     </>
                 )}
             </Button>

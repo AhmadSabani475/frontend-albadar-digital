@@ -15,7 +15,6 @@ import type { Tagihan } from "@/types/Tagihan";
 import type { Pembayaran } from "@/types/Pembayaran";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import FormField from "@/components/molecules/FormField";
 import { Button } from "@/components/ui/button";
 import { StepBackIcon } from "lucide-react";
 
@@ -24,12 +23,6 @@ const DetailTagihanPage = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [tagihan, setTagihan] = useState<Tagihan | undefined>();
     const [riwayatPembayaran, setRiwayatPembayaran] = useState<Pembayaran[]>([]);
-
-    const [nominalBayar, setNominalBayar] = useState<number | "">("");
-    const [tanggalBayar, setTanggalBayar] = useState<string>(
-        new Date().toISOString().split("T")[0]
-    );
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     const fetchData = async (tagihanId: string | undefined) => {
         if (!tagihanId) return;
@@ -46,26 +39,6 @@ const DetailTagihanPage = () => {
             console.error(error);
         } finally {
             setIsLoading(false);
-        }
-    };
-    const handleSubmitPembayaran = async (e: React.SubmitEvent) => {
-        e.preventDefault();
-        if (!id || !nominalBayar || Number(nominalBayar) <= 0) return;
-
-        try {
-            setIsSubmitting(true);
-            await pembayaranService.createPembayaran({
-                tagihanId: id,
-                nominalBayar: Number(nominalBayar),
-                tanggalBayar: new Date(tanggalBayar),
-            });
-
-            setNominalBayar("");
-            await fetchData(id);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
@@ -85,7 +58,6 @@ const DetailTagihanPage = () => {
     );
 
     const sisaTagihan = Math.max(0, totalNominal - totalDibayar);
-    const isLunas = tagihan?.status === "lunas" || sisaTagihan === 0;
     const persentase =
         totalNominal > 0
             ? Math.min(100, Math.round((totalDibayar / totalNominal) * 100))
@@ -230,7 +202,7 @@ const DetailTagihanPage = () => {
                     </Card>
                 </div>
 
-                <div className="lg:col-span-1 ">
+                <div className="lg:col-span-1">
                     <Card className="w-full">
                         <CardHeader className="text-xl font-bold pb-2 border-b">
                             Ringkasan Pelunasan
@@ -269,45 +241,6 @@ const DetailTagihanPage = () => {
                                     />
                                 </div>
                             </div>
-                        </CardContent>
-                    </Card>
-                    <Card className="w-full mt-5">
-                        <CardHeader className="text-xl font-bold pb-2 border-b">
-                            Catat Pembayaran
-                        </CardHeader>
-                        <CardContent className="flex flex-col gap-4 pt-4">
-                            {isLunas ? (
-                                <p className="text-sm text-emerald-400 text-center py-2">
-                                    Tagihan ini sudah lunas.
-                                </p>
-                            ) : (
-                                <form onSubmit={handleSubmitPembayaran} className="flex flex-col gap-4">
-                                    <FormField
-                                        label="Nominal Pembayaran (Rp)"
-                                        name="nominalBayar"
-                                        placeholder="Contoh: 200000"
-                                        type="number"
-                                        value={nominalBayar}
-                                        onChange={(e) => setNominalBayar(e.target.value ? Number(e.target.value) : "")}
-                                    />
-
-                                    <FormField
-                                        label="Tanggal Bayar"
-                                        name="tanggalBayar"
-                                        type="date"
-                                        value={tanggalBayar}
-                                        onChange={(e) => setTanggalBayar(e.target.value)}
-                                    />
-
-                                    <Button
-                                        type="submit"
-                                        disabled={isSubmitting || !nominalBayar}
-                                        className="w-full mt-2"
-                                    >
-                                        {isSubmitting ? "Menyimpan..." : "Simpan Pembayaran"}
-                                    </Button>
-                                </form>
-                            )}
                         </CardContent>
                     </Card>
                 </div>

@@ -45,13 +45,19 @@ export interface CreateSantriPayload {
   ayah: Orangtua;
   ibu: Orangtua;
   alamat: Alamat;
-  sekolahId: string;
+  sekolah?: string;
+  kelasFormal?: string;
+  kelasNgaji?: string;
+  sekolahId?: string;
   kamarId: string;
   laundry?: boolean;
 }
 
 export interface Santri extends Omit<CreateSantriPayload, 'kamarId' | 'sekolahId'> {
   _id: string;
+  sekolah?: string;
+  kelasFormal?: string;
+  kelasNgaji?: string;
   kamarId: {
     _id: string;
     namaKamar: string;
@@ -61,7 +67,7 @@ export interface Santri extends Omit<CreateSantriPayload, 'kamarId' | 'sekolahId
       namaAsrama: string;
     };
   };
-  sekolahId: {
+  sekolahId?: {
     _id: string;
     nama: string;
     jenjang?: string;

@@ -7,6 +7,7 @@ import { SIDEBAR_MENU } from '@/constants/menu';
 import { LogOut, SlidersHorizontal } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import ConfirmActionButton from '../molecules/ConfirmActionButton';
 
 const AppSidebar = () => {
     const { user, logout } = useAuthStore();
@@ -74,14 +75,22 @@ const AppSidebar = () => {
                         />
                     )}
                     <SidebarMenuItem>
-                        <SidebarMenuButton onClick={logout} className="text-destructive hover:text-destructive cursor-pointer font-medium">
-                            <LogOut className="h-4 w-4" />
-                            <span>Logout</span>
-                        </SidebarMenuButton>
+                        <ConfirmActionButton
+                            title="Keluar dari Aplikasi?"
+                            description="Anda harus login kembali untuk mengakses akun ini."
+                            actionLabel="Logout"
+                            onConfirm={logout}
+                            trigger={
+                                <SidebarMenuButton className="text-destructive hover:text-destructive cursor-pointer font-medium">
+                                    <LogOut className="h-4 w-4" />
+                                    <span>Logout</span>
+                                </SidebarMenuButton>
+                            }>
+                        </ConfirmActionButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarFooter>
-        </Sidebar>
+        </Sidebar >
     );
 };
 

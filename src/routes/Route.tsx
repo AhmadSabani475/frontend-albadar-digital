@@ -21,7 +21,6 @@ import UangJajanPage from '@/pages/UangJajanPage/UangJajanPage';
 import KasirPage from '@/pages/KasirPage/KasirPage';
 import RiwayatTransaksiPage from '@/pages/RiwayatTransaksiPage/RiwayatTransaksiPage';
 import SettingsPage from '@/pages/SettingsPage/SettingsPage';
-import KenaikanKelasPage from '@/pages/KenaikanKelasPage/KenaikanKelasPage';
 import TunggakanPage from '@/pages/TunggakanPage/TunggakanPage';
 
 const routes: RouteObject[] = [
@@ -240,19 +239,6 @@ const routes: RouteObject[] = [
                 },
             },
             {
-                path: 'kenaikan-kelas',
-                element: (
-                    <ProtectedRoute allowedRoles={['admin']}>
-                        <KenaikanKelasPage />
-                    </ProtectedRoute>
-                ),
-                handle: {
-                    breadcrumb: 'Kenaikan Kelas',
-                    title: 'Kenaikan Kelas',
-                    subtitle: 'Kelola Kelas Sekolah & Ngaji',
-                },
-            },
-            {
                 path: 'settings',
                 element: (
                     <ProtectedRoute allowedRoles={['admin']}>
@@ -262,20 +248,7 @@ const routes: RouteObject[] = [
                 handle: {
                     breadcrumb: 'Pengaturan',
                     title: 'Pengaturan Master Data',
-                    subtitle: 'Kelola acuan tingkat kelas, ngaji, tahun ajaran, asrama & kamar',
-                },
-            },
-            {
-                path: 'akademik',
-                element: (
-                    <ProtectedRoute allowedRoles={['admin']}>
-                        <SettingsPage />
-                    </ProtectedRoute>
-                ),
-                handle: {
-                    breadcrumb: 'Pengaturan',
-                    title: 'Pengaturan Master Data',
-                    subtitle: 'Kelola acuan tingkat kelas, ngaji, tahun ajaran, asrama & kamar',
+                    subtitle: 'Kelola acuan asrama & kamar',
                 },
             },
         ],

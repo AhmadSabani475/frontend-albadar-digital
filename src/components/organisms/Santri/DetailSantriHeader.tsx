@@ -39,9 +39,10 @@ export const DetailSantriHeader = ({ data, isUpdatingStatus, onUpdateStatus }: D
         ? `${data.kamarId.asramaId?.namaAsrama ? `${data.kamarId.asramaId.namaAsrama} - ` : ''}${data.kamarId.namaKamar}`
         : 'Belum diatur';
 
-    const namaSekolah = typeof data.sekolahId === 'object' && data.sekolahId
-        ? data.sekolahId.nama
-        : 'Belum diatur';
+    const sekolahVal = data.sekolah || (typeof data.sekolahId === 'object' && data.sekolahId ? data.sekolahId.nama : undefined);
+    const namaSekolah = sekolahVal
+        ? `${sekolahVal}${data.kelasFormal ? ` (${data.kelasFormal})` : ''}`
+        : data.kelasFormal ?? 'Belum diatur';
 
     return (
         <div className="w-full rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">

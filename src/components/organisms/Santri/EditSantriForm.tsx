@@ -1,20 +1,15 @@
-﻿import { Accordion } from '@/components/ui/accordion';
+import { Accordion } from '@/components/ui/accordion';
 import { Save, Undo2 } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { useEffect, useState, type FormEvent } from 'react';
 import type { CreateSantriPayload, Santri } from '@/types/Santri';
 import { Link, useNavigate } from 'react-router-dom';
 import { santriService } from '@/services/santri.service';
-import { tahunAjaranService } from '@/services/tahunAjaran.service';
-import { kelasSantriService } from '@/services/kelasSantri.service';
-import { riwayatKelasNgajiService } from '@/services/riwayatKelasNgaji.service';
 import DataDiriSection from './DataDiriSection';
 import DataAlamatSection from './DataAlamatSection';
 import DataOrangTuaSection from './DataOrangTuaSection';
 import DataPendidikanSection from './DataPendidikanSection';
 import DataAsramaSekolah from './DataAsramaSekolah';
-import type { TingkatKelas } from '@/types/TingkatKelas';
-import type { TingkatNgaji } from '@/types/TingkatNgaji';
 import { toast } from '@/hooks/use-toast';
 
 interface PropTypes {
@@ -24,8 +19,6 @@ interface PropTypes {
 const EditSantriForm = ({ id }: PropTypes) => {
     const navigate = useNavigate();
     const [data, setData] = useState<Santri>();
-    const [currentTingkatKelasId, setCurrentTingkatKelasId] = useState<string>('');
-    const [currentTingkatNgajiId, setCurrentTingkatNgajiId] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
@@ -33,9 +26,6 @@ const EditSantriForm = ({ id }: PropTypes) => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-
-        const newTingkatKelasId = formData.get('tingkatKelasId') as string;
-        const newTingkatNgajiId = formData.get('tingkatNgajiId') as string;
 
         const santri: CreateSantriPayload = {
             nik: formData.get('nik') as string | undefined,
@@ -85,8 +75,10 @@ const EditSantriForm = ({ id }: PropTypes) => {
                 provinsi: formData.get('alamat.provinsi') as string,
                 kodePos: formData.get('alamat.kodePos') as string | undefined
             },
+            sekolah: (formData.get('sekolah') as string) || undefined,
+            kelasFormal: (formData.get('kelasFormal') as string) || undefined,
+            kelasNgaji: (formData.get('kelasNgaji') as string) || undefined,
             kamarId: formData.get('kamarId') as string,
-            sekolahId: formData.get('sekolahId') as string,
             laundry: formData.get('laundry') === 'true',
         };
 
@@ -94,33 +86,6 @@ const EditSantriForm = ({ id }: PropTypes) => {
             setIsSaving(true);
             setError('');
             await santriService.editSantriById(id, santri);
-
-            if (newTingkatKelasId !== currentTingkatKelasId || newTingkatNgajiId !== currentTingkatNgajiId) {
-                try {
-                    const taRes = await tahunAjaranService.getAllTahunAjaran();
-                    const activeTa = taRes.data?.find((t) => t.is_active) || taRes.data?.[0];
-
-                    if (activeTa) {
-                        if (newTingkatKelasId && newTingkatKelasId !== currentTingkatKelasId) {
-                            await kelasSantriService.create({
-                                santriId: id,
-                                tahunAjaranId: activeTa._id,
-                                tingkatKelasId: newTingkatKelasId,
-                                status: 'aktif',
-                            });
-                        }
-                        if (newTingkatNgajiId && newTingkatNgajiId !== currentTingkatNgajiId) {
-                            await riwayatKelasNgajiService.create({
-                                santriId: id,
-                                tahunAjaranId: activeTa._id,
-                                tingkatNgajiId: newTingkatNgajiId,
-                            });
-                        }
-                    }
-                } catch (assignErr) {
-                    console.error('Gagal memperbarui tingkat kelas/ngaji:', assignErr);
-                }
-            }
 
             toast({
                 variant: 'success',
@@ -148,26 +113,9 @@ const EditSantriForm = ({ id }: PropTypes) => {
             setIsLoading(true);
             setError('');
             try {
-                const [santriRes, kelasRes, ngajiRes] = await Promise.all([
-                    santriService.getSantriById(id),
-                    kelasSantriService.getAll({ santriId: id }),
-                    riwayatKelasNgajiService.getAll({ santriId: id }),
-                ]);
-
+                const santriRes = await santriService.getSantriById(id);
                 if (!cancelled) {
                     setData(santriRes.data);
-
-                    const activeKelas = kelasRes.data?.find(k => k.status === 'aktif') || kelasRes.data?.[kelasRes.data.length - 1];
-                    if (activeKelas) {
-                        const tkObj = activeKelas.tingkatKelasId as TingkatKelas;
-                        setCurrentTingkatKelasId(typeof tkObj === 'string' ? tkObj : tkObj?._id || '');
-                    }
-
-                    const activeNgaji = ngajiRes.data?.[ngajiRes.data.length - 1];
-                    if (activeNgaji && activeNgaji.tingkatNgajiId) {
-                        const tnObj = activeNgaji.tingkatNgajiId as TingkatNgaji;
-                        setCurrentTingkatNgajiId(typeof tnObj === 'string' ? tnObj : tnObj?._id || '');
-                    }
                 }
             } catch (err) {
                 if (!cancelled) {
@@ -225,11 +173,11 @@ const EditSantriForm = ({ id }: PropTypes) => {
                 <DataPendidikanSection initialValues={data.pendidikanTerakhir} />
                 <DataAsramaSekolah
                     initialValues={{
+                        sekolah: data.sekolah || (typeof data.sekolahId === 'object' ? data.sekolahId?.nama : undefined),
+                        kelasFormal: data.kelasFormal,
+                        kelasNgaji: data.kelasNgaji,
                         kamarId: typeof data.kamarId === 'string' ? data.kamarId : data.kamarId?._id,
-                        sekolahId: typeof data.sekolahId === 'string' ? data.sekolahId : data.sekolahId?._id,
                         laundry: data.laundry,
-                        tingkatKelasId: currentTingkatKelasId,
-                        tingkatNgajiId: currentTingkatNgajiId,
                     }}
                 />
             </Accordion>

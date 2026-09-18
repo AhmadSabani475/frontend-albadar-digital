@@ -1,13 +1,10 @@
-﻿import { Accordion } from '@/components/ui/accordion';
+import { Accordion } from '@/components/ui/accordion';
 import { Loader2, Save, Undo2 } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { useState, type FormEvent } from 'react';
 import type { CreateSantriPayload } from '@/types/Santri';
 import { Link, useNavigate } from 'react-router-dom';
 import { santriService } from '@/services/santri.service';
-import { tahunAjaranService } from '@/services/tahunAjaran.service';
-import { kelasSantriService } from '@/services/kelasSantri.service';
-import { riwayatKelasNgajiService } from '@/services/riwayatKelasNgaji.service';
 import DataDiriSection from './DataDiriSection';
 import DataAlamatSection from './DataAlamatSection';
 import DataOrangTuaSection from './DataOrangTuaSection';
@@ -24,9 +21,6 @@ const AddSantriForm = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-
-        const tingkatKelasId = formData.get('tingkatKelasId') as string;
-        const tingkatNgajiId = formData.get('tingkatNgajiId') as string;
 
         const santri: CreateSantriPayload = {
             nik: formData.get('nik') as string | undefined,
@@ -76,43 +70,17 @@ const AddSantriForm = () => {
                 provinsi: formData.get('alamat.provinsi') as string,
                 kodePos: formData.get('alamat.kodePos') as string | undefined
             },
+            sekolah: (formData.get('sekolah') as string) || undefined,
+            kelasFormal: (formData.get('kelasFormal') as string) || undefined,
+            kelasNgaji: (formData.get('kelasNgaji') as string) || undefined,
             kamarId: formData.get('kamarId') as string,
-            sekolahId: formData.get('sekolahId') as string,
             laundry: formData.get('laundry') === 'true',
         };
 
         try {
             setIsLoading(true);
             setError('');
-            const newSantriRes = await santriService.createSantri(santri);
-            const createdSantriId = newSantriRes.data?._id;
-
-            if (createdSantriId && (tingkatKelasId || tingkatNgajiId)) {
-                try {
-                    const taRes = await tahunAjaranService.getAllTahunAjaran();
-                    const activeTa = taRes.data?.find((t) => t.is_active) || taRes.data?.[0];
-
-                    if (activeTa) {
-                        if (tingkatKelasId) {
-                            await kelasSantriService.create({
-                                santriId: createdSantriId,
-                                tahunAjaranId: activeTa._id,
-                                tingkatKelasId,
-                                status: 'aktif',
-                            });
-                        }
-                        if (tingkatNgajiId) {
-                            await riwayatKelasNgajiService.create({
-                                santriId: createdSantriId,
-                                tahunAjaranId: activeTa._id,
-                                tingkatNgajiId,
-                            });
-                        }
-                    }
-                } catch (assignErr) {
-                    console.error('Gagal assign kelas/ngaji awal santri:', assignErr);
-                }
-            }
+            await santriService.createSantri(santri);
 
             toast({
                 variant: 'success',

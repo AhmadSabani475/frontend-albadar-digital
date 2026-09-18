@@ -15,7 +15,6 @@ import DetailDataOrangTua from './DetailDataOrangTua';
 import DetailDataPendidikan from './DetailDataPendidikan';
 import DetailDataAsramaSekolah from './DetailDataAsramaSekolah';
 import DataRiwayatPembayaran from './DataRiwayatPembayaran';
-import DataRiwayatAkademik from './DataRiwayatAkademik';
 
 type ViewDataSantriProps = {
     id: string;
@@ -122,7 +121,6 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
                     'data-ortu',
                     'data-pendidikan',
                     'data-asrama-sekolah',
-                    'riwayat-akademik',
                     'riwayat-pembayaran',
                 ]}
                 className="w-full flex flex-col gap-4"
@@ -132,7 +130,6 @@ const ViewDataSantri = ({ id }: ViewDataSantriProps) => {
                 <DetailDataOrangTua data={data} />
                 <DetailDataPendidikan pendidikan={data.pendidikanTerakhir} />
                 <DetailDataAsramaSekolah data={data} />
-                <DataRiwayatAkademik santriId={id} />
                 <DataRiwayatPembayaran santriId={id} santri={data} />
             </Accordion>
 
